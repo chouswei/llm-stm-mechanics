@@ -10,13 +10,13 @@
 
 ## Abstract
 
-Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. Its conserved quantity is the identically vanishing momentum conjugate to the naming sector, and breaking it makes the action cost of a load gauge-dependent, hence unmeasurable. Two predictions are stated with protocols that can fail. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
+Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
 
 ---
 
 ## Non-doctrine block
 
-This thesis is analysis. It is not MemNet product doctrine. It changes no MemNet version — not a, not b, not c. Six specific consequences, stated so they cannot be quietly dropped:
+This thesis is analysis. It is not MemNet product doctrine. It changes no MemNet version — not a, not b, not c. Nine specific consequences, stated so they cannot be quietly dropped:
 
 1. **Phase-space equivalence in research does not license a third operator.** It does not license a `rag_query` on the wire. Operator count stays 2: Recall and Commit.
 2. $p$ is an analysis quantity. It is never a node property and is never emitted by `pin_map`. Emitting it would break identity-is-the-element and no-store-key.
@@ -24,6 +24,9 @@ This thesis is analysis. It is not MemNet product doctrine. It changes no MemNet
 4. **The manifold is implicit and is never emitted.** Do not materialise it, do not precompute it, and do not dump $S$ in order to "see" it.
 5. **Multipliers are for analysis.** Engine caps stay hard rejects. A soft, buyable row cap $M$ is goldfish death.
 6. $\mathcal{A}$ is an analysis integral over the agent's turns, not engine-retained state. There is no cross-turn trajectory store. That is exactly the stuffed-map failure that dropping prior pin maps exists to prevent.
+7. **No engine-emitted coverage, $d$, $\lambda$, or $m$.** Schematic terms in $L_d$ are analysis. They are not `pin_map` fields. The ban is the same as for $p$.
+8. **An experimental snapshot is not a dump-$S$ API.** Serialising observable material for a RAG bench is a protocol step. It is not a product dump of $S$ and not `rag_query`.
+9. **No learned ranker inside Recall.** Approximating $\arg\max_u H_c$ is experimenter or harness work. It is not a MemNet verb and not a silent merge into RelativeSeed. RelativeSeed still never absorbs.
 
 ---
 
@@ -51,7 +54,7 @@ So the question is not "how much can we store" but "which slice is loaded, and a
 
 **Optimal control.** Cue-as-control plus an action functional is optimal control, not bare classical mechanics. Pontryagin's maximum principle [5] gives the costate interpretation of $p$ and the control Hamiltonian. Inequality constraints are handled by the Karush-Kuhn-Tucker conditions [6][7], with the standard modern presentation and the shadow-price reading of multipliers in Boyd and Vandenberghe [8].
 
-**Symmetry.** Noether [9] is the source for symmetry implies conservation, and for the second theorem's treatment of local (gauge) invariance, which is the case that actually applies here (§8).
+**Symmetry.** Noether [9] is the source for symmetry implies conservation, and for the second theorem's treatment of local (gauge) invariance. The existing lock is a global discrete renaming group; §8 uses a continuous local chart only as a pedagogical surrogate.
 
 **Geometric and quantum-inspired information retrieval.** There is a real literature that puts retrieval in Hilbert space: van Rijsbergen [10], the survey by Uprety, Gkoumas and Song [12], and Piwowarski, Frommholz, Lalmas and van Rijsbergen [13]. Operator representations of graph nodes exist too [14]. This work is relevant to §11 and is explicitly *not* the foundation used here. Quantum walks [17][18] appear only in §11. Quantum steering [19] appears only as a contrast: the steering in this paper is classical control, not the EPR-type phenomenon.
 
@@ -217,7 +220,7 @@ $$
 \dot{W}=\frac{\partial H_c}{\partial p},\qquad \dot{p}=-\frac{\partial H_c}{\partial W},\qquad u_t\in\arg\max_{u\in U}H_c(W_t,p_t,u,t).
 $$
 
-Here $p$ is the adjoint or costate. This is compatible with its mechanical derivation when the formulations are connected by the Legendre transform; it is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
+Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\mathrm{mech}}=m\dot{W}$ lives in a different equation. This paper uses one letter $p$ as a convenience. The identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ is assumed, not shown; it holds only under Legendre regularity (§13). It is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
 
 ### 6.2 Inequality caps and KKT diagnostics
 
@@ -299,7 +302,7 @@ $$
 
 The measurable Shape is an equivalence class $[\tilde{X}_t]$ under $G$, not a bag of cabinet keys. This is gauge invariance: multiple internal descriptions denote one physical working-set trajectory.
 
-For a finite permutation group, invariance gives exact orbit equivalence rather than a differential Noether charge. To work a conserved quantity through properly, embed renaming in a continuous redundant naming chart. Let $\theta^a_t$ be coordinates that choose an internal naming gauge while observables $x_t$ encode incidence and payload. Write
+For a finite permutation group, invariance gives exact orbit equivalence rather than a differential Noether charge. That orbit equivalence on the quotient $\mathcal{W}/G$ is the theorem. What follows is a continuous pedagogical surrogate, not a derivation from the existing MemNet lock. The lock is a global bijection $\rho$ on hidden ids, applied once to the cabinet. Local turn-dependent renaming is a strictly larger group. Embed renaming in a continuous redundant naming chart only to show what a Noether-II constraint *would* look like. Let $\theta^a_t$ be coordinates that choose an internal naming gauge while observables $x_t$ encode incidence and payload. Write
 
 $$
 W_t=(x_t,\theta_t),
@@ -323,9 +326,7 @@ $$
 \dot\pi_a = \frac{\partial L}{\partial \theta^a}=0.
 $$
 
-Thus the conserved quantity is the **vanishing gauge charge** $\pi_a\equiv0$: no physical momentum flows in the hidden-name direction. In the discrete theory, the same statement follows from the discrete Noether identity [3]: the momentum map paired with every infinitesimal naming generator is constant, and gauge redundancy constrains that constant to zero. This is a first-class constraint, not a useful payload to emit.
-
-There is a subtle point. Ordinary global symmetries yield a possibly nonzero conserved charge. A local gauge symmetry yields a Noether identity and a constraint. Hidden-name invariance is the latter. Calling some arbitrary hash count "the conserved quantity" would be wrong. The rigorous result is that physical trajectories lie in the quotient $\mathcal{W}/G$, and momentum components tangent to gauge orbits vanish.
+In the surrogate, the vanishing gauge charge $\pi_a\equiv0$ is a constraint: no physical momentum flows in the hidden-name direction. It is a property of the continuous chart, not a conserved payload of the product. Ordinary global symmetries yield a possibly nonzero conserved charge. A local gauge symmetry yields a Noether identity and a constraint. The product lock is global and discrete; the local continuous story is pedagogy. Calling some arbitrary hash count "the conserved quantity" would be wrong. The rigorous result is that physical trajectories lie in the quotient $\mathcal{W}/G$.
 
 ### 8.2 Observable consequence
 
@@ -353,7 +354,7 @@ $$
 
 The naming gauge exerts a fictitious force. Two relabelled but otherwise identical stores can follow different trajectories. The measured action becomes cabinet-dependent. Cache behaviour can change after a database migration that preserves all observable content. Worse, an emitted hidden key acquires apparent identity and can be replayed as if it were the element. That violates identity-is-the-element and no-store-key.
 
-This gives a direct test. Generate isomorphic copies of a session graph under random hidden-id permutations. Fix cue codebook tokens, admission policy, model, and RNG seed. Compare canonicalised $\tilde{X}_t$, $W_t$, cap activity, and output. Any systematic difference is a gauge anomaly. Noether's theorem has converted a naming rule into an executable invariant test.
+This gives a direct test. Generate isomorphic copies of a session graph under random hidden-id permutations. Fix cue codebook tokens, admission policy, model, and RNG seed. Canonicalise *labels*, not sequence: admission order in the window is physical [11]. If a hid-sort changes row order and therefore $W$, that is a gauge anomaly, not noise to be washed out. Any systematic difference is a gauge anomaly. The quotient has become an executable invariant test.
 
 ## 9 Instantiations: one phase space, different controls
 
@@ -423,13 +424,13 @@ $$
 
 with nonnegative coefficients preregistered on a development set. This is not claimed to be a universal Lagrangian. It is a measurement model whose coefficients are fixed before the held-out comparison.
 
-**Protocol.** Build at least 500 synthetic and 200 human-reviewed session graphs. Each task has a known minimal evidence set within $k\le2$ hops of a legal RelativeSeed. Create two load conditions: (A) bounded ShapeWalk with fixed hard $M$, and (B) a semantic RAG operator allowed to retrieve from a serialised snapshot of the same observable material. Match model, prompt instructions, total output budget, and final evidence coverage. Log offered $\tilde{X}_t$, caller admissions, final $W_t$, KV evictions, answer score, and all random seeds. Run deterministic decoding and a temperature condition with at least 20 seeds. Compare $\widehat{\mathcal{A}}_d$ at matched answer quality using paired bootstrap confidence intervals.
+**Protocol.** Build at least 500 synthetic and 200 human-reviewed session graphs. Each task has a known minimal evidence set within $k\le2$ hops of a legal RelativeSeed. Create two load conditions: (A) bounded ShapeWalk with fixed hard $M$, and (B) a semantic RAG operator allowed to retrieve from a serialised snapshot of the same observable material. That snapshot is a bench fixture. It is not a product dump of $S$ and not `rag_query`. Match model, prompt instructions, and total output budget. Compare at equal task quality; do not require matched final evidence coverage. A coverage-match plus a token-mass term in $\widehat{\mathcal{A}}_d$ would make the dump lose by construction. Log offered $\tilde{X}_t$, caller admissions, final $W_t$, KV evictions, answer score, and all random seeds. Run deterministic decoding and a temperature condition with at least 20 seeds. Compare $\widehat{\mathcal{A}}_d$ at matched answer quality using paired bootstrap confidence intervals.
 
 **Failure condition.** If RAG dumps have equal or lower action at equal quality across the prespecified local-task stratum, the predicted advantage is false. If the result appears only after changing coefficients, it is also false for the preregistered estimator. A mixed result would narrow the claim to particular graph topologies rather than rescue it universally.
 
 ### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 
-**Claim.** The estimated shadow price $\lambda_M$ becomes positive precisely when the row cap is active and marginally relaxing $M$ would improve the task objective. Wrongly centred or diffuse Shapes should produce positive $\lambda_M$ more often than correctly centred compact Shapes.
+**Claim.** The finite-difference $\widehat{\lambda}_M$ is a diagnostic of the *account*, not a KKT multiplier read off the engine. Complementary slackness is exact only at an optimum of the control programme. The prediction is that this diagnostic becomes positive precisely when the row cap is active and marginally relaxing $M$ would improve the task objective. Wrongly centred or diffuse Shapes should produce positive $\widehat{\lambda}_M$ more often than correctly centred compact Shapes.
 
 **Protocol.** For each task, run $M\in\{8,12,16,24,32\}$ while keeping all other caps fixed. Estimate
 
@@ -445,9 +446,9 @@ Complementary slackness is exact for the optimisation model under its regularity
 
 ### 10.3 Prediction 3: rename invariance
 
-**Claim.** Hidden-id permutations produce no change in canonicalised offered Shapes, admitted working sets, cap multipliers, or output distributions.
+**Claim.** Hidden-id permutations produce no change in offered Shapes, admitted working sets, cap multipliers, or output distributions, once *labels* are canonicalised. Admission order is physical and is not canonicalised away.
 
-**Protocol.** For every test session create 100 isomorphic hidden-id permutations. Freeze observable fields, edge labels, cue codebook tokens, model, and random seeds. Canonicalise outputs by observable identity and perform exact comparison before generation, then distributional comparison across temperatures after generation.
+**Protocol.** For every test session create 100 isomorphic hidden-id permutations. Freeze observable fields, edge labels, cue codebook tokens, model, and random seeds. Canonicalise labels by observable identity. Do not sort or otherwise wash out row order: if hid-sort changes sequence and therefore $W$, that is a gauge anomaly [11]. Exact comparison before generation; distributional comparison after generation. At $T>0$ and under GPU noise, "reproducible" means outside a predeclared equivalence band. Exact-match without that band will false-positive.
 
 **Failure condition.** Any reproducible dependence on hidden names is a gauge anomaly. There is no coefficient to tune. This is the sharpest test in the paper.
 
@@ -513,6 +514,12 @@ The matrix must live in analysis, not in `pin_map`.
 
 **Can a learned control remain inspectable?** A ranker may approximate $\arg\max_u H_c$, but its chosen control should still be auditable against hard caps, rename invariance, and proposal/admission/eviction logs. Otherwise optimal-control notation only renames opacity.
 
+**Which equation is the actual update?** §3.2 writes discrete Euler-Lagrange; §3.3 writes continuous port-Hamiltonian. They are stacked, not glued. There is no discrete Dirac or discrete port-Hamiltonian step in this paper. A physicist is entitled to ask which equation is the update rule.
+
+**Is $p$ one object?** Mechanical $p_{\mathrm{mech}}=m\dot{W}$ and the Pontryagin costate $p_{\mathrm{adj}}$ live in different equations. One letter is a convenience. The identification is assumed, not shown.
+
+**Is the continuous gauge chart a theorem?** The existing lock is a global discrete group $G$. The turn-dependent $\theta_t$ chart is a larger, continuous, local group used as pedagogy. The vanishing $\pi_a$ is a property of that surrogate. The theorem is the quotient $\mathcal{W}/G$.
+
 ## 14 Conclusion
 
 The next LLM generate is a goldfish. Only $W_t$ is resident. The rest is inventory. Short-term memory is therefore not the session graph $S$, a corpus, weights, or a global ranking. It is the phase point $(W,p)$ moving on the manifold induced by that inventory.
@@ -521,7 +528,7 @@ The three roles are the spine. The LLM is the integrator. It runs the controlled
 
 Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Momentum follows from $p=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
 
-Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. The naming-sector momentum vanishes, so physical action lives on the quotient by renaming. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test.
+Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The vanishing naming-sector momentum is a property of a continuous surrogate, not the product conserved quantity.
 
 The account can fail. Bounded local loading may not reduce measured action. The $M$-cap multiplier may not diagnose wrong Shapes. Hidden-id permutations may change behaviour. Those outcomes would narrow or reject the mechanism. Until such tests are run, the defensible result is a variational account of the working set, with a strong claim about the layer at which an STM mechanism should be stated.
 
