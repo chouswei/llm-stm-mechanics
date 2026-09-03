@@ -54,7 +54,7 @@ So the question is not "how much can we store" but "which slice is loaded, and a
 
 **Optimal control.** Cue-as-control plus an action functional is optimal control, not bare classical mechanics. Pontryagin's maximum principle [5] gives the costate interpretation of $p$ and the control Hamiltonian. Inequality constraints are handled by the Karush-Kuhn-Tucker conditions [6][7], with the standard modern presentation and the shadow-price reading of multipliers in Boyd and Vandenberghe [8].
 
-**Symmetry.** Noether [9] is the source for symmetry implies conservation, and for the second theorem's treatment of local (gauge) invariance. The existing lock is a global discrete renaming group; §8 uses a continuous local chart only as a pedagogical surrogate.
+**Symmetry.** Noether [9] is the source for symmetry implies conservation. The case that applies here is a finite group $G$ acting globally: physical Shape lives in the quotient $\mathcal{W}/G$ (orbit equivalence). The second theorem's local gauge invariance is only what an optional continuous naming chart would look like; it is not the existing lock (§8).
 
 **Geometric and quantum-inspired information retrieval.** There is a real literature that puts retrieval in Hilbert space: van Rijsbergen [10], the survey by Uprety, Gkoumas and Song [12], and Piwowarski, Frommholz, Lalmas and van Rijsbergen [13]. Operator representations of graph nodes exist too [14]. This work is relevant to §11 and is explicitly *not* the foundation used here. Quantum walks [17][18] appear only in §11. Quantum steering [19] appears only as a contrast: the steering in this paper is classical control, not the EPR-type phenomenon.
 
@@ -528,7 +528,7 @@ The three roles are the spine. The LLM is the integrator. It runs the controlled
 
 Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Momentum follows from $p=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
 
-Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The vanishing naming-sector momentum is a property of a continuous surrogate, not the product conserved quantity.
+Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
 The account can fail. Bounded local loading may not reduce measured action. The $M$-cap multiplier may not diagnose wrong Shapes. Hidden-id permutations may change behaviour. Those outcomes would narrow or reject the mechanism. Until such tests are run, the defensible result is a variational account of the working set, with a strong claim about the layer at which an STM mechanism should be stated.
 
