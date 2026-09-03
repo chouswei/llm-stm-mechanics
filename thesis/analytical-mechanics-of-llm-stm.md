@@ -140,14 +140,7 @@ $$
 The better systems account is port-Hamiltonian [4]:
 
 $$
-\begin{bmatrix}
-\dot{W}\\
-\dot{p}
-\end{bmatrix}
-=
-\left(J-R\right)\nabla H + G u,
-\qquad J^\top=-J,
-\qquad R=R^\top\succeq 0.
+\begin{bmatrix}\dot{W}\\ \dot{p}\end{bmatrix}=(J-R)\nabla H+Gu,\qquad J^{\top}=-J,\qquad R=R^{\top}\succeq 0.
 $$
 
 Then
