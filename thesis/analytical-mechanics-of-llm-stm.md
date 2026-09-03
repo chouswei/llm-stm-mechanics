@@ -427,19 +427,19 @@ with nonnegative coefficients preregistered on a development set. This is not cl
 
 **Failure condition.** If RAG dumps have equal or lower action at equal quality across the prespecified local-task stratum, the predicted advantage is false. If the result appears only after changing coefficients, it is also false for the preregistered estimator. A mixed result would narrow the claim to particular graph topologies rather than rescue it universally.
 
-### 10.2 Prediction 2: the $M$-cap multiplier detects a wrong Shape
+### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 
 **Claim.** The estimated shadow price $\lambda_M$ becomes positive precisely when the row cap is active and marginally relaxing $M$ would improve the task objective. Wrongly centred or diffuse Shapes should produce positive $\lambda_M$ more often than correctly centred compact Shapes.
 
 **Protocol.** For each task, run $M\in\{8,12,16,24,32\}$ while keeping all other caps fixed. Estimate
 
 $$
-\widehat{\lambda}_M=-\frac{J^*(M+\delta)-J^*(M)}{\delta}
+\widehat{\lambda}_{M}=-\frac{J^{\ast}(M+\delta)-J^{\ast}(M)}{\delta}
 $$
 
-for a minimised cost $J^*$, with one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat\lambda_M>0$ predicts truncation and task improvement under cap relaxation.
+for a minimised cost $J^{\ast}$, with one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat{\lambda}_{M}>0$ predicts truncation and task improvement under cap relaxation.
 
-**Failure condition.** The claim fails if $\widehat\lambda_M$ is routinely positive while the cap has slack, nonpositive when relaxing a binding cap improves the preregistered objective, or no better than raw row count at identifying wrong Shapes. Noise near zero should be handled with an equivalence band fixed in advance.
+**Failure condition.** The claim fails if $\widehat{\lambda}_{M}$ is routinely positive while the cap has slack, nonpositive when relaxing a binding cap improves the preregistered objective, or no better than raw row count at identifying wrong Shapes. Noise near zero should be handled with an equivalence band fixed in advance.
 
 Complementary slackness is exact for the optimisation model under its regularity assumptions. An engine trace is not automatically an optimum. The protocol therefore tests the adequacy of the model as well as the product hypothesis.
 
