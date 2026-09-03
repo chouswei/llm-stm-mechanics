@@ -264,13 +264,13 @@ This definition answers a practical question that static retrieval metrics evade
 A phase-space diagram makes the separation explicit:
 
 ```mermaid
-flowchart LR
-    I[Inventory: weights / corpus / session graph S] -->|control u proposes| X[Offered Shape X-tilde_t]
-    X -->|caller admission| W[Configuration W_t]
-    W -->|derive p = m W-dot| P[Phase point (W_t, p_t)]
-    P -->|LLM stochastic integration| N[Next configuration W_t+1]
-    N -->|eviction / dissipation| E[Bounded W_t+1]
-    N -. gated Commit Delta .-> I
+flowchart TD
+    I["Inventory — weights, corpus, session graph S"] -->|"control u proposes"| X["Offered Shape X̃_t"]
+    X -->|"caller admission"| W["Configuration W_t"]
+    W -->|"derive p = m W-dot"| P["Phase point W_t, p_t"]
+    P -->|"LLM stochastic integration"| Nxt["Next configuration W_t+1"]
+    Nxt -->|"eviction / dissipation"| E["Bounded W_t+1"]
+    Nxt -.->|"gated Commit Delta"| I
 ```
 
 The diagram has no arrow from inventory directly to generation. Every usable item crosses the proposal and admission boundaries. Commit $\Delta$ points back to inventory because it changes $S$, not because $S$ is the action.
