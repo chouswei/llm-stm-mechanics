@@ -72,10 +72,7 @@ $$
 The action is always $\mathcal{A}$, never $S$. The symbol $S$ is locked to the persistent session graph. A useful elementary Lagrangian is
 
 $$
-L(W,\dot{W},u,t)
-= \frac{1}{2}m\lVert \dot{W}\rVert^2
-- V(W;u,t)
-- C(W,u,t).
+L(W,\dot{W},u,t)=\frac{1}{2}m\|\dot{W}\|^2-V(W;u,t)-C(W,u,t).
 $$
 
 The kinetic term is not decoration. It defines persistence. The parameter $m$ is pin stickiness: large $m$ makes rapid working-set changes costly. The cue $u$ enters a time-dependent potential or a constraint. It is a control, not a coordinate. $C$ prices token load, unsupported material, redundancy, or task error.
@@ -91,8 +88,7 @@ Thus hold and inertia are represented by $m$. Momentum is the consequence $m\dot
 Where the Legendre transform is regular, the Hamiltonian is
 
 $$
-H(W,p,u,t) = p\cdot\dot{W} - L
-= \frac{\lVert p\rVert^2}{2m} + V(W;u,t) + C(W,u,t).
+H(W,p,u,t)=p\cdot\dot{W}-L=\frac{\|p\|^2}{2m}+V(W;u,t)+C(W,u,t).
 $$
 
 This $H$ is an analysis function. It is not a MemNet verb and not a scheduler. It explains the selected deflection of $W$; it does not perform Recall or Commit.
@@ -112,9 +108,7 @@ $$
 Varying interior configurations with endpoints fixed gives the discrete Euler-Lagrange equation [3]:
 
 $$
-D_2 L_d(W_{k-1},W_k;u_{k-1})
-+ D_1 L_d(W_k,W_{k+1};u_k)
-+ F^-_k + F^+_k = 0.
+D_2 L_d(W_{k-1},W_k;u_{k-1})+D_1 L_d(W_k,W_{k+1};u_k)+F^-_k+F^+_k=0.
 $$
 
 The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation.
@@ -134,16 +128,13 @@ Pure Hamiltonian flow is symplectic and volume-preserving. Eviction is neither. 
 One option is a Rayleigh dissipation function,
 
 $$
-\mathcal{R}(\dot{W})=\frac{1}{2}\gamma\lVert \dot{W}\rVert^2,
+\mathcal{R}(\dot{W})=\frac{1}{2}\gamma\|\dot{W}\|^2,
 $$
 
 which modifies the Euler-Lagrange equation to
 
 $$
-\frac{d}{dt}\frac{\partial L}{\partial \dot{W}}
--\frac{\partial L}{\partial W}
-+\frac{\partial \mathcal{R}}{\partial \dot{W}}
-=F_u.
+\frac{d}{dt}\frac{\partial L}{\partial\dot{W}}-\frac{\partial L}{\partial W}+\frac{\partial\mathcal{R}}{\partial\dot{W}}=F_u.
 $$
 
 The better systems account is port-Hamiltonian [4]:
@@ -162,9 +153,7 @@ $$
 Then
 
 $$
-\dot{H}
-= -\nabla H^\top R\nabla H + y^\top u
-\le y^\top u.
+\dot{H}=-\nabla H^{\top} R\nabla H+y^{\top}u\le y^{\top}u.
 $$
 
 The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one.
@@ -232,11 +221,7 @@ $$
 The necessary conditions are
 
 $$
-\dot{W}=\frac{\partial H_c}{\partial p},
-\qquad
-\dot{p}=-\frac{\partial H_c}{\partial W},
-\qquad
-u_t \in \arg\max_{u\in U}H_c(W_t,p_t,u,t).
+\dot{W}=\frac{\partial H_c}{\partial p},\qquad \dot{p}=-\frac{\partial H_c}{\partial W},\qquad u_t\in\arg\max_{u\in U}H_c(W_t,p_t,u,t).
 $$
 
 Here $p$ is the adjoint or costate. This is compatible with its mechanical derivation when the formulations are connected by the Legendre transform; it is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
@@ -390,11 +375,7 @@ Let the product cue $q_t$ be a finite sequence of codebook tokens. At the analys
 A schematic discrete Lagrangian is
 
 $$
-L_d(W_t,W_{t+1};u_t)
-= \frac{m}{2}\,d(W_t,W_{t+1})^2
-- \alpha\,\mathrm{coverage}(W_{t+1},u_t)
-+ \beta\,|W_{t+1}\setminus W_t|
-+ \chi_{\mathrm{invalid}}.
+L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,|W_{t+1}\setminus W_t|+\chi_{\mathrm{invalid}}.
 $$
 
 Here $d$ is a set-transition distance. The stickiness $m$ prices churn. Coverage rewards cue-relevant support. The third term prices newly loaded mass. The indicator $\chi_{\mathrm{invalid}}$ is infinite for hard-invalid transitions. The native discrete momentum is given by the discrete Legendre transform of $L_d$, not returned by the engine.
@@ -404,11 +385,7 @@ Here $d$ is a set-transition distance. The stickiness $m$ prices churn. Coverage
 The constraints are
 
 $$
-\mathrm{hop}(\tilde{X}_7)\le k,
-\qquad
-|\tilde{X}_7|\le M,
-\qquad
-\mathrm{rate}(W_7,W_8)\le r.
+\mathrm{hop}(\tilde{X}_7)\le k,\qquad |\tilde{X}_7|\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.
 $$
 
 Their KKT multipliers estimate which cap is active in the *optimal-control account*. Product behaviour remains hard reject. If the row-cap multiplier becomes positive and task loss rises, the diagnostic says the offered Shape is pressing against $M$. It does not say to make $M$ buyable.
@@ -422,11 +399,7 @@ RAG [16] is one load operator from a corpus into the window. A retriever maps qu
 The relevant cost is not only retrieval relevance. It includes token mass, duplication, displacement of resident pins, and positional degradation:
 
 $$
-C_{\mathrm{RAG}}
-= c_{\mathrm{tok}}|\tilde{X}|
-+ c_{\mathrm{dup}}D(\tilde{X})
-+ c_{\mathrm{evict}}E(W_{t-1},W_t)
-+ c_{\mathrm{task}}\ell_{\mathrm{task}}.
+C_{\mathrm{RAG}}=c_{\mathrm{tok}}|\tilde{X}|+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.
 $$
 
 The "lost in the middle" result [11] implies that equal evidence with equal inclusion can induce different task costs under different positions. Therefore global rank alone cannot determine $W$'s usefulness.
@@ -452,14 +425,7 @@ A dictionary can always be made to fit after the fact. A mechanism must rule out
 Define an operational discrete action estimator before seeing outcomes:
 
 $$
-\widehat{\mathcal{A}}_d
-= \sum_t
-\left[
- a\,d(W_t,W_{t+1})^2
-+b\,\mathrm{tokens\_admitted}_t
-+c\,\mathrm{critical\_evictions}_t
-+d\,\ell_{\mathrm{task},t}
-\right],
+\widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],
 $$
 
 with nonnegative coefficients preregistered on a development set. This is not claimed to be a universal Lagrangian. It is a measurement model whose coefficients are fixed before the held-out comparison.
@@ -475,8 +441,7 @@ with nonnegative coefficients preregistered on a development set. This is not cl
 **Protocol.** For each task, run $M\in\{8,12,16,24,32\}$ while keeping all other caps fixed. Estimate
 
 $$
-\widehat\lambda_M
-= -\frac{J^*(M+\delta)-J^*(M)}{\delta}
+\widehat{\lambda}_M=-\frac{J^*(M+\delta)-J^*(M)}{\delta}
 $$
 
 for a minimised cost $J^*$, with one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat\lambda_M>0$ predicts truncation and task improvement under cap relaxation.
@@ -500,9 +465,7 @@ Analytical mechanics comes first because the present mechanism already has confi
 Start with observables $A(W,p)$ and $B(W,p)$ on phase space and their Poisson bracket,
 
 $$
-\{A,B\}
-= \frac{\partial A}{\partial W}\frac{\partial B}{\partial p}
-- \frac{\partial A}{\partial p}\frac{\partial B}{\partial W}.
+\{A,B\}=\frac{\partial A}{\partial W}\frac{\partial B}{\partial p}-\frac{\partial A}{\partial p}\frac{\partial B}{\partial W}.
 $$
 
 Canonical quantisation replaces the bracket by a commutator,
