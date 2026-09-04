@@ -1,0 +1,75 @@
+{
+  "prediction": 1,
+  "stratum": "llm-answer-quality",
+  "scorer": "full_gold",
+  "score_llm": "|pred ∩ full_gold_keys| / |full_gold_keys|",
+  "full_gold_keys": "ALL graph.gold_slugs (NOT gold∩W)",
+  "prompt_only_key_on": "gold ∩ W",
+  "invalid_prior": {
+    "scorer": "gold ∩ W (extraction fidelity)",
+    "false_claim": "200/200 LLM-perfect",
+    "status": "INVALID — must not be cited; this run supersedes"
+  },
+  "honesty": "graphs: human-reviewed by agent under user delegation; not author-blind",
+  "memnet_llm_version": "0.19.4",
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "term_a": "a * |W|^2",
+    "tokens": "sum(len(title)+len(slug))",
+    "ell_task": "1-score_llm",
+    "locked_before_outcomes": true,
+    "same_as_prior_p1": true,
+    "retuned": false
+  },
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0,
+    "decoding": "greedy T=0 (predeclared primary band)"
+  },
+  "protocol": {
+    "graphs": "experiments/p1-hr/",
+    "n_sessions": 200,
+    "k_hop": 2,
+    "M_hard": 12,
+    "cue_kind": "HUB",
+    "walk": "pin_map M=12 k=2",
+    "dump_is_bench_fixture": true,
+    "equal_quality": "both score_llm==1.0 on full gold"
+  },
+  "n_sessions": 200,
+  "n_both_perfect": 170,
+  "n_walk_imperfect_llm": 30,
+  "n_dump_imperfect_llm": 0,
+  "stats_both_perfect": {
+    "n": 170,
+    "n_bootstrap": 10000,
+    "mean_A_walk": 338.99411764705883,
+    "mean_A_dump": 3271.4058823529413,
+    "mean": 2932.4117647058824,
+    "median": 2847.0,
+    "ci95": [2780.3529411764707, 3086.3117647058825],
+    "stdev_delta": 1018.8145971623117,
+    "note": "ℓ_task=0 on both sides; Â matches p1-hr both-perfect gold-presence slice"
+  },
+  "verification": {
+    "session_i": 170,
+    "family": "cap-bind-stress",
+    "n_gold": 5,
+    "walk_score_llm": 0.2,
+    "walk_hits": "1/5",
+    "dump_score_llm": 1.0
+  },
+  "verdict": "PASS",
+  "verdict_reason": "On both-perfect stratum (n=170 equal LLM quality on full gold), mean Δ=2932.4118 > 0 and 95% CI [2780.3529, 3086.3118] excludes 0. Coefficients not retuned. Invalid gold∩W 200/200 run is not the claim.",
+  "T_gt_0": "OPEN",
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-04 counts; full per-call results.json not attached. No secrets.",
+  "harness": "experiments/p1-llm/run_p1_llm.py",
+  "prior_gold_presence": "experiments/p1-hr/results.summary.json"
+}

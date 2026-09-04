@@ -1,6 +1,6 @@
-# Experiments (P1 / P1-HR / P2 / P3 / P3-gen / P3-gen-0194)
+# Experiments (P1 / P1-HR / P1-LLM / P2 / P3 / P3-gen / P3-gen-0194)
 
-Harnesses for the thesis §10 predictions. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) calls an OpenRouter chat API at $T=0$; that is the exception, not a change to the synthetic strata.
+Harnesses for the thesis §10 predictions. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; that is the exception, not a change to the synthetic strata.
 
 ## Stack
 
@@ -21,6 +21,14 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 
 # P1-HR — ShapeWalk vs dump on human-reviewed n=200 (diverse families)
 .venv/bin/python experiments/p1-hr/run_p1_hr.py
+
+# P1-LLM — LLM-answer quality on p1-hr graphs (FIXED full-gold scorer; T=0)
+# Authoritative numbers: experiments/p1-llm/results.summary.json
+# Do NOT cite the invalid gold∩W 200/200 extraction-fidelity run.
+# Needs OPENROUTER_API_KEY for a live re-run; never commit the key.
+.venv/bin/python experiments/p1-llm/run_p1_llm.py --check-scorer
+# export OPENROUTER_API_KEY=
+# .venv/bin/python experiments/p1-llm/run_p1_llm.py
 
 # P2 — M-cap lambda-hat diagnostic (eq 31)
 .venv/bin/python experiments/p2/run_p2.py
@@ -44,7 +52,8 @@ export OPENROUTER_API_KEY=  # never commit
 | Pred | Verdict | Notes |
 |------|---------|-------|
 | P1 synthetic | PASS (structural) | n=500; constant Δ=1934 (clone stratum) |
-| P1-HR | PASS | n=200 human-reviewed; 17 families; n_both_perfect=170; mean Δ≈2932, CI excludes 0 |
+| P1-HR | PASS | n=200 human-reviewed; 17 families; n_both_perfect=170; mean Δ≈2932, CI excludes 0 (gold presence) |
+| P1-LLM | PASS | full-gold scorer; n=170 equal-quality; mean Δ≈2932, CI [2780,3086]; T=0 gpt-4o-mini; T>0 OPEN. Invalid gold∩W 200/200 must not be cited |
 | P2 | PASS (account diagnostic) | truncation / no-false-positive strong; AUROC vs \|W\| only marginal |
 | P3 before-generate | PASS after MemNet #147 | pre-#147: FAIL (order) — see `p3/PRE147.md` |
 | P3 generation half ($T=0$) | 0.19.3: RAW FAIL 30/120 / CANONICAL PASS 0/120; 0.19.4: both PASS 0/120 | #148 honesty c confirmation; $T>0$ OPEN; no SemVer $a$/$b$ claim |
