@@ -1,0 +1,192 @@
+{
+  "memnet_llm_version": "0.19.3",
+  "api": {
+    "binding": "in-process Python product API (CLI-equivalent; goldfish, no Neo4j)",
+    "cli": [
+      "session open --map-file",
+      "mutate --stdin",
+      "query pin-map --kind --locator --depth --max-rows",
+      "session close"
+    ],
+    "python_names": [
+      "memnet.session.open_session",
+      "memnet.mutate_gate.MutateGate.apply",
+      "memnet.pin_map_composer.PinMapComposer.compose",
+      "memnet.session.close_session"
+    ],
+    "operator_count": 2,
+    "operators": [
+      "pin_map (query pin-map)",
+      "mutate"
+    ],
+    "not_used": [
+      "add",
+      "rag_query",
+      "Layer",
+      "query find",
+      "query neighbors"
+    ],
+    "call_counts": {
+      "open_session": 2020,
+      "MutateGate.apply": 2020,
+      "PinMapComposer.compose": 2020,
+      "close_session": 2020
+    }
+  },
+  "protocol": {
+    "n_sessions": 20,
+    "n_perms": 100,
+    "M": 12,
+    "k": 2,
+    "cue_kind": "HUB",
+    "cue_tokens": "codebook field locator slug=hub-sXX (unique HUB seed)",
+    "n_nodes": 16,
+    "n_doc": 7,
+    "n_usr": 4,
+    "n_tsk": 4,
+    "seed": 20260903,
+    "temperature": 0,
+    "gpu": false,
+    "equivalence_band": "exact match (T=0, no GPU). No wiggle.",
+    "hid_on_wire": false,
+    "isomorphism": "hid is GraphElement handle (Record.hid, exclude=True, _elN), off pin_map wire. Operational permutation = shuffled CREATE order (allocator new_hid) plus bijection on optional nickname property id. MATCH/cue use observable slug, never hid/id.",
+    "canonicalisation": "node: (kind, payload minus id/hid); edge: (src_obs, rel_type, rel_payload minus id/hid, dst_obs). Emitted sequence is NOT sorted."
+  },
+  "counts": {
+    "n_compare": 2000,
+    "label_match": 2000,
+    "label_anomaly": 0,
+    "order_match": 0,
+    "order_anomaly": 2000,
+    "build_fail": 0,
+    "hid_leak_shapes": 0
+  },
+  "verdict": "FAIL (order)",
+  "per_session": [
+    {
+      "session_i": 0,
+      "hub_slug": "hub-s00",
+      "orig_sid": "mn_2c71b3f1",
+      "orig_n_labels": 12,
+      "orig_hid_leak": false,
+      "n_perms": 100,
+      "label_anomaly": 0,
+      "order_anomaly": 100,
+      "both_match": 0
+    },
+    {
+      "session_i": 1,
+      "hub_slug": "hub-s01",
+      "orig_sid": "mn_04040994",
+      "orig_n_labels": 12,
+      "orig_hid_leak": false,
+      "n_perms": 100,
+      "label_anomaly": 0,
+      "order_anomaly": 100,
+      "both_match": 0
+    }
+  ],
+  "examples": [
+    {
+      "kind": "order_only",
+      "session_i": 0,
+      "perm_i": 1,
+      "orig_sid": "mn_2c71b3f1",
+      "perm_sid": "mn_e01f4757",
+      "hub_slug": "hub-s00",
+      "cue": "--kind HUB --locator slug=hub-s00",
+      "orig_n": 12,
+      "perm_n": 12,
+      "orig_canonical_order": [
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "perm_canonical_order": [
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})"
+      ],
+      "only_in_orig": [],
+      "only_in_perm": [],
+      "orig_raw": "(:HUB {id: 'nick-hub-s00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n06', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:TSK {id: 'nick-tsk-s00-n00', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-tsk-s00-n01', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-tsk-s00-n02', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n",
+      "perm_raw": "(:HUB {id: 'nick-tsk-s00-n01', slug: 'hub-s00', title: 'Hub s00 root'})\n(:TSK {id: 'nick-doc-s00-n02', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:DOC {id: 'nick-tsk-s00-n00', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-usr-s00-n01', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:TSK {id: 'nick-doc-s00-n03', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:DOC {id: 'nick-hub-s00', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-usr-s00-n03', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:TSK {id: 'nick-doc-s00-n05', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n",
+      "orig_hid_leak": false,
+      "perm_hid_leak": false
+    },
+    {
+      "kind": "order_only",
+      "session_i": 0,
+      "perm_i": 2,
+      "orig_sid": "mn_2c71b3f1",
+      "perm_sid": "mn_2b875e4a",
+      "hub_slug": "hub-s00",
+      "cue": "--kind HUB --locator slug=hub-s00",
+      "orig_n": 12,
+      "perm_n": 12,
+      "orig_canonical_order": [
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "perm_canonical_order": [
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})"
+      ],
+      "only_in_orig": [],
+      "only_in_perm": [],
+      "orig_raw": "(:HUB {id: 'nick-hub-s00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n06', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:TSK {id: 'nick-tsk-s00-n00', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-tsk-s00-n01', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-tsk-s00-n02', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n",
+      "perm_raw": "(:HUB {id: 'nick-tsk-s00-n00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:TSK {id: 'nick-usr-s00-n03', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-doc-s00-n00', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:DOC {id: 'nick-usr-s00-n02', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:TSK {id: 'nick-usr-s00-n00', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-tsk-s00-n01', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:TSK {id: 'nick-usr-s00-n01', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:DOC {id: 'nick-hub-s00', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n",
+      "orig_hid_leak": false,
+      "perm_hid_leak": false
+    }
+  ],
+  "elapsed_s": 609.458,
+  "files": {
+    "schema": "/workspace/p3-hid/schema.txt",
+    "runner": "/workspace/p3-hid/run_p3.py",
+    "results": "/workspace/p3-hid/results.json",
+    "report": "/workspace/p3-hid/REPORT.md"
+  },
+  "per_session_count": 20,
+  "per_session_note": "truncated; re-run script for full",
+  "examples_count": 5,
+  "examples_note": "truncated; re-run script for full"
+}

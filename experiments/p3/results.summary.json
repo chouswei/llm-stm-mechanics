@@ -1,0 +1,215 @@
+{
+  "memnet_llm_version": "0.19.3",
+  "memnet_file": "/workspace/p3-hid-post147/.venv/lib/python3.13/site-packages/memnet/__init__.py",
+  "merge_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "pr": 147,
+  "observable_rank": {
+    "module_importable": true,
+    "module_file": "/workspace/p3-hid-post147/.venv/lib/python3.13/site-packages/memnet/observable_rank.py",
+    "exports": [
+      "RANK_EXCLUDE_KEYS",
+      "edge_rank_key",
+      "node_rank_key",
+      "observable_payload",
+      "ranked",
+      "record_rank_key"
+    ],
+    "error": null
+  },
+  "prior_pilot": {
+    "source": "pypi memnet-llm==0.19.3 pre-PR#147",
+    "label_match": 2000,
+    "label_anomaly": 0,
+    "order_match": 0,
+    "order_anomaly": 2000,
+    "n_compare": 2000,
+    "verdict": "FAIL (order)"
+  },
+  "api": {
+    "binding": "in-process Python product API (CLI-equivalent; goldfish, no Neo4j)",
+    "cli": [
+      "session open --map-file",
+      "mutate --stdin",
+      "query pin-map --kind --locator --depth --max-rows",
+      "session close"
+    ],
+    "python_names": [
+      "memnet.session.open_session",
+      "memnet.mutate_gate.MutateGate.apply",
+      "memnet.pin_map_composer.PinMapComposer.compose",
+      "memnet.session.close_session"
+    ],
+    "operator_count": 2,
+    "operators": [
+      "pin_map (query pin-map)",
+      "mutate"
+    ],
+    "not_used": [
+      "add",
+      "rag_query",
+      "Layer",
+      "query find",
+      "query neighbors"
+    ],
+    "call_counts": {
+      "open_session": 2020,
+      "MutateGate.apply": 2020,
+      "PinMapComposer.compose": 2020,
+      "close_session": 2020
+    }
+  },
+  "protocol": {
+    "n_sessions": 20,
+    "n_perms": 100,
+    "M": 12,
+    "k": 2,
+    "cue_kind": "HUB",
+    "cue_tokens": "codebook field locator slug=hub-sXX (unique HUB seed)",
+    "n_nodes": 16,
+    "n_doc": 7,
+    "n_usr": 4,
+    "n_tsk": 4,
+    "seed": 20260903,
+    "temperature": 0,
+    "gpu": false,
+    "equivalence_band": "exact match (T=0, no GPU). No wiggle.",
+    "hid_on_wire": false,
+    "isomorphism": "hid is GraphElement handle (Record.hid, exclude=True, _elN), off pin_map wire. Operational permutation = shuffled CREATE order (allocator new_hid) plus bijection on optional nickname property id. MATCH/cue use observable slug, never hid/id.",
+    "canonicalisation": "node: (kind, payload minus id/hid); edge: (src_obs, rel_type, rel_payload minus id/hid, dst_obs). Emitted sequence is NOT sorted."
+  },
+  "counts": {
+    "n_compare": 2000,
+    "label_match": 2000,
+    "label_anomaly": 0,
+    "order_match": 2000,
+    "order_anomaly": 0,
+    "build_fail": 0,
+    "hid_leak_shapes": 0
+  },
+  "verdict": "PASS",
+  "per_session": [
+    {
+      "session_i": 0,
+      "hub_slug": "hub-s00",
+      "orig_sid": "mn_31738f81",
+      "orig_n_labels": 12,
+      "orig_hid_leak": false,
+      "n_perms": 100,
+      "label_anomaly": 0,
+      "order_anomaly": 0,
+      "both_match": 100
+    },
+    {
+      "session_i": 1,
+      "hub_slug": "hub-s01",
+      "orig_sid": "mn_07eadfab",
+      "orig_n_labels": 12,
+      "orig_hid_leak": false,
+      "n_perms": 100,
+      "label_anomaly": 0,
+      "order_anomaly": 0,
+      "both_match": 100
+    }
+  ],
+  "examples": [],
+  "match_examples": [
+    {
+      "kind": "match",
+      "session_i": 0,
+      "perm_i": 1,
+      "orig_sid": "mn_31738f81",
+      "perm_sid": "mn_c28bb3b3",
+      "hub_slug": "hub-s00",
+      "cue": "--kind HUB --locator slug=hub-s00",
+      "orig_n": 12,
+      "perm_n": 12,
+      "orig_canonical_order": [
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "perm_canonical_order": [
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "orig_raw": "(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n06', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:HUB {id: 'nick-hub-s00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:TSK {id: 'nick-tsk-s00-n00', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-tsk-s00-n01', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-tsk-s00-n02', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n",
+      "perm_raw": "(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-tsk-s00-n00', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-usr-s00-n01', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-usr-s00-n03', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-hub-s00', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:HUB {id: 'nick-tsk-s00-n01', slug: 'hub-s00', title: 'Hub s00 root'})\n(:TSK {id: 'nick-doc-s00-n03', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-doc-s00-n05', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-doc-s00-n02', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n"
+    },
+    {
+      "kind": "match",
+      "session_i": 0,
+      "perm_i": 2,
+      "orig_sid": "mn_31738f81",
+      "perm_sid": "mn_a1cc1db1",
+      "hub_slug": "hub-s00",
+      "cue": "--kind HUB --locator slug=hub-s00",
+      "orig_n": 12,
+      "perm_n": 12,
+      "orig_canonical_order": [
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "perm_canonical_order": [
+        "(:DOC {slug=doc-s00-n00, title=Document s00 #0})",
+        "(:DOC {slug=doc-s00-n01, title=Document s00 #1})",
+        "(:DOC {slug=doc-s00-n02, title=Document s00 #2})",
+        "(:DOC {slug=doc-s00-n03, title=Document s00 #3})",
+        "(:DOC {slug=doc-s00-n04, title=Document s00 #4})",
+        "(:DOC {slug=doc-s00-n05, title=Document s00 #5})",
+        "(:DOC {slug=doc-s00-n06, title=Document s00 #6})",
+        "(:HUB {slug=hub-s00, title=Hub s00 root})",
+        "(:TSK {slug=tsk-s00-n00, title=Task s00 #0})",
+        "(:TSK {slug=tsk-s00-n01, title=Task s00 #1})",
+        "(:TSK {slug=tsk-s00-n02, title=Task s00 #2})",
+        "(:TSK {slug=tsk-s00-n03, title=Task s00 #3})"
+      ],
+      "orig_raw": "(:DOC {id: 'nick-doc-s00-n00', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-doc-s00-n04', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n06', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:HUB {id: 'nick-hub-s00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:TSK {id: 'nick-tsk-s00-n00', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-tsk-s00-n01', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-tsk-s00-n02', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-tsk-s00-n03', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n",
+      "perm_raw": "(:DOC {id: 'nick-usr-s00-n02', slug: 'doc-s00-n00', title: 'Document s00 #0'})\n(:DOC {id: 'nick-doc-s00-n05', slug: 'doc-s00-n01', title: 'Document s00 #1'})\n(:DOC {id: 'nick-doc-s00-n03', slug: 'doc-s00-n02', title: 'Document s00 #2'})\n(:DOC {id: 'nick-tsk-s00-n01', slug: 'doc-s00-n03', title: 'Document s00 #3'})\n(:DOC {id: 'nick-doc-s00-n01', slug: 'doc-s00-n04', title: 'Document s00 #4'})\n(:DOC {id: 'nick-hub-s00', slug: 'doc-s00-n05', title: 'Document s00 #5'})\n(:DOC {id: 'nick-doc-s00-n02', slug: 'doc-s00-n06', title: 'Document s00 #6'})\n(:HUB {id: 'nick-tsk-s00-n00', slug: 'hub-s00', title: 'Hub s00 root'})\n(:TSK {id: 'nick-usr-s00-n01', slug: 'tsk-s00-n00', title: 'Task s00 #0'})\n(:TSK {id: 'nick-usr-s00-n03', slug: 'tsk-s00-n01', title: 'Task s00 #1'})\n(:TSK {id: 'nick-doc-s00-n00', slug: 'tsk-s00-n02', title: 'Task s00 #2'})\n(:TSK {id: 'nick-usr-s00-n00', slug: 'tsk-s00-n03', title: 'Task s00 #3'})\n"
+    }
+  ],
+  "elapsed_s": 607.63,
+  "files": {
+    "schema": "/workspace/p3-hid-post147/schema.txt",
+    "runner": "/workspace/p3-hid-post147/run_p3.py",
+    "results": "/workspace/p3-hid-post147/results.json",
+    "report": "/workspace/p3-hid-post147/REPORT.md"
+  },
+  "package_test": {
+    "present": true,
+    "path": "/workspace/p3-hid-post147/pkg_tests/test_pin_map_observable_rank.py",
+    "source": "https://raw.githubusercontent.com/chouswei/MemNet/eff05dc8a0ad5369e8d7e7f347db30b9300b04d6/tests/test_pin_map_observable_rank.py",
+    "result": "3 passed",
+    "detail": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /workspace/p3-hid-post147/.venv/bin/python\ncachedir: .pytest_cache\nrootdir: /workspace/p3-hid-post147\ncollecting ... collected 3 items\npkg_tests/test_pin_map_observable_rank.py::test_rank_key_excludes_hid_and_nickname_id PASSED [ 33%]\npkg_tests/test_pin_map_observable_rank.py::test_isomorphic_create_shuffle_same_pin_map_sequence PASSED [ 66%]\npkg_tests/test_pin_map_observable_rank.py::test_find_seed_order_follows_observables_not_hid PASSED [100%]\n============================== 3 passed in 2.70s ==============================="
+  },
+  "per_session_count": 20,
+  "per_session_note": "truncated; re-run script for full"
+}

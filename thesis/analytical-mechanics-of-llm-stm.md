@@ -10,7 +10,7 @@
 
 ## Abstract
 
-Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. On a synthetic stratum they all passed after one product fix: a hid-ranking gauge anomaly in `pin_map` (MemNet PR #147) that Prediction 3 caught before generation. Human-reviewed graphs and LLM-generate strata remain open. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
+Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. On a synthetic stratum they *held*; Prediction 3 failed on stock `memnet-llm` 0.19.3 (hid-ranking of `pin_map` order), then passed after MemNet PR #147. Human-reviewed graphs and LLM-generate strata remain open. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
 
 ---
 
@@ -152,7 +152,7 @@ $$
 \dot{H}=-\nabla H^{\top} R\nabla H+y^{\top}u\le y^{\top}u.\qquad (11)
 $$
 
-Read the symbols once. $\nabla H$ is the gradient of $H$ in the $(W,p)$ coordinates. The superscript $\top$ is transpose: $J^{\top}=-J$ says $J$ is skew-symmetric; $y^{\top}u$ is the ordinary scalar product of the co-port $y$ with the control $u$. The relation $R\succeq 0$ means $R$ is symmetric positive semidefinite — a matrix that can only dissipate, never create, energy. The inequality $\le$ in (11) is the dissipation inequality: stored energy cannot rise faster than the power injected through the port.
+Read the symbols once. $\nabla H$ is the gradient of $H$ in the $(W,p)$ coordinates. $G$ is the input matrix that maps the control vector $u$ into that same phase-space; $Gu$ is the steered force. The superscript $\top$ is transpose: $J^{\top}=-J$ says $J$ is skew-symmetric; $y^{\top}u$ is the ordinary scalar product of the co-port $y$ with the control $u$. The relation $R\succeq 0$ means $R$ is symmetric positive semidefinite — a matrix that can only dissipate, never create, energy. The inequality $\le$ in (11) is the dissipation inequality: stored energy cannot rise faster than the power injected through the port.
 
 The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one.
 
@@ -212,7 +212,7 @@ $$
 J[u] = \Phi(W_N) + \int_0^N \ell(W,u,t)\,dt.\qquad (13)
 $$
 
-Here $\Phi(W_N)$ is a terminal cost on the final working set, and $\ell(W,u,t)$ is the running cost per turn (token mass, task error, redundancy). Neither is a MemNet verb; both are analysis scalars chosen by the experimenter.
+Here $\Phi(W_N)$ is a terminal cost on the final working set, and $\ell(W,u,t)$ is the running cost per turn (token mass, task error, redundancy). Do not confuse $\ell$ with the Lagrangian $L$: $\ell$ is the optimal-control running cost inside $J[u]$; $L$ is the mechanical Lagrangian of §3. Neither $\ell$ nor $\Phi$ is a MemNet verb; both are analysis scalars chosen by the experimenter.
 
 Pontryagin's control Hamiltonian is
 
@@ -442,7 +442,7 @@ The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-
 
 **Failure condition.** If RAG dumps have equal or lower action at equal quality across the prespecified local-task stratum, the predicted advantage is false. If the result appears only after changing coefficients, it is also false for the preregistered estimator. A mixed result would narrow the claim to particular graph topologies rather than rescue it universally.
 
-**Result (synthetic stratum, 2026-09-04).** PASS. MemNet @ `eff05dc8` (post PR #147). $n=500$ isomorphic-scale sessions; both conditions scored $1.0$ on all $500$ (gold evidence present). Coefficients locked before outcomes: $a=1$, $b=1$, $c=0$, $d=10$, with $d(\emptyset,W)=|W|$ in (30). Mean $\widehat{\mathcal{A}}$ walk $=422$, dump $=2356$, paired $\Delta=1934$; $95\%$ bootstrap CI $[1934,1934]$ excludes $0$. Dump admitted mean $|W|=35$ vs walk $|W|=11$. Caveat: $\Delta$ was constant across this regular synthetic family — a structural win, not a noisy human-task win. No LLM generate. Human-reviewed $200$ not run.
+**Result (synthetic stratum, 2026-09-04).** PASS as a *structural* claim only. MemNet @ `eff05dc8` (post PR #147). $n=500$ sessions. Score here means **equal gold-evidence presence** ($|\mathrm{gold}\cap W|/|\mathrm{gold}|$), not LLM answer quality — both conditions scored $1.0$ on all $500$. Coefficients locked before outcomes: $a=1$, $b=1$, $c=0$, $d=10$, with $d(\emptyset,W)=|W|$ in (30). Mean $\widehat{\mathcal{A}}$ walk $=422$, dump $=2356$, paired $\Delta=1934$; $95\%$ bootstrap CI $[1934,1934]$ excludes $0$. Dump admitted mean $|W|=35$ vs walk $|W|=11$. $\Delta$ was constant across this regular synthetic family. No LLM generate. Human-reviewed $200$ **not run**. Do not read this PASS as the full §10.1 claim.
 
 ### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 
@@ -462,7 +462,7 @@ Use one-row or four-row finite differences and confidence intervals over model s
 
 Complementary slackness is exact for the optimisation model under its regularity assumptions. An engine trace is not automatically an optimum. The protocol therefore tests the adequacy of the model as well as the product hypothesis.
 
-**Result (synthetic stratum, 2026-09-04).** PASS as an *account* diagnostic. $n=200$ sessions, $M\in\{8,12,16,24,32\}$, $\delta$ one grid step, band $|\widehat\lambda|<0.005$, $J=(1-\mathrm{score})+0.01|W|$. When gold was truncated and score improved at $M+\delta$, $\widehat\lambda_M$ was positive in $449/463$ ($97\%$). When gold already lay inside $W$, $\widehat\lambda_M\le$ band in $667/667$ (never fake-positive with slack). Wrong cue vs correct: positive-$\widehat\lambda$ rate $0.395$ vs $0.166$ (gap $0.229$). Beat raw $|W|$ as a wrong-Shape detector (AUROC $0.599$ vs $0.5$). Engine caps remained hard rejects; $M$ was only the compose analysis knob. No LLM generate.
+**Result (synthetic stratum, 2026-09-04).** PASS as an *account* diagnostic. $n=200$ sessions, $M\in\{8,12,16,24,32\}$, $\delta$ one grid step, band $|\widehat\lambda|<0.005$, $J=(1-\mathrm{score})+0.01|W|$. When gold was truncated and score improved at $M+\delta$, $\widehat\lambda_M$ was positive in $449/463$ ($97\%$). When gold already lay inside $W$, $\widehat\lambda_M\le$ band in $667/667$ (never fake-positive with slack). Wrong cue vs correct: positive-$\widehat\lambda$ rate $0.395$ vs $0.166$ (gap $0.229$). As a wrong-Shape detector versus raw $|W|$, AUROC was only *marginally* above chance ($0.599$ vs $0.5$) — the claim that survives is the truncation / no-false-positive diagnostic, not discrimination power. Engine caps remained hard rejects; $M$ was only the compose analysis knob. No LLM generate.
 
 ### 10.3 Prediction 3: rename invariance
 
@@ -478,23 +478,30 @@ Complementary slackness is exact for the optimisation model under its regularity
 2. **Fix:** MemNet PR #147 — ranking by kind + observable payload; nickname `id` also excluded from the rank key. Same operators; not a usage-method $b$.
 3. **Re-run on `master` @ `eff05dc8`:** PASS. Same $2000$ comparisons: label $2000/2000$, order $2000/2000$. Package regression `test_pin_map_observable_rank.py`: $3$ passed.
 
-Generation half ($T>0$ distributional) not run; not needed to establish the pre-generate gauge law.
+The anomaly was *order*, not wire leak: label sets already matched on the failing pilot. That is the Lost-in-the-Middle point [11].
+
+Generation half ($T>0$ distributional comparison after generate) remains **OPEN** — still part of the written claim, not established here.
+
+Deterministic observable order after #147 is an honesty / gauge property. It is not a place to put a learned ranker inside Recall (doctrine 9).
 
 ### 10.4 Scoreboard
 
 | Prediction | Estimator | Stratum | Verdict |
 |---|---|---|---|
-| P1 local load vs dump | (30) | synthetic $n=500$, equal gold score | PASS |
-| P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS |
-| P3 rename / order invariance | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
+| P1 local load vs dump | (30) | synthetic $n=500$, equal *gold presence* (not LLM quality) | PASS (structural); human-reviewed 200 OPEN |
+| P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS (truncation / no-false-positive); AUROC vs $|W|$ marginal |
+| P3 rename / order (before generate) | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
+| P3 generation half | — | — | OPEN |
 
-Scope lock: synthetic, in-process goldfish, no live cabinet, no LLM generate, no human-reviewed graphs. The three fail-able claims held on this stratum. That supports the variational account; it does not close §13.
+Harnesses, seeds, and locked coefficients: [`experiments/`](../experiments/). Summary JSON is truncated; re-run the scripts for full dumps.
+
+Scope lock: synthetic, in-process goldfish, no live cabinet, no LLM generate. That supports the variational account on this stratum; it does not close §13.
 
 ## 11 Quantization later
 
 Analytical mechanics comes first because the present mechanism already has configurations, controls, constraints, dissipation, and stochastic integration. If future evidence shows that noncommuting measurements, interference, or contextual probability add predictive power, quantisation has a disciplined path.
 
-Start with observables $A(W,p)$ and $B(W,p)$ on phase space and their Poisson bracket,
+Start with observables $A(W,p)$ and $B(W,p)$ on phase space and their Poisson bracket — the classical commutator of observables on phase space —
 
 $$
 \{A,B\}=\frac{\partial A}{\partial W}\frac{\partial B}{\partial p}-\frac{\partial A}{\partial p}\frac{\partial B}{\partial W}.\qquad (32)
