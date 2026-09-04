@@ -114,7 +114,7 @@ $$
 D_2 L_d(W_{k-1},W_k;u_{k-1})+D_1 L_d(W_k,W_{k+1};u_k)+F^-_k+F^+_k=0.\qquad (6)
 $$
 
-The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation.
+Here $D_1 L_d$ means the partial derivative of $L_d$ with respect to its *first* slot (the earlier configuration), and $D_2 L_d$ with respect to its *second* slot (the later configuration). They are not new operators; they are ordinary gradients with the two arguments of $L_d(W_k,W_{k+1})$ labelled. The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation.
 
 There is an alternative when gradients are needed. Relax membership into continuous attention mass $a_i \ge 0$ on a simplex,
 
@@ -152,6 +152,8 @@ $$
 \dot{H}=-\nabla H^{\top} R\nabla H+y^{\top}u\le y^{\top}u.\qquad (11)
 $$
 
+Read the symbols once. $\nabla H$ is the gradient of $H$ in the $(W,p)$ coordinates. The superscript $\top$ is transpose: $J^{\top}=-J$ says $J$ is skew-symmetric; $y^{\top}u$ is the ordinary scalar product of the co-port $y$ with the control $u$. The relation $R\succeq 0$ means $R$ is symmetric positive semidefinite — a matrix that can only dissipate, never create, energy. The inequality $\le$ in (11) is the dissipation inequality: stored energy cannot rise faster than the power injected through the port.
+
 The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one.
 
 ## 4 Dictionary and naming
@@ -171,6 +173,8 @@ The skew structure $J$ accounts for conservative interchange. The resistive stru
 | $\Delta$ | The gated Commit. It is an impulse that can change inventory $S$, not the session graph itself. |
 | $t$ | Turn index, not wall clock. |
 | store | The manifold of configurations on which $W$ can live, represented by inventory such as weights, a cabinet, a corpus, or session graph $S$. It is not the point $W$. |
+
+**Uncommon operators, once.** $\setminus$ is set difference. $\mapsto$ means "is rewritten as." $\arg\max$ is the set of maximisers. $\nabla$ is gradient; $(\cdot)^{\top}$ is transpose; $R\succeq 0$ means positive semidefinite. $D_1,D_2$ are partials in the first and second slots of a two-argument discrete Lagrangian. A hat ($\widehat{\cdot}$) marks an estimator. $\chi_{\mathrm{invalid}}$ is a $0$/$+\infty$ barrier. These are standard analysis marks; none is a MemNet wire verb.
 
 There are two levels in the word *store*. Concrete cabinets contain elements. Analytically, their addressable possibilities induce the manifold $\mathcal{W}$. The store is therefore the manifold on which a phase point may be selected, not the selected point itself. Memgraph and Neo4j can implement a cabinet. Neither is a theory of memory.
 
@@ -202,11 +206,13 @@ $$
 \dot{W} = f(W,u,t)\qquad (12)
 $$
 
-or its discrete counterpart $W_{t+1}=F(W_t,u_t,\xi_t)$, where $\xi_t$ is sampling noise. Let the objective be
+or its discrete counterpart $W_{t+1}=F(W_t,u_t,\xi_t)$, where $\xi_t$ is sampling noise (the stochastic draw of the LLM). Let the objective be
 
 $$
 J[u] = \Phi(W_N) + \int_0^N \ell(W,u,t)\,dt.\qquad (13)
 $$
+
+Here $\Phi(W_N)$ is a terminal cost on the final working set, and $\ell(W,u,t)$ is the running cost per turn (token mass, task error, redundancy). Neither is a MemNet verb; both are analysis scalars chosen by the experimenter.
 
 Pontryagin's control Hamiltonian is
 
@@ -219,6 +225,8 @@ The necessary conditions are
 $$
 \dot{W}=\frac{\partial H_c}{\partial p},\qquad \dot{p}=-\frac{\partial H_c}{\partial W},\qquad u_t\in\arg\max_{u\in U}H_c(W_t,p_t,u,t).\qquad (15)
 $$
+
+The first two lines are the usual Hamilton equations for state and costate. The third uses $\arg\max$: $u_t$ is any control in the allowed set $U$ that *maximises* $H_c$ at the current $(W_t,p_t)$. If several maximisers exist, any one may be chosen; the set notation $\in\arg\max$ records that. That maximisation step *is* cue selection.
 
 Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\mathrm{mech}}=m\dot{W}$ lives in a different equation. This paper uses one letter $p$ as a convenience. The identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ is assumed, not shown; it holds only under Legendre regularity (§13). It is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
 
@@ -314,6 +322,8 @@ $$
 \theta_t^a \mapsto \theta_t^a + \epsilon_t^a.\qquad (21)
 $$
 
+The arrow $\mapsto$ means "is sent to": each naming coordinate $\theta_t^a$ may be shifted by an arbitrary $\epsilon_t^a$ at that turn. It is a rewrite rule for the chart, not a dynamical flow.
+
 Because names are unobservable, the action cannot depend on $\theta^a$ or its velocity. The conjugate naming momentum is therefore
 
 $$
@@ -372,7 +382,7 @@ $$
 L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,|W_{t+1}\setminus W_t|+\chi_{\mathrm{invalid}}.\qquad (27)
 $$
 
-Here $d$ is a set-transition distance. The stickiness $m$ prices churn. Coverage rewards cue-relevant support. The third term prices newly loaded mass. The indicator $\chi_{\mathrm{invalid}}$ is infinite for hard-invalid transitions. The native discrete momentum is given by the discrete Legendre transform of $L_d$, not returned by the engine.
+Read (27) term by term. $d(W_t,W_{t+1})$ is a set-transition distance between consecutive working sets. The stickiness $m$ prices churn through the kinetic term. $\mathrm{coverage}(W_{t+1},u_t)$ is a scalar reward for how well the new set supports the cue — analysis only, never a `pin_map` field. The operator $\setminus$ is set difference: $W_{t+1}\setminus W_t$ is the set of elements newly admitted this turn, and $|W_{t+1}\setminus W_t|$ is their count. The symbol $\chi_{\mathrm{invalid}}$ is an indicator barrier: $0$ on legal transitions and $+\infty$ on hard-invalid ones (cap violations, unreachable pins), so illegal moves are simply not stationary points of $L_d$. The native discrete momentum is the discrete Legendre transform of $L_d$, not returned by the engine.
 
 **Worked turn.** Assume the LLM is answering why a prior deployment failed. At turn 7, product cue $q_7$ contains codebook tokens for `deployment`, `rollback`, and a relative-session marker. The experimenter maps this to $u_7$. ShapeWalk starts from the legal RelativeSeed, walks up to $k=2$, and offers 18 rows under hard `LIMIT M=24`; this is $\tilde{X}_7$. The caller admits the 12 rows whose observable payload fits alongside system text and recent dialogue, so $\tilde{X}_7\nsubseteq W_7$ as an entire Shape. KV policy then removes two low-value old dialogue spans from $W_7$. The model integrates the resulting state and explains the rollback. If the output warrants durable change, gated Commit $\Delta_7$ writes a new observable relation to $S$. Commit is an impulse that changes the manifold's inventory for future turns. It is not a third retrieval operator.
 
@@ -381,6 +391,8 @@ The constraints are
 $$
 \mathrm{hop}(\tilde{X}_7)\le k,\qquad |\tilde{X}_7|\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.\qquad (28)
 $$
+
+Plain language: $\mathrm{hop}(\tilde{X})$ is the farthest graph distance from the seed still present in the offered Shape; $|\tilde{X}|$ is the row count; $\mathrm{rate}(W_t,W_{t+1})$ is how fast the working set is allowed to change (for example $|W_{t+1}\setminus W_t|$). All three are $\le$ inequalities — hard caps, not soft targets.
 
 Their KKT multipliers estimate which cap is active in the *optimal-control account*. Product behaviour remains hard reject. If the row-cap multiplier becomes positive and task loss rises, the diagnostic says the offered Shape is pressing against $M$. It does not say to make $M$ buyable.
 
@@ -395,6 +407,8 @@ The relevant cost is not only retrieval relevance. It includes token mass, dupli
 $$
 C_{\mathrm{RAG}}=c_{\mathrm{tok}}|\tilde{X}|+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.\qquad (29)
 $$
+
+Each $c_{\cdot}$ is a nonnegative weight fixed by the experimenter. $|\tilde{X}|$ prices token mass; $D(\tilde{X})$ prices duplication inside the offer; $E(W_{t-1},W_t)$ prices how much resident material was displaced; $\ell_{\mathrm{task}}$ is the task loss (for example $1$ minus answer quality). None of these scalars is emitted by the engine.
 
 The "lost in the middle" result [11] implies that equal evidence with equal inclusion can induce different task costs under different positions. Therefore global rank alone cannot determine $W$'s usefulness.
 
@@ -422,7 +436,7 @@ $$
 \widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],\qquad (30)
 $$
 
-with nonnegative coefficients preregistered on a development set. This is not claimed to be a universal Lagrangian. It is a measurement model whose coefficients are fixed before the held-out comparison.
+The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-in for the true action, not the action itself. The coefficients $a,b,c,d$ are nonnegative and must be preregistered on a development set before the held-out comparison. $\mathrm{tokens\_admitted}$ counts newly loaded token mass; $\mathrm{critical\_evictions}$ counts removals of task-relevant pins; $\ell_{\mathrm{task}}$ is task loss. This is not claimed to be a universal Lagrangian. It is a measurement model.
 
 **Protocol.** Build at least 500 synthetic and 200 human-reviewed session graphs. Each task has a known minimal evidence set within $k\le2$ hops of a legal RelativeSeed. Create two load conditions: (A) bounded ShapeWalk with fixed hard $M$, and (B) a semantic RAG operator allowed to retrieve from a serialised snapshot of the same observable material. That snapshot is a bench fixture. It is not a product dump of $S$ and not `rag_query`. Match model, prompt instructions, and total output budget. Compare at equal task quality; do not require matched final evidence coverage. A coverage-match plus a token-mass term in $\widehat{\mathcal{A}}_d$ would make the dump lose by construction. Log offered $\tilde{X}_t$, caller admissions, final $W_t$, KV evictions, answer score, and all random seeds. Run deterministic decoding and a temperature condition with at least 20 seeds. Compare $\widehat{\mathcal{A}}_d$ at matched answer quality using paired bootstrap confidence intervals.
 
@@ -440,7 +454,9 @@ $$
 \widehat{\lambda}_{M}=-\frac{J^{\ast}(M+\delta)-J^{\ast}(M)}{\delta}\qquad (31)
 $$
 
-for a minimised cost $J^{\ast}$, with one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat{\lambda}_{M}>0$ predicts truncation and task improvement under cap relaxation.
+Again the hat means estimator. $J^{\ast}(M)$ is the achieved task cost when the row cap is set to $M$; $\delta$ is a small positive step in $M$ (one grid step in the experiments). The fraction is an ordinary finite difference: how much $J^{\ast}$ falls when the cap is relaxed, with a minus sign so that improvement yields $\widehat\lambda_M>0$. It is a shadow-price analogue of the account, not a multiplier read out of the engine.
+
+Use one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat{\lambda}_{M}>0$ predicts truncation and task improvement under cap relaxation.
 
 **Failure condition.** The claim fails if $\widehat{\lambda}_{M}$ is routinely positive while the cap has slack, nonpositive when relaxing a binding cap improves the preregistered objective, or no better than raw row count at identifying wrong Shapes. Noise near zero should be handled with an equivalence band fixed in advance.
 
@@ -522,7 +538,7 @@ $$
 T = \frac12 \dot{W}^\top M(W)\dot{W}.\qquad (34)
 $$
 
-The matrix must live in analysis, not in `pin_map`.
+Here $M(W)$ is a mass *matrix* (not the row cap $M$), and $\dot{W}^\top$ is the transpose of the velocity vector, so the product is the usual quadratic form $\sum_{ij}\dot W_i M_{ij}\dot W_j$. The matrix must live in analysis, not in `pin_map`.
 
 **Where is the Markov boundary?** $(W,p)$ is intended to make the active process first-order, but stochastic decoding, tool state, and caller policy may leave hidden history. If trajectories with equal measured $(W,p)$ have systematically different futures under equal controls, the state is incomplete. That is another falsification route.
 
