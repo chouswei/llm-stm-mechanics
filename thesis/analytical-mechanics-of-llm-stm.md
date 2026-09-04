@@ -228,7 +228,7 @@ $$
 
 The first two lines are the usual Hamilton equations for state and costate. The third uses $\arg\max$: $u_t$ is any control in the allowed set $U$ that *maximises* $H_c$ at the current $(W_t,p_t)$. If several maximisers exist, any one may be chosen; the set notation $\in\arg\max$ records that. That maximisation step *is* cue selection.
 
-Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\mathrm{mech}}=m\dot{W}$ lives in a different equation. This paper uses one letter $p$ as a convenience. The identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ is assumed, not shown; it holds only under Legendre regularity (§13). It is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
+Here $p$ in (14)–(15) is the adjoint $p_{\mathrm{adj}}$. Mechanical momentum $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$ is (3); the discrete fibre derivatives of $L_d$ are (35)–(36). Identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ is conditional under the §13 seam lock. Default prose may still use one letter $p$ when Legendre regularity and programme match are in force and dissipation is off the table for that sentence; otherwise write $p_{\mathrm{adj}}$ or $p_{\mathrm{mech}}$ explicitly. This is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
 
 ### 6.2 Inequality caps and KKT diagnostics
 
@@ -592,7 +592,26 @@ Here $M(W)$ is a mass *matrix* (not the row cap $M$), and $\dot{W}^\top$ is the 
 
 **Where is the Markov boundary?** $(W,p)$ is intended to make the active process first-order, but stochastic decoding, tool state, and caller policy may leave hidden history. If trajectories with equal measured $(W,p)$ have systematically different futures under equal controls, the state is incomplete. That is another falsification route.
 
-**How should discrete costates be interpreted?** Pontryagin costates and discrete Legendre momenta coincide only under specific regularity and discretisation choices. In mixed integer admission, the costate can be nonsmooth or set-valued. The paper's conceptual identification is strong; a production estimator needs a specific optimisation programme.
+**Seam lock: when $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$.** Two objects. Mechanical momentum is the fibre derivative of the Lagrangian: $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$ in the continuous surrogate (3). On the discrete side the Marsden–West maps of $L_d$ are
+
+$$
+p_k^+=D_2 L_d(W_k,W_{k+1};u_k)\qquad (35)
+$$
+
+$$
+-p_k^-=D_1 L_d(W_k,W_{k+1};u_k)\qquad (36)
+$$
+
+Right momentum $p_k^+$ is conjugate to the later slot; left momentum $p_k^-$ is conjugate to the earlier slot, with the minus so that matching $p_k^-=p_k^+$ recovers the unforced discrete Euler–Lagrange equation (6). Pontryagin's costate $p_{\mathrm{adj}}$ is the multiplier in $H_c=p\cdot f-\ell$ ((14)–(15)). The identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ (one letter $p$ licensed) holds only if *all* of the following are in force.
+
+1. **Legendre regularity.** The continuous Hessian $\partial^2 L/\partial\dot{W}^2$ is nonsingular, or the discrete left and right Legendre maps are locally invertible on the operating chart.
+2. **Programme match.** The steering objective is stationary for the *same* $L$, so $\ell$ and the kinetics are not an unrelated control cost. Then $H_c$ coincides with the mechanical $H$ up to this paper's sign convention ((4) versus (14)).
+3. **No active integer barrier at the point.** Mixed $0$–$1$ admission makes the costate nonsmooth or set-valued. Identification then means a selected subgradient or a convex relaxation, and must be stated as such — not a silent equality.
+4. **Dissipation caveat.** If the resistive structure $R\neq 0$ (port-Hamiltonian eviction, §3.3), mechanical momentum from $L$ and the adjoint of a dissipative optimal-control problem generally *diverge*. Do not identify without an explicit dissipative maximum principle.
+
+**Operational firewall.** Estimators and product code must name which $p$. Never invent a momentum field on offered Shape or `pin_map`. Native discrete momentum is analysis of $L_d$, not an engine return (same ban as near (27)).
+
+**Still open.** A concrete optimisation programme that would yield a production estimator of either object on real traces — including genuinely nonsmooth mixed-integer programmes — is not chosen here. The lock is conceptual and conditional; it is not an experimental measurement of the seam.
 
 **Can dissipation be task-weighted without circularity?** Evicting a token matters because of future use, which is only partially observed. One route is to estimate counterfactual task loss after forced eviction. Another is to learn a dissipative metric on held-out tasks. Both risk overfitting the Lagrangian to the benchmark.
 
@@ -604,8 +623,6 @@ Here $M(W)$ is a mass *matrix* (not the row cap $M$), and $\dot{W}^\top$ is the 
 
 **Which equation is the actual update?** §3.2 writes discrete Euler-Lagrange; §3.3 writes continuous port-Hamiltonian. They are stacked, not glued. There is no discrete Dirac or discrete port-Hamiltonian step in this paper. A physicist is entitled to ask which equation is the update rule.
 
-**Is $p$ one object?** Mechanical $p_{\mathrm{mech}}=m\dot{W}$ and the Pontryagin costate $p_{\mathrm{adj}}$ live in different equations. One letter is a convenience. The identification is assumed, not shown.
-
 **Is the continuous gauge chart a theorem?** The existing lock is a global discrete group $G$. The turn-dependent $\theta_t$ chart is a larger, continuous, local group used as pedagogy. The vanishing $\pi_a$ is a property of that surrogate. The theorem is the quotient $\mathcal{W}/G$.
 
 ## 14 Conclusion
@@ -614,7 +631,7 @@ The next LLM generate is a goldfish. Only $W_t$ is resident. The rest is invento
 
 The three roles are the spine. The LLM is the integrator. It runs the controlled, usually stochastic, equations and does not pick the Lagrangian, hold $S$, measure $S$, or commit $S$. Steering is choosing $H$, a force, or a constraint. ShapeWalk, RAG, rankers, and KV eviction are different controls on one phase space. **Memory = manifold + phase point.** Usefulness is a trajectory of $\mathcal{A}$, not a dump.
 
-Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Momentum follows from $p=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
+Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
@@ -658,6 +675,8 @@ Paper form: each display equation ends with $\qquad (n)$. Display equations only
 - (32) Poisson bracket
 - (33) canonical quantisation map
 - (34) state-dependent kinetic energy
+- (35) discrete right Legendre map $p_k^+$
+- (36) discrete left Legendre map $-p_k^-$
 ## References
 
 1. Herbert Goldstein, Charles P. Poole Jr., and John L. Safko. *Classical Mechanics*, 3rd ed. Addison-Wesley, 2002. https://books.google.com/books?id=EE-wQgAACAAJ
