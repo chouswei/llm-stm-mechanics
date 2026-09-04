@@ -1,0 +1,22 @@
+# P1 T>0 harder evidence-vs-noise (experiments/p1-tgt0/)
+# Paper record is results.summary.json; no per-seed results.json dump in this repo.
+
+Per-session (not shipped here) fields include:
+  walk/dump score_mean
+  walk/dump noise_leak_any
+  walk/dump Â
+  Δ = Â_dump − Â_walk
+
+score_mean := mean over n_seeds=20 of full-gold evidence score_llm
+  score_llm = |pred ∩ full_gold_evidence| / |full_gold_evidence|
+noise_leak_any if any seed leaks an N… token
+
+Primary equal-quality gate (strict claim):
+  both sides score_mean==1.0 AND NOT noise_leak_any
+
+Relaxed secondary (not the strict claim):
+  both sides score_mean>=0.95 AND NOT noise_leak_any
+
+Protocol: temperature T=0.8; n_seeds=20 per (graph, condition).
+Coefficients a=1, b=1, c=0, d=10; Â uses ell=1−score_mean.
+Same harder task as p1-llm-hard (NOT KEY-extraction).

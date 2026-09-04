@@ -8,7 +8,7 @@ OpenRouter `openai/gpt-4o-mini`. $T=0$ greedy RAW/CANONICAL plus $T=0.8$ CANONIC
 
 Authoritative numbers: [`results.summary.json`](results.summary.json) / [`REPORT.md`](REPORT.md).
 
-This directory records the **$T>0$ CANONICAL close** on that band after [MemNet PR #148](https://github.com/chouswei/MemNet/pull/148). It is not a new prediction and not a SemVer $a$ or $b$ claim. P1 $T>0$ remains OPEN.
+This directory records the **$T>0$ CANONICAL close** on that band after [MemNet PR #148](https://github.com/chouswei/MemNet/pull/148). It is not a new prediction and not a SemVer $a$ or $b$ claim. P1 $T>0$ closed on the harder evidence-versus-noise band in [`../p1-tgt0/`](../p1-tgt0/); KEY-extraction $T>0$ was not run.
 
 ## Re-run (requires your key)
 

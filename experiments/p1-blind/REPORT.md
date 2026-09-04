@@ -35,6 +35,6 @@ Pre-regen (same lock, 0.19.3 harness record): mean $\Delta\approx 2932.41$, CI $
 
 ## Post-regen P1 LLM (touched sessions merged)
 
-Same primary: $n=170$ / $\Delta$ / CI. Full-gold KEY-extraction scorer. Still **PASS**. $T>0$ remains **OPEN**. See [`../p1-llm/`](../p1-llm/).
+Same primary: $n=170$ / $\Delta$ / CI. Full-gold KEY-extraction scorer. Still **PASS**. KEY $T>0$ was not run (**OPEN**). See [`../p1-llm/`](../p1-llm/).
 
-Harder evidence-versus-noise (no KEY markers): $n=161$ both-perfect, $n_{\mathrm{noise\_leak}}=0$, mean $\Delta\approx 2940.65$, CI $[2782.09, 3098.31]$. Still **PASS**. $T>0$ remains **OPEN**. See [`../p1-llm-hard/`](../p1-llm-hard/).
+Harder evidence-versus-noise (no KEY markers): $n=161$ both-perfect, $n_{\mathrm{noise\_leak}}=0$, mean $\Delta\approx 2940.65$, CI $[2782.09, 3098.31]$. Still **PASS**. $T>0$ on this harder task closed in [`../p1-tgt0/`](../p1-tgt0/). See [`../p1-llm-hard/`](../p1-llm-hard/).
