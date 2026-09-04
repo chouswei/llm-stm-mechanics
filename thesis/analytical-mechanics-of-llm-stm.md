@@ -69,13 +69,13 @@ So the question is not "how much can we store" but "which slice is loaded, and a
 Let $\mathcal{W}$ denote the configuration manifold of admissible working sets. A trajectory is a sequence $W_0, W_1, \ldots, W_N$. In a continuous surrogate one writes
 
 $$
-\mathcal{A}[W,u] = \int_{0}^{N} L(W,\dot{W},u,t)\,dt.\tag{1}
+\mathcal{A}[W,u] = \int_{0}^{N} L(W,\dot{W},u,t)\,dt.\qquad (1)
 $$
 
 The action is always $\mathcal{A}$, never $S$. The symbol $S$ is locked to the persistent session graph. A useful elementary Lagrangian is
 
 $$
-L(W,\dot{W},u,t)=\frac{1}{2}m\|\dot{W}\|^2-V(W;u,t)-C(W,u,t).\tag{2}
+L(W,\dot{W},u,t)=\frac{1}{2}m\|\dot{W}\|^2-V(W;u,t)-C(W,u,t).\qquad (2)
 $$
 
 The kinetic term is not decoration. It defines persistence. The parameter $m$ is pin stickiness: large $m$ makes rapid working-set changes costly. The cue $u$ enters a time-dependent potential or a constraint. It is a control, not a coordinate. $C$ prices token load, unsupported material, redundancy, or task error.
@@ -83,7 +83,7 @@ The kinetic term is not decoration. It defines persistence. The parameter $m$ is
 Now derive momentum rather than naming one by intuition:
 
 $$
-p = \frac{\partial L}{\partial \dot{W}} = m\dot{W}.\tag{3}
+p = \frac{\partial L}{\partial \dot{W}} = m\dot{W}.\qquad (3)
 $$
 
 Thus hold and inertia are represented by $m$. Momentum is the consequence $m\dot{W}$. It is not defined as "how hard a pin resists eviction". Such a verbal definition would assert the answer without giving a Lagrangian and would make $p$ a product field. Both are category errors.
@@ -91,7 +91,7 @@ Thus hold and inertia are represented by $m$. Momentum is the consequence $m\dot
 Where the Legendre transform is regular, the Hamiltonian is
 
 $$
-H(W,p,u,t)=p\cdot\dot{W}-L=\frac{\|p\|^2}{2m}+V(W;u,t)+C(W,u,t).\tag{4}
+H(W,p,u,t)=p\cdot\dot{W}-L=\frac{\|p\|^2}{2m}+V(W;u,t)+C(W,u,t).\qquad (4)
 $$
 
 This $H$ is an analysis function. It is not a MemNet verb and not a scheduler. It explains the selected deflection of $W$; it does not perform Recall or Commit.
@@ -105,13 +105,13 @@ A token is admitted or it is not. A graph row is returned or it is not. The nati
 Use a discrete Lagrangian $L_d(W_k,W_{k+1};u_k)$, interpreted as an approximation to the action over one turn. The discrete action is
 
 $$
-\mathcal{A}_d = \sum_{k=0}^{N-1} L_d(W_k,W_{k+1};u_k).\tag{5}
+\mathcal{A}_d = \sum_{k=0}^{N-1} L_d(W_k,W_{k+1};u_k).\qquad (5)
 $$
 
 Varying interior configurations with endpoints fixed gives the discrete Euler-Lagrange equation [3]:
 
 $$
-D_2 L_d(W_{k-1},W_k;u_{k-1})+D_1 L_d(W_k,W_{k+1};u_k)+F^-_k+F^+_k=0.\tag{6}
+D_2 L_d(W_{k-1},W_k;u_{k-1})+D_1 L_d(W_k,W_{k+1};u_k)+F^-_k+F^+_k=0.\qquad (6)
 $$
 
 The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation.
@@ -119,7 +119,7 @@ The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a co
 There is an alternative when gradients are needed. Relax membership into continuous attention mass $a_i \ge 0$ on a simplex,
 
 $$
-\sum_i a_i = 1,\tag{7}
+\sum_i a_i = 1,\qquad (7)
 $$
 
 and define $W$ by its attention-density vector. The vertices recover hard admission. This relaxation can estimate gradients or solve an optimal control problem, but an implementation must round back to a discrete working set. The relaxed system is an instrument, not an excuse to claim the actual window is smooth.
@@ -131,25 +131,25 @@ Pure Hamiltonian flow is symplectic and volume-preserving. Eviction is neither. 
 One option is a Rayleigh dissipation function,
 
 $$
-\mathcal{R}(\dot{W})=\frac{1}{2}\gamma\|\dot{W}\|^2,\tag{8}
+\mathcal{R}(\dot{W})=\frac{1}{2}\gamma\|\dot{W}\|^2,\qquad (8)
 $$
 
 which modifies the Euler-Lagrange equation to
 
 $$
-\frac{d}{dt}\frac{\partial L}{\partial\dot{W}}-\frac{\partial L}{\partial W}+\frac{\partial\mathcal{R}}{\partial\dot{W}}=F_u.\tag{9}
+\frac{d}{dt}\frac{\partial L}{\partial\dot{W}}-\frac{\partial L}{\partial W}+\frac{\partial\mathcal{R}}{\partial\dot{W}}=F_u.\qquad (9)
 $$
 
 The better systems account is port-Hamiltonian [4]:
 
 $$
-\begin{bmatrix}\dot{W}\\ \dot{p}\end{bmatrix}=(J-R)\nabla H+Gu,\qquad J^{\top}=-J,\qquad R=R^{\top}\succeq 0.\tag{10}
+\begin{bmatrix}\dot{W}\\ \dot{p}\end{bmatrix}=(J-R)\nabla H+Gu,\qquad J^{\top}=-J,\qquad R=R^{\top}\succeq 0.\qquad (10)
 $$
 
 Then
 
 $$
-\dot{H}=-\nabla H^{\top} R\nabla H+y^{\top}u\le y^{\top}u.\tag{11}
+\dot{H}=-\nabla H^{\top} R\nabla H+y^{\top}u\le y^{\top}u.\qquad (11)
 $$
 
 The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one.
@@ -199,25 +199,25 @@ Steering is choosing $H$, a force, or a constraint that deflects $W$. ShapeWalk,
 Let the controlled state obey
 
 $$
-\dot{W} = f(W,u,t)\tag{12}
+\dot{W} = f(W,u,t)\qquad (12)
 $$
 
 or its discrete counterpart $W_{t+1}=F(W_t,u_t,\xi_t)$, where $\xi_t$ is sampling noise. Let the objective be
 
 $$
-J[u] = \Phi(W_N) + \int_0^N \ell(W,u,t)\,dt.\tag{13}
+J[u] = \Phi(W_N) + \int_0^N \ell(W,u,t)\,dt.\qquad (13)
 $$
 
 Pontryagin's control Hamiltonian is
 
 $$
-H_c(W,p,u,t)=p\cdot f(W,u,t)-\ell(W,u,t).\tag{14}
+H_c(W,p,u,t)=p\cdot f(W,u,t)-\ell(W,u,t).\qquad (14)
 $$
 
 The necessary conditions are
 
 $$
-\dot{W}=\frac{\partial H_c}{\partial p},\qquad \dot{p}=-\frac{\partial H_c}{\partial W},\qquad u_t\in\arg\max_{u\in U}H_c(W_t,p_t,u,t).\tag{15}
+\dot{W}=\frac{\partial H_c}{\partial p},\qquad \dot{p}=-\frac{\partial H_c}{\partial W},\qquad u_t\in\arg\max_{u\in U}H_c(W_t,p_t,u,t).\qquad (15)
 $$
 
 Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\mathrm{mech}}=m\dot{W}$ lives in a different equation. This paper uses one letter $p$ as a convenience. The identification $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ is assumed, not shown; it holds only under Legendre regularity (§13). It is not permission to invent a `momentum` field. The maximum principle *is* the sentence "the experimenter picks the next cue." The LLM does not choose the cost functional. It integrates the next step after the experimenter or agent harness selects $u$.
@@ -227,19 +227,19 @@ Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\
 Window length, hop radius, row cap $M$, and load-rate caps are inequalities. They are not plain equality constraints with ordinary Lagrange multipliers. Let
 
 $$
-g_M(W)=|W|-M\le 0.\tag{16}
+g_M(W)=|W|-M\le 0.\qquad (16)
 $$
 
 The augmented cost uses a KKT multiplier $\lambda_M\ge0$. Necessary conditions include primal feasibility, dual feasibility, stationarity, and complementary slackness [6][7][8]:
 
 $$
-\lambda_M g_M(W)=0.\tag{17}
+\lambda_M g_M(W)=0.\qquad (17)
 $$
 
 Therefore
 
 $$
-\lambda_M>0 \implies |W|=M.\tag{18}
+\lambda_M>0 \implies |W|=M.\qquad (18)
 $$
 
 Under regularity and an active optimum, a positive shadow price occurs precisely when relaxing the cap would improve the objective. This yields a measurable result: $\lambda_M>0$ exactly when the goldfish row cap is biting. The same applies to window length, hop radius, and rate caps. Estimate $\lambda_M$ by finite differences of optimal task loss around $M$, not by softening the engine reject. The engine cap remains hard.
@@ -297,7 +297,7 @@ This is the main result.
 A hidden identifier `hid` is not observable. Identity-by-name is not identity. Rename every hidden storage identifier by a bijection $\rho$, preserving incidence, observable payloads, and codebook-token relations. A correct `pin_map` output cannot change except for the corresponding unobservable relabelling. Formally, if $G$ is the group of such renamings and $g\in G$, then the discrete Lagrangian must satisfy
 
 $$
-L_d(gW_t,gW_{t+1};u_t)=L_d(W_t,W_{t+1};u_t).\tag{19}
+L_d(gW_t,gW_{t+1};u_t)=L_d(W_t,W_{t+1};u_t).\qquad (19)
 $$
 
 The measurable Shape is an equivalence class $[\tilde{X}_t]$ under $G$, not a bag of cabinet keys. This is gauge invariance: multiple internal descriptions denote one physical working-set trajectory.
@@ -305,25 +305,25 @@ The measurable Shape is an equivalence class $[\tilde{X}_t]$ under $G$, not a ba
 For a finite permutation group, invariance gives exact orbit equivalence rather than a differential Noether charge. That orbit equivalence on the quotient $\mathcal{W}/G$ is the theorem. What follows is a continuous pedagogical surrogate, not a derivation from the existing MemNet lock. The lock is a global bijection $\rho$ on hidden ids, applied once to the cabinet. Local turn-dependent renaming is a strictly larger group. Embed renaming in a continuous redundant naming chart only to show what a Noether-II constraint *would* look like. Let $\theta^a_t$ be coordinates that choose an internal naming gauge while observables $x_t$ encode incidence and payload. Write
 
 $$
-W_t=(x_t,\theta_t),\tag{20}
+W_t=(x_t,\theta_t),\qquad (20)
 $$
 
 and require local gauge invariance under arbitrary turn-dependent shifts
 
 $$
-\theta_t^a \mapsto \theta_t^a + \epsilon_t^a.\tag{21}
+\theta_t^a \mapsto \theta_t^a + \epsilon_t^a.\qquad (21)
 $$
 
 Because names are unobservable, the action cannot depend on $\theta^a$ or its velocity. The conjugate naming momentum is therefore
 
 $$
-\pi_a = \frac{\partial L}{\partial \dot\theta^a}=0.\tag{22}
+\pi_a = \frac{\partial L}{\partial \dot\theta^a}=0.\qquad (22)
 $$
 
 Its evolution is
 
 $$
-\dot\pi_a = \frac{\partial L}{\partial \theta^a}=0.\tag{23}
+\dot\pi_a = \frac{\partial L}{\partial \theta^a}=0.\qquad (23)
 $$
 
 In the surrogate, the vanishing gauge charge $\pi_a\equiv0$ is a constraint: no physical momentum flows in the hidden-name direction. It is a property of the continuous chart, not a conserved payload of the product. Ordinary global symmetries yield a possibly nonzero conserved charge. A local gauge symmetry yields a Noether identity and a constraint. The product lock is global and discrete; the local continuous story is pedagogy. Calling some arbitrary hash count "the conserved quantity" would be wrong. The rigorous result is that physical trajectories lie in the quotient $\mathcal{W}/G$.
@@ -333,13 +333,13 @@ In the surrogate, the vanishing gauge charge $\pi_a\equiv0$ is a constraint: no 
 Let a load cost be
 
 $$
-C_{\mathrm{load}}(\tilde{X}_t,W_t).\tag{24}
+C_{\mathrm{load}}(\tilde{X}_t,W_t).\qquad (24)
 $$
 
 Gauge invariance requires
 
 $$
-C_{\mathrm{load}}(g\tilde{X}_t,gW_t)=C_{\mathrm{load}}(\tilde{X}_t,W_t).\tag{25}
+C_{\mathrm{load}}(g\tilde{X}_t,gW_t)=C_{\mathrm{load}}(\tilde{X}_t,W_t).\qquad (25)
 $$
 
 Then action, cap multipliers, and task metrics are all functions on the quotient space. Two isomorphic session graphs differing only in hidden names must produce the same distribution of admitted Shapes, the same estimated action, and the same task score, up to sampling error.
@@ -349,7 +349,7 @@ Then action, cap multipliers, and task metrics are all functions on the quotient
 If `hid` leaks into ranking, ordering, persistence, or the returned Shape, the potential becomes $V(W;u,\theta)$. Then
 
 $$
-\dot\pi_a=\frac{\partial L}{\partial\theta^a}\ne0.\tag{26}
+\dot\pi_a=\frac{\partial L}{\partial\theta^a}\ne0.\qquad (26)
 $$
 
 The naming gauge exerts a fictitious force. Two relabelled but otherwise identical stores can follow different trajectories. The measured action becomes cabinet-dependent. Cache behaviour can change after a database migration that preserves all observable content. Worse, an emitted hidden key acquires apparent identity and can be replayed as if it were the element. That violates identity-is-the-element and no-store-key.
@@ -369,7 +369,7 @@ Let the product cue $q_t$ be a finite sequence of codebook tokens. At the analys
 A schematic discrete Lagrangian is
 
 $$
-L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,|W_{t+1}\setminus W_t|+\chi_{\mathrm{invalid}}.\tag{27}
+L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,|W_{t+1}\setminus W_t|+\chi_{\mathrm{invalid}}.\qquad (27)
 $$
 
 Here $d$ is a set-transition distance. The stickiness $m$ prices churn. Coverage rewards cue-relevant support. The third term prices newly loaded mass. The indicator $\chi_{\mathrm{invalid}}$ is infinite for hard-invalid transitions. The native discrete momentum is given by the discrete Legendre transform of $L_d$, not returned by the engine.
@@ -379,7 +379,7 @@ Here $d$ is a set-transition distance. The stickiness $m$ prices churn. Coverage
 The constraints are
 
 $$
-\mathrm{hop}(\tilde{X}_7)\le k,\qquad |\tilde{X}_7|\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.\tag{28}
+\mathrm{hop}(\tilde{X}_7)\le k,\qquad |\tilde{X}_7|\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.\qquad (28)
 $$
 
 Their KKT multipliers estimate which cap is active in the *optimal-control account*. Product behaviour remains hard reject. If the row-cap multiplier becomes positive and task loss rises, the diagnostic says the offered Shape is pressing against $M$. It does not say to make $M$ buyable.
@@ -393,7 +393,7 @@ RAG [16] is one load operator from a corpus into the window. A retriever maps qu
 The relevant cost is not only retrieval relevance. It includes token mass, duplication, displacement of resident pins, and positional degradation:
 
 $$
-C_{\mathrm{RAG}}=c_{\mathrm{tok}}|\tilde{X}|+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.\tag{29}
+C_{\mathrm{RAG}}=c_{\mathrm{tok}}|\tilde{X}|+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.\qquad (29)
 $$
 
 The "lost in the middle" result [11] implies that equal evidence with equal inclusion can induce different task costs under different positions. Therefore global rank alone cannot determine $W$'s usefulness.
@@ -419,7 +419,7 @@ A dictionary can always be made to fit after the fact. A mechanism must rule out
 Define an operational discrete action estimator before seeing outcomes:
 
 $$
-\widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],\tag{30}
+\widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],\qquad (30)
 $$
 
 with nonnegative coefficients preregistered on a development set. This is not claimed to be a universal Lagrangian. It is a measurement model whose coefficients are fixed before the held-out comparison.
@@ -435,7 +435,7 @@ with nonnegative coefficients preregistered on a development set. This is not cl
 **Protocol.** For each task, run $M\in\{8,12,16,24,32\}$ while keeping all other caps fixed. Estimate
 
 $$
-\widehat{\lambda}_{M}=-\frac{J^{\ast}(M+\delta)-J^{\ast}(M)}{\delta}\tag{31}
+\widehat{\lambda}_{M}=-\frac{J^{\ast}(M+\delta)-J^{\ast}(M)}{\delta}\qquad (31)
 $$
 
 for a minimised cost $J^{\ast}$, with one-row or four-row finite differences and confidence intervals over model seeds. Label whether the gold minimal evidence set is truncated at each $M$. Independently perturb the cue to create a wrong Shape without changing the answer target. Test whether $\widehat{\lambda}_{M}>0$ predicts truncation and task improvement under cap relaxation.
@@ -459,13 +459,13 @@ Analytical mechanics comes first because the present mechanism already has confi
 Start with observables $A(W,p)$ and $B(W,p)$ on phase space and their Poisson bracket,
 
 $$
-\{A,B\}=\frac{\partial A}{\partial W}\frac{\partial B}{\partial p}-\frac{\partial A}{\partial p}\frac{\partial B}{\partial W}.\tag{32}
+\{A,B\}=\frac{\partial A}{\partial W}\frac{\partial B}{\partial p}-\frac{\partial A}{\partial p}\frac{\partial B}{\partial W}.\qquad (32)
 $$
 
 Canonical quantisation replaces the bracket by a commutator,
 
 $$
-\{A,B\}\longrightarrow \frac{1}{i\hbar}[\hat A,\hat B].\tag{33}
+\{A,B\}\longrightarrow \frac{1}{i\hbar}[\hat A,\hat B].\qquad (33)
 $$
 
 That move may motivate Hilbert-space retrieval models [10][12][13], operator representations of local graph topology [14], or quantum-walk propagators [17][18]. It does not turn a graph database into a wavefunction, make a node id physical identity, or remove admission and eviction. A quantised model would still need an observable algebra, a state, a measurement rule, and a map back to actual $W_t$.
@@ -497,7 +497,7 @@ This is not support from "quantum memory graph" marketing. Quantum Atomic RAG, Q
 How should $m$ be measured? Pin stickiness could be estimated from the intervention needed to displace an item from $W$ while task and model remain fixed. It may be item-specific and state-dependent, giving a mass matrix rather than a scalar:
 
 $$
-T = \frac12 \dot{W}^\top M(W)\dot{W}.\tag{34}
+T = \frac12 \dot{W}^\top M(W)\dot{W}.\qquad (34)
 $$
 
 The matrix must live in analysis, not in `pin_map`.
@@ -534,7 +534,7 @@ The account can fail. Bounded local loading may not reduce measured action. The 
 
 ## Equation index
 
-Numbered for talk. Display equations only.
+Paper form: each display equation ends with $\qquad (n)$. Display equations only.
 
 - (1) action functional
 - (2) elementary Lagrangian
