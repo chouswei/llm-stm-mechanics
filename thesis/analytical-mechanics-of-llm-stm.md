@@ -494,9 +494,21 @@ The anomaly was *order*, not wire leak: label sets already matched on the failin
 
 Example mismatch pattern: the same DOC slugs and titles appear in the same order on CANONICAL; RAW answers can drop a slug when nickname ids reshuffle across isomorphic CREATE-order permutations.
 
-Interpretation: after #147, the remaining gauge leak for *generation* is nickname `id` on the `pin_map` wire, not ranking/order. This note does not claim a MemNet SemVer product cut; nickname-off-wire is a separate MemNet PR. Harness: [`experiments/p3-gen/`](../experiments/p3-gen/).
+Interpretation: after #147, the remaining gauge leak for *generation* is nickname `id` on the `pin_map` wire, not ranking/order. This note does not claim a MemNet SemVer $a$ or $b$ cut; nickname-off-wire is product honesty $c$. Harness: [`experiments/p3-gen/`](../experiments/p3-gen/).
 
-Deterministic observable order after #147 is an honesty / gauge property. It is not a place to put a learned ranker inside Recall (doctrine 9).
+**Result (post-fix, `memnet-llm` 0.19.4, 2026-09-04).** Same protocol and LLM as the generation half above. MemNet PR #148 omitted nickname `id` from `pin_map` emit (same usage method: cue $\to$ `pin_map` $\to$ mutate). Published as `memnet-llm` 0.19.4. This is a product honesty $c$ confirmation, not a new prediction.
+
+- RAW: **PASS** — mismatches $0/120$ (was FAIL $30/120$ on $0.19.3$ @ `eff05dc8`).
+- CANONICAL: **PASS** — mismatches $0/120$.
+- `raw_id_wire_diff_events=0` (was $120$).
+- `canon_text_diff_events=0`, `hid_leaks=0`, `build_fail=0`.
+- `nickname_on_wire_failure_mode=false`.
+- LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$, $n_{\mathrm{sessions}}=8$, $n_{\mathrm{perms}}=15$, $M=12$, $k=2$.
+- Elapsed $\sim 374$s.
+
+This note still makes no SemVer $a$ or $b$ claim. Record: [`experiments/p3-gen-0194/`](../experiments/p3-gen-0194/).
+
+Deterministic observable order after #147, and nickname-off-wire after #148, are honesty / gauge properties. They are not a place to put a learned ranker inside Recall (doctrine 9).
 
 ### 10.4 Scoreboard
 
@@ -506,7 +518,7 @@ Deterministic observable order after #147 is an honesty / gauge property. It is 
 | P1 local load vs dump | (30) | human-reviewed $n=200$, 17 families, equal *gold presence* | PASS (structural; CI $[2780,3086]$); LLM quality OPEN |
 | P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS (truncation / no-false-positive); AUROC vs $|W|$ marginal |
 | P3 rename / order (before generate) | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
-| P3 generation half ($T=0$) | (19) law | OpenRouter `gpt-4o-mini`; $8\times 15=120$ | RAW FAIL $30/120$ / CANONICAL PASS $0/120$ (nickname-on-wire); $T>0$ OPEN |
+| P3 generation half ($T=0$) | (19) law | OpenRouter `gpt-4o-mini`; $8\times 15=120$ | $0.19.3$ @ `eff05dc8`: RAW FAIL $30/120$ / CANONICAL PASS $0/120$; $0.19.4$ (#148 honesty $c$): RAW PASS $0/120$ / CANONICAL PASS $0/120$; $T>0$ OPEN |
 
 Harnesses, seeds, and locked coefficients: [`experiments/`](../experiments/). Summary JSON is truncated; re-run the scripts for full dumps.
 
@@ -540,7 +552,7 @@ This is not a node `hid` or store key treated as identity. Hidden names are gaug
 
 This is not raising $M$, enlarging the context window, or dumping $S$ and calling the result "more memory." Those moves alter a cap or load mass. They do not specify a good trajectory.
 
-This is not a MemNet 1.0 claim. The worked package version is `memnet-llm` 0.19.3. The paper changes no version.
+This is not a MemNet 1.0 claim. The worked package version in §9.1 is `memnet-llm` 0.19.3. §10.3 cites `0.19.4` only as honesty $c$ confirmation (PR #148). The paper changes no version and makes no SemVer $a$ or $b$ claim.
 
 This is not a product switch to Memgraph or Neo4j. Those are cabinets: implementations of inventory that induces the manifold. Changing cabinets may be a canonical change of address or an engineering migration. It is not automatically a change in memory physics.
 
@@ -590,7 +602,7 @@ Taking the mechanics seriously repairs the loose parts. Discrete variational mec
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
-The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 before-generate passed. The generation half at $T=0$ then split: RAW FAIL ($30/120$) from nickname `id` still on the `pin_map` wire; CANONICAL PASS ($0/120$) after stripping `id`/`hid`. That remaining leak is not a SemVer product cut; nickname-off-wire is a separate MemNet PR. P1 and P2 passed on the synthetic stratum; P1 human-reviewed passed on gold presence (not author-blind). Author-blind review, broader LLM-quality, $T>0$ generation, and the open items in §13 remain.
+The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 before-generate passed. The generation half at $T=0$ then split on $0.19.3$ @ `eff05dc8`: RAW FAIL ($30/120$) from nickname `id` still on the `pin_map` wire; CANONICAL PASS ($0/120$) after stripping `id`/`hid`. After MemNet PR #148 (`memnet-llm` 0.19.4, honesty $c$), the same protocol confirmed both RAW and CANONICAL PASS ($0/120$); `raw_id_wire_diff_events=0`. That is confirmation, not a new prediction, and not a SemVer $a$ or $b$ claim. P1 and P2 passed on the synthetic stratum; P1 human-reviewed passed on gold presence (not author-blind). Author-blind review, broader LLM-quality, $T>0$ generation, and the open items in §13 remain.
 
 ## Equation index
 
