@@ -7,7 +7,7 @@ OpenRouter `openai/gpt-4o-mini` at $T=0$ (greedy, `max_tokens=256`). Graph const
 
 Task: list DOC `slug` fields in emitted order, comma-separated.
 
-This is **not** a MemNet SemVer product cut. Nickname-off-wire is a separate MemNet change.
+This is **not** a MemNet SemVer $a$ or $b$ claim. Nickname-off-wire is product honesty $c$ (MemNet PR #148 / `memnet-llm` 0.19.4); the post-fix confirmation is [`../p3-gen-0194/`](../p3-gen-0194/).
 
 ## Reported verdict (2026-09-04)
 

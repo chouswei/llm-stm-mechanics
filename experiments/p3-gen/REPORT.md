@@ -2,7 +2,7 @@
 
 After-generate comparison on isomorphic CREATE-order / nickname permutations. Graph and cue match the before-generate harness in [`../p3/`](../p3/). **$T=0$ is the predeclared primary band.** $T>0$ was not run.
 
-**Not a MemNet SemVer product cut.** Nickname-off-wire is a separate MemNet change.
+**Not a MemNet SemVer $a$ or $b$ claim.** Nickname-off-wire is product honesty $c$ (MemNet PR #148 / `memnet-llm` 0.19.4). Post-fix confirmation: [`../p3-gen-0194/`](../p3-gen-0194/).
 
 ## Verdict
 
@@ -50,7 +50,7 @@ Hidden-id / nickname permutations must not change generate outputs once *labels*
 
 **CANONICAL PASS.** Stripping `id`/`hid` while keeping row order made `pin_map` text identical across permutations (`canon_text_diff_events=0`) and answers matched 0/120 mismatches.
 
-**Interpretation.** After #147, the remaining gauge leak *for generation* is nickname `id` on the `pin_map` wire, not ranking/order. That is an honesty / wire-shape issue. Closing it in the product is a separate MemNet PR; this paper does not cut a SemVer.
+**Interpretation.** After #147, the remaining gauge leak *for generation* is nickname `id` on the `pin_map` wire, not ranking/order. That is an honesty / wire-shape issue. Closing it in the product is MemNet PR #148 (`memnet-llm` 0.19.4, honesty $c$); this paper does not cut SemVer $a$ or $b$.
 
 ## Example mismatch pattern
 

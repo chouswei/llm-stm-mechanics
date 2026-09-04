@@ -52,6 +52,8 @@
       "close_session": 128
     }
   },
-  "interpretation": "After MemNet PR #147, remaining gauge leak for generation is nickname id on the pin_map wire, not ranking/order. Nickname-off-wire is a separate MemNet PR; this note makes no SemVer product cut.",
-  "semver_claim": false
+  "interpretation": "After MemNet PR #147, remaining gauge leak for generation is nickname id on the pin_map wire, not ranking/order. Nickname-off-wire is MemNet PR #148 / memnet-llm 0.19.4 honesty c; this note makes no SemVer a or b claim. Post-fix record: experiments/p3-gen-0194/.",
+  "semver_claim": false,
+  "semver_a_claim": false,
+  "semver_b_claim": false
 }

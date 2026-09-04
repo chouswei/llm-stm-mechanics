@@ -4,4 +4,4 @@ Research note by **Szu-Wei Chou**, dated **2026-09-03**, accompanying [MemNet](h
 
 Short-term memory is modelled as a controlled trajectory of the LLM-side working set $W_t$, not as a dump of persistent inventory such as a session graph. The note argues for discrete, dissipative analytical mechanics with Pontryagin control, KKT cap diagnostics, and a Noether gauge invariant under hidden-identifier renaming; Hilbert-space formalism is optional later as a quantisation, never the store. This is analysis only: it is not MemNet product doctrine, makes no SemVer claim, and changes no MemNet version.
 
-Empirical harnesses for §10: [`experiments/`](experiments/) (P1/P2/P3 synthetic goldfish; P3 generation half under `experiments/p3-gen/`).
+Empirical harnesses for §10: [`experiments/`](experiments/) (P1/P2/P3 synthetic goldfish; P3 generation half under `experiments/p3-gen/`; 0.19.4 honesty $c$ confirmation under `experiments/p3-gen-0194/`).

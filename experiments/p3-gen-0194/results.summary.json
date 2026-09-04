@@ -1,0 +1,60 @@
+{
+  "memnet_llm_version": "0.19.4",
+  "merge_commit": "1242c467bc9052360b4d61d754e944cc7ddf6cd9",
+  "pr_ranking_fix": 147,
+  "pr_nickname_off_wire": 148,
+  "honesty": "c",
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0,
+    "max_tokens": 256,
+    "decoding": "greedy T=0 (predeclared primary band)"
+  },
+  "protocol": {
+    "n_sessions": 8,
+    "n_perms": 15,
+    "n_compare": 120,
+    "M": 12,
+    "k": 2,
+    "cue_kind": "HUB",
+    "task": "list DOC slug fields in order, comma-separated",
+    "conditions": ["RAW", "CANONICAL"],
+    "DROP_KEYS": ["id", "hid"],
+    "canonicalisation": "strip id/hid from pin_map text; preserve row order",
+    "harness": "experiments/p3-gen/run_p3_gen.py"
+  },
+  "verdicts": {
+    "RAW": {
+      "verdict": "PASS",
+      "mismatches": 0,
+      "n_compare": 120,
+      "was_on_0.19.3_eff05dc8": {
+        "verdict": "FAIL",
+        "mismatches": 30,
+        "n_compare": 120
+      }
+    },
+    "CANONICAL": {
+      "verdict": "PASS",
+      "mismatches": 0,
+      "n_compare": 120
+    },
+    "T_gt_0_CANONICAL": "OPEN"
+  },
+  "counts": {
+    "raw_id_wire_diff_events": 0,
+    "canon_text_diff_events": 0,
+    "hid_leaks": 0,
+    "build_fail": 0
+  },
+  "nickname_on_wire_failure_mode": false,
+  "elapsed_s": 374,
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-04 counts; full per-call results.json not attached. No secrets.",
+  "prior": "experiments/p3-gen/results.summary.json",
+  "interpretation": "After MemNet PR #148 (nickname id off pin_map emit) published as memnet-llm 0.19.4, RAW and CANONICAL both PASS 0/120. Product honesty c confirmation of the 0.19.3 split, not a new prediction. This note makes no SemVer a or b claim.",
+  "semver_a_claim": false,
+  "semver_b_claim": false
+}
