@@ -1,0 +1,57 @@
+{
+  "memnet_llm_version": "0.19.3",
+  "merge_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "pr_ranking_fix": 147,
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0,
+    "max_tokens": 256,
+    "decoding": "greedy T=0 (predeclared primary band)"
+  },
+  "protocol": {
+    "n_sessions": 8,
+    "n_perms": 15,
+    "n_compare": 120,
+    "M": 12,
+    "k": 2,
+    "cue_kind": "HUB",
+    "task": "list DOC slug fields in order, comma-separated",
+    "conditions": ["RAW", "CANONICAL"],
+    "DROP_KEYS": ["id", "hid"],
+    "canonicalisation": "strip id/hid from pin_map text; preserve row order"
+  },
+  "verdicts": {
+    "RAW": {
+      "verdict": "FAIL",
+      "mismatches": 30,
+      "n_compare": 120
+    },
+    "CANONICAL": {
+      "verdict": "PASS",
+      "mismatches": 0,
+      "n_compare": 120
+    },
+    "T_gt_0_CANONICAL": "OPEN"
+  },
+  "counts": {
+    "raw_id_wire_diff_events": 120,
+    "canon_text_diff_events": 0,
+    "hid_leaks": 0,
+    "build_fail": 0
+  },
+  "nickname_on_wire_failure_mode": true,
+  "discarded": "local sshleifer/tiny-gpt2 partials — not part of verdict",
+  "elapsed_s": 360,
+  "api": {
+    "call_counts": {
+      "open_session": 128,
+      "MutateGate.apply": 128,
+      "PinMapComposer.compose": 128,
+      "close_session": 128
+    }
+  },
+  "interpretation": "After MemNet PR #147, remaining gauge leak for generation is nickname id on the pin_map wire, not ranking/order. Nickname-off-wire is a separate MemNet PR; this note makes no SemVer product cut.",
+  "semver_claim": false
+}

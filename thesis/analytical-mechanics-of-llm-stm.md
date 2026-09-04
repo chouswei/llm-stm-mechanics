@@ -10,7 +10,7 @@
 
 ## Abstract
 
-Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. On a synthetic stratum they *held*; Prediction 3 failed on stock `memnet-llm` 0.19.3 (hid-ranking of `pin_map` order), then passed after MemNet PR #147. A human-reviewed P1 stratum ($n=200$) also passed on gold-evidence presence; LLM-generate strata and author-blind review remain open. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
+Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. On a synthetic stratum they *held*; Prediction 3 failed on stock `memnet-llm` 0.19.3 (hid-ranking of `pin_map` order), then passed after MemNet PR #147. A human-reviewed P1 stratum ($n=200$) also passed on gold-evidence presence. The P3 generation half at $T=0$ (OpenRouter `openai/gpt-4o-mini`) closed as a split: RAW FAIL (nickname `id` still on the `pin_map` wire) versus CANONICAL PASS (strip `id`/`hid`, preserve order). That is not a MemNet SemVer cut; nickname-off-wire is a separate product PR. Author-blind review, broader LLM-quality (P1), and $T>0$ generation remain open. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
 
 ---
 
@@ -482,7 +482,19 @@ Complementary slackness is exact for the optimisation model under its regularity
 
 The anomaly was *order*, not wire leak: label sets already matched on the failing pilot. That is the Lost-in-the-Middle point [11].
 
-Generation half ($T>0$ distributional comparison after generate) remains **OPEN** — still part of the written claim, not established here.
+**Result (generation half, 2026-09-04).** MemNet $0.19.3$ @ `eff05dc8` (after PR #147). LLM: OpenRouter `openai/gpt-4o-mini` (base `https://openrouter.ai/api/v1`). Protocol: $n_{\mathrm{sessions}}=8$, $n_{\mathrm{perms}}=15$ ($120$ comparisons), $M=12$, $k=2$, cue kind HUB, $T=0$ greedy, `max_tokens=256`. Task: list DOC `slug` fields in order, comma-separated. Conditions: RAW (actual `pin_map`, which may include nickname `id`) versus CANONICAL (strip `id`/`hid` from `pin_map` text, preserve order; $\mathrm{DROP\_KEYS}=\{id,hid\}$).
+
+- RAW: **FAIL** — mismatches $30/120$.
+- CANONICAL: **PASS** — mismatches $0/120$.
+- `raw_id_wire_diff_events=120`, `canon_text_diff_events=0`, `hid_leaks=0`, `build_fail=0`.
+- `nickname_on_wire_failure_mode=True`.
+- $T>0$ CANONICAL: **OPEN** (skipped for OpenRouter cost/latency; $T=0$ is the predeclared primary band).
+- Discarded: local `sshleifer/tiny-gpt2` partials — not part of the verdict.
+- Elapsed $\sim 360$s. Call counts `open_session` / `MutateGate` / `PinMapComposer` / `close_session` $=128$ each.
+
+Example mismatch pattern: the same DOC slugs and titles appear in the same order on CANONICAL; RAW answers can drop a slug when nickname ids reshuffle across isomorphic CREATE-order permutations.
+
+Interpretation: after #147, the remaining gauge leak for *generation* is nickname `id` on the `pin_map` wire, not ranking/order. This note does not claim a MemNet SemVer product cut; nickname-off-wire is a separate MemNet PR. Harness: [`experiments/p3-gen/`](../experiments/p3-gen/).
 
 Deterministic observable order after #147 is an honesty / gauge property. It is not a place to put a learned ranker inside Recall (doctrine 9).
 
@@ -494,11 +506,11 @@ Deterministic observable order after #147 is an honesty / gauge property. It is 
 | P1 local load vs dump | (30) | human-reviewed $n=200$, 17 families, equal *gold presence* | PASS (structural; CI $[2780,3086]$); LLM quality OPEN |
 | P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS (truncation / no-false-positive); AUROC vs $|W|$ marginal |
 | P3 rename / order (before generate) | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
-| P3 generation half | — | — | OPEN |
+| P3 generation half ($T=0$) | (19) law | OpenRouter `gpt-4o-mini`; $8\times 15=120$ | RAW FAIL $30/120$ / CANONICAL PASS $0/120$ (nickname-on-wire); $T>0$ OPEN |
 
 Harnesses, seeds, and locked coefficients: [`experiments/`](../experiments/). Summary JSON is truncated; re-run the scripts for full dumps.
 
-Scope lock: synthetic, in-process goldfish, no live cabinet, no LLM generate. That supports the variational account on this stratum; it does not close §13.
+Scope lock: synthetic, in-process goldfish, no live cabinet. P1, P2, and P3 before-generate remain no-LLM-generate strata. P3 generation at $T=0$ used OpenRouter `openai/gpt-4o-mini` as above; $T>0$, author-blind review, and broader LLM-quality are still open. That supports the variational account on the tested strata; it does not close §13.
 
 ## 11 Quantization later
 
@@ -578,7 +590,7 @@ Taking the mechanics seriously repairs the loose parts. Discrete variational mec
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
-The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 passed; P1 and P2 passed on the same synthetic stratum. The defensible result is now stronger than a dictionary: a variational account of the working set whose three fail-able claims held where tested, and whose lead symmetry already paid for a product fix. Human-reviewed graphs, LLM-generate strata, and the open items in §13 remain.
+The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 before-generate passed. The generation half at $T=0$ then split: RAW FAIL ($30/120$) from nickname `id` still on the `pin_map` wire; CANONICAL PASS ($0/120$) after stripping `id`/`hid`. That remaining leak is not a SemVer product cut; nickname-off-wire is a separate MemNet PR. P1 and P2 passed on the synthetic stratum; P1 human-reviewed passed on gold presence (not author-blind). Author-blind review, broader LLM-quality, $T>0$ generation, and the open items in §13 remain.
 
 ## Equation index
 

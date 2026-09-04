@@ -1,6 +1,6 @@
-# Experiments (P1 / P1-HR / P2 / P3)
+# Experiments (P1 / P1-HR / P2 / P3 / P3-gen)
 
-Harnesses for the thesis §10 predictions. No LLM generate. In-process MemNet goldfish only.
+Harnesses for the thesis §10 predictions. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P3 generation half (`p3-gen/`) calls an OpenRouter chat API at $T=0$; that is the exception, not a change to the synthetic strata.
 
 ## Stack
 
@@ -25,8 +25,14 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 # P2 — M-cap lambda-hat diagnostic (eq 31)
 .venv/bin/python experiments/p2/run_p2.py
 
-# P3 — rename / order invariance (eq 19 law)
+# P3 — rename / order invariance (eq 19 law; before generate)
 .venv/bin/python experiments/p3/run_p3.py
+
+# P3-gen — generation half (OpenRouter; needs OPENROUTER_API_KEY)
+# Paper verdict is experiments/p3-gen/results.summary.json — do not overwrite it
+# from a different model. Dry-run: P3_GEN_DRY=1 (wire diffs only).
+export OPENROUTER_API_KEY=  # never commit
+.venv/bin/python experiments/p3-gen/run_p3_gen.py
 ```
 
 ## Reported scoreboard (2026-09-04)
@@ -37,6 +43,6 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 | P1-HR | PASS | n=200 human-reviewed; 17 families; n_both_perfect=170; mean Δ≈2932, CI excludes 0 |
 | P2 | PASS (account diagnostic) | truncation / no-false-positive strong; AUROC vs \|W\| only marginal |
 | P3 before-generate | PASS after MemNet #147 | pre-#147: FAIL (order) — see `p3/PRE147.md` |
-| P3 generation half | OPEN | not run |
+| P3 generation half ($T=0$) | RAW FAIL 30/120 / CANONICAL PASS 0/120 | nickname `id` on wire; $T>0$ OPEN; no SemVer cut |
 
 Full per-session dumps are truncated in `*.summary.json`; re-run the scripts for complete artifacts.
