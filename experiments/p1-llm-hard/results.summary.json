@@ -1,0 +1,75 @@
+{
+  "prediction": 1,
+  "stratum": "llm-answer-quality-harder-evidence-vs-noise",
+  "harder_than": "experiments/p1-llm/",
+  "scorer": "full_gold_evidence",
+  "score_llm": "|pred ∩ full_gold_evidence| / |full_gold_evidence|",
+  "full_gold_evidence": "E{session_i}-{slug} for ALL graph.gold_slugs (NOT gold∩W)",
+  "markers": {
+    "KEY": "absent (no KEY=/key: markers)",
+    "evidence_on": "gold ∩ W",
+    "evidence_form": "evidence: 'E{session_i}-{slug}'",
+    "noise_on": "non-gold in W",
+    "noise_form": "noise: 'N{session_i}-{slug}'"
+  },
+  "task": "list every evidence value, ignore noise; alphabetical comma-separated",
+  "noise_leak": "true if any N… token in pred",
+  "equal_quality": "both score_llm==1.0 AND no noise_leak",
+  "honesty": "graphs: Sage author-blind ACCEPT after regen (experiments/p1-blind/SAGE_SIGNOFF.md); KEY-extraction p1-llm kept; this closes a harder discrimination task",
+  "memnet_llm_version": "0.19.4",
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "term_a": "a * |W|^2",
+    "tokens": "sum(len(title)+len(slug))",
+    "ell_task": "1-score_llm",
+    "locked_before_outcomes": true,
+    "same_as_prior_p1": true,
+    "retuned": false
+  },
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0,
+    "decoding": "greedy T=0 (predeclared primary band)"
+  },
+  "protocol": {
+    "graphs": "experiments/p1-hr/",
+    "n_sessions": 200,
+    "k_hop": 2,
+    "M_hard": 12,
+    "cue_kind": "HUB",
+    "walk": "pin_map M=12 k=2",
+    "dump_is_bench_fixture": true,
+    "post_regen": true
+  },
+  "n_sessions": 200,
+  "n_both_perfect": 161,
+  "n_noise_leak": 0,
+  "n_walk_imperfect_llm": 35,
+  "n_dump_imperfect_llm": 9,
+  "stats_both_perfect": {
+    "n": 161,
+    "n_bootstrap": 10000,
+    "mean": 2940.65,
+    "ci95": [
+      2782.09,
+      3098.31
+    ],
+    "authoritative": "post-regen p1-hr n=200; harder evidence-vs-noise 2026-09-04; coeffs not retuned",
+    "note": "ℓ_task=0 on both sides on the equal-quality slice (score_llm==1.0 and no noise_leak)."
+  },
+  "elapsed_s": 674.8,
+  "verdict": "PASS",
+  "verdict_reason": "On both-perfect stratum (n=161 equal LLM quality: score_llm==1.0 and no noise_leak), mean Δ≈2940.65 > 0 and 95% CI [2782.09, 3098.31] excludes 0. n_noise_leak=0. Coefficients not retuned. Closes a harder discrimination task than KEY-extraction (experiments/p1-llm/).",
+  "T_gt_0": "OPEN",
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-04 harder P1 LLM evidence-vs-noise run. Full per-call results.json not attached. No secrets.",
+  "harness": "experiments/p1-llm-hard/run_p1_llm_hard.py",
+  "prior_key_extraction": "experiments/p1-llm/results.summary.json",
+  "prior_gold_presence": "experiments/p1-hr/results.summary.json"
+}
