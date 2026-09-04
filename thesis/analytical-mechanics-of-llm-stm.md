@@ -40,7 +40,7 @@ So the question is not "how much can we store" but "which slice is loaded, and a
 
 **The claim.** Analytical mechanics is the right fundamental layer for the mechanism of short-term memory in large language models. Configuration, velocity, derived momentum, a Lagrangian, a Hamiltonian, constraints with multipliers, and a variational principle over turns are sufficient to state what short-term memory *is* and to make predictions about it that can fail. Hilbert-space and quantum formalism is optional and later — a quantisation of this mechanics, taken up in §11. It is never the store.
 
-**One caveat, stated early.** The LLM is a stochastic map. At temperature $T > 0$ the update from $W_t$ to $W_{t+1}$ is sampled, not determined, so the integrator is a Langevin-type stochastic integrator and not a symplectic one; deterministic statements below are statements about the drift, and every measurement protocol in §10 must either fix the temperature or average over seeds.
+**One caveat, stated early.** The LLM is a stochastic map. At temperature $T > 0$ the update from $W_t$ to $W_{t+1}$ is sampled, not determined, so the integrator is a Langevin-type stochastic integrator and not a symplectic one; deterministic statements below are statements about the drift, and every measurement protocol in §10 must either fix the temperature or average over seeds. The §13 stochasticity seam lock is the rest of that split: drift versus path measure; Onsager–Machlup is a candidate rate functional for the continuous surrogate, not a theorem for discrete token or admission noise.
 
 **Turn index.** Throughout, $t$ is a **turn index**, not wall-clock time. $t \to t+1$ is one agent turn. Wall-clock latency is a real engineering quantity and is not this variable.
 
@@ -206,7 +206,7 @@ $$
 \dot{W} = f(W,u,t)\qquad (12)
 $$
 
-or its discrete counterpart $W_{t+1}=F(W_t,u_t,\xi_t)$, where $\xi_t$ is sampling noise (the stochastic draw of the LLM). Let the objective be
+or its discrete counterpart $W_{t+1}=F(W_t,u_t,\xi_t)$, where $\xi_t$ is sampling noise (the stochastic draw of the LLM). At $T>0$ that controlled process induces a path measure $\mu$ on trajectories, not a single curve; see the §13 stochasticity seam lock. Let the objective be
 
 $$
 J[u] = \Phi(W_N) + \int_0^N \ell(W,u,t)\,dt.\qquad (13)
@@ -617,7 +617,18 @@ Right momentum $p_k^+$ is conjugate to the later slot; left momentum $p_k^-$ is 
 
 **Which symmetries besides renaming exist?** Cue-basis transformations may be canonical if they preserve observable trajectories. Order invariance is not generally a symmetry because long-context models are position-sensitive [11]. Session-graph automorphisms that preserve all codebook and payload observables are candidates for a larger gauge group.
 
-**How much does stochasticity matter?** At nonzero temperature the relevant object is a path measure and the action may be an Onsager-Machlup-type functional rather than the deterministic $\mathcal{A}$. The Langevin sentence in §1 is not a full stochastic variational derivation. This is one of the framework's weakest current points.
+**Seam lock: how much stochasticity matters.** Two regimes.
+
+1. **$T=0$ (greedy / deterministic decoding).** The map $W_t\mapsto W_{t+1}$ is treated as a drift. Deterministic Lagrangian, discrete Euler–Lagrange, and PMP statements apply to that drift. Residual tie-breaks still need a fixed seed protocol.
+2. **$T>0$.** The LLM draw $\xi_t$ in $W_{t+1}=F(W_t,u_t,\xi_t)$ (§6.1) makes the object a **path measure** $\mu$ on trajectories, not a single curve. Deterministic action $\mathcal{A}=\int L\,dt$ (or $\mathcal{A}_d$) is then talk about the *drift* or a *most-probable-path* surrogate — not the full stochastic cost.
+
+**Candidate stochastic object.** For continuous Langevin-type SDEs, path probabilities admit an Onsager–Machlup-type rate functional. That is the **candidate** stochastic variational object for the continuous surrogate (attention-mass chart (7) / Langevin integrator metaphor in §1). This paper does **not** derive an Onsager–Machlup functional for categorical token sampling or mixed $0$–$1$ admission on the hard window. Do not read the §1 Langevin sentence as that derivation.
+
+**Measurement discipline.** Every §10 protocol must either fix temperature or average over seeds / use a predeclared distributional band. That is how P1 $T>0$ (harder evidence-versus-noise; $T=0.8$; $n_{\mathrm{seeds}}=20$) and P3 $T>0$ CANONICAL ($T=0.8$; $N_{\mathrm{SAMPLES\_DIST}}=5$; $\mathrm{DIST\_MATCH\_BAND}=0.05$) are well-posed. Operational success of those bands does **not** close a stochastic variational derivation; it closes the measurement question for those claims.
+
+**Relation to the update lock.** The native mechanical update remains forced discrete EL (6) on the turn lattice (§13 update lock). Stochasticity is integrator noise on top of that discrete map, not a reason to replace (6) by a continuous SDE on the hard window.
+
+**Still open.** A derived Onsager–Machlup / large-deviation rate functional for the composed `pin_map` + LLM categorical sampler is not written here, nor is the relation (if any) of the operational estimator $\widehat{\mathcal{A}}_d$ to that rate functional, nor a continuum limit from discrete admission noise to Langevin plus Onsager–Machlup. The lock is the two-regime split and the measurement discipline; it is not a theorem that discrete token noise is Onsager–Machlup.
 
 **Can a learned control remain inspectable?** A ranker may approximate $\arg\max_u H_c$, but its chosen control should still be auditable against hard caps, rename invariance, and proposal/admission/eviction logs. Otherwise optimal-control notation only renames opacity.
 
@@ -643,7 +654,7 @@ The next LLM generate is a goldfish. Only $W_t$ is resident. The rest is invento
 
 The three roles are the spine. The LLM is the integrator. It runs the controlled, usually stochastic, equations and does not pick the Lagrangian, hold $S$, measure $S$, or commit $S$. Steering is choosing $H$, a force, or a constraint. ShapeWalk, RAG, rankers, and KV eviction are different controls on one phase space. **Memory = manifold + phase point.** Usefulness is a trajectory of $\mathcal{A}$, not a dump.
 
-Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
+Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator; under the §13 stochasticity lock, deterministic $\mathcal{A}$ statements are drift-level.
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
