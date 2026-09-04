@@ -1,0 +1,236 @@
+{
+  "prediction": 1,
+  "stratum": "human-reviewed",
+  "honesty": "human-reviewed by agent under user delegation; not author-blind",
+  "memnet_version": "0.19.3",
+  "memnet_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "term_a": "a * |W|^2",
+    "tokens": "sum(len(title)+len(slug))",
+    "ell_task": "1-score",
+    "locked_before_outcomes": true,
+    "same_as_prior_p1": true,
+    "retuned": false
+  },
+  "protocol": {
+    "k_hop": 2,
+    "M_hard": 12,
+    "cue_kind": "HUB",
+    "walk_admits_all_offered": true,
+    "dump_is_bench_fixture": true,
+    "equal_quality": "both score==1.0"
+  },
+  "n_sessions": 200,
+  "n_ok": 200,
+  "n_both_perfect": 170,
+  "n_walk_imperfect": 30,
+  "n_checklist_pass": 200,
+  "n_families": 17,
+  "family_histogram": {
+    "asymmetric-spoke": 11,
+    "broken-path-then-repair": 11,
+    "cap-bind-stress": 15,
+    "chain-of-hubs": 12,
+    "deep-narrow": 12,
+    "dense-clique-with-gold-rim": 11,
+    "diamond": 12,
+    "fan-out-fan-in": 11,
+    "hub-with-dead-ends": 11,
+    "ladder": 11,
+    "multi-root-one-legal-seed": 11,
+    "noisy-sibling-hub": 11,
+    "sparse-evidence": 11,
+    "star": 12,
+    "tree-with-gold-leaves": 11,
+    "wide-shallow": 12,
+    "wrong-branch-crowding": 15
+  },
+  "walk_imperfect_reasons": {
+    "cap_binding": 30
+  },
+  "unique_delta_values_both_perfect": 127,
+  "wall_time_s": 138.4345371723175,
+  "stats_both_perfect": {
+    "mean": 2932.4117647058824,
+    "median": 2847.0,
+    "ci95": [
+      2780.3529411764707,
+      3086.3117647058825
+    ],
+    "n": 170,
+    "n_bootstrap": 10000,
+    "mean_A_walk": 338.99411764705883,
+    "mean_A_dump": 3271.4058823529413,
+    "mean_score_walk": 1.0,
+    "mean_score_dump": 1.0,
+    "mean_w_walk": 8.623529411764705,
+    "mean_w_dump": 43.705882352941174,
+    "mean_tok_walk": 255.97058823529412,
+    "mean_tok_dump": 1288.2764705882353,
+    "stdev_delta": 1018.8145971623117
+  },
+  "stats_full": {
+    "mean": 3043.771666666667,
+    "median": 2924.5,
+    "ci95": [
+      2906.6375,
+      3183.2525
+    ],
+    "n": 200,
+    "n_bootstrap": 10000,
+    "mean_A_walk": 371.37333333333333,
+    "mean_A_dump": 3415.145,
+    "mean_score_walk": 0.8821666666666667,
+    "mean_score_dump": 1.0,
+    "mean_w_walk": 9.13,
+    "mean_w_dump": 44.835,
+    "mean_tok_walk": 278.025,
+    "mean_tok_dump": 1331.37,
+    "stdev_delta": 1013.3580203009859
+  },
+  "verdict": "PASS",
+  "verdict_reason": "On both-perfect stratum (n=170), mean \u0394=2932.4118 > 0 and 95% CI [2780.3529, 3086.3118] excludes 0 \u2014 dump costs more action at equal quality. Coefficients not retuned.",
+  "call_counts": {
+    "open_session": 200,
+    "MutateGate.apply": 200,
+    "PinMapComposer.compose": 200,
+    "close_session": 200
+  },
+  "sessions_sample": [
+    {
+      "session_i": 0,
+      "family": "star",
+      "hub_slug": "hub-s0000",
+      "n_session_nodes": 28,
+      "n_gold": 3,
+      "walk": {
+        "score": 1.0,
+        "w_size": 12,
+        "tokens": 349,
+        "action": 493.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 28,
+        "tokens": 809,
+        "action": 1593.0,
+        "n_offered_rows": 28
+      },
+      "delta_action": 1100.0,
+      "both_perfect": true,
+      "walk_imperfect": false,
+      "walk_miss_reason": null,
+      "ok": true
+    },
+    {
+      "session_i": 1,
+      "family": "chain-of-hubs",
+      "hub_slug": "hub-s0001-h0",
+      "n_session_nodes": 31,
+      "n_gold": 3,
+      "walk": {
+        "score": 1.0,
+        "w_size": 5,
+        "tokens": 158,
+        "action": 183.0,
+        "n_offered_rows": 9
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 31,
+        "tokens": 915,
+        "action": 1876.0,
+        "n_offered_rows": 31
+      },
+      "delta_action": 1693.0,
+      "both_perfect": true,
+      "walk_imperfect": false,
+      "walk_miss_reason": null,
+      "ok": true
+    },
+    {
+      "session_i": 2,
+      "family": "diamond",
+      "hub_slug": "hub-s0002",
+      "n_session_nodes": 28,
+      "n_gold": 5,
+      "walk": {
+        "score": 1.0,
+        "w_size": 9,
+        "tokens": 246,
+        "action": 327.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 28,
+        "tokens": 789,
+        "action": 1573.0,
+        "n_offered_rows": 28
+      },
+      "delta_action": 1246.0,
+      "both_perfect": true,
+      "walk_imperfect": false,
+      "walk_miss_reason": null,
+      "ok": true
+    },
+    {
+      "session_i": 3,
+      "family": "wide-shallow",
+      "hub_slug": "hub-s0003",
+      "n_session_nodes": 35,
+      "n_gold": 7,
+      "walk": {
+        "score": 1.0,
+        "w_size": 12,
+        "tokens": 383,
+        "action": 527.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 35,
+        "tokens": 1054,
+        "action": 2279.0,
+        "n_offered_rows": 35
+      },
+      "delta_action": 1752.0,
+      "both_perfect": true,
+      "walk_imperfect": false,
+      "walk_miss_reason": null,
+      "ok": true
+    },
+    {
+      "session_i": 4,
+      "family": "deep-narrow",
+      "hub_slug": "hub-s0004",
+      "n_session_nodes": 28,
+      "n_gold": 4,
+      "walk": {
+        "score": 1.0,
+        "w_size": 7,
+        "tokens": 191,
+        "action": 240.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 28,
+        "tokens": 793,
+        "action": 1577.0,
+        "n_offered_rows": 28
+      },
+      "delta_action": 1337.0,
+      "both_perfect": true,
+      "walk_imperfect": false,
+      "walk_miss_reason": null,
+      "ok": true
+    }
+  ]
+}

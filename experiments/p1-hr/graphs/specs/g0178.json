@@ -1,0 +1,768 @@
+{
+  "session_i": 178,
+  "family": "cap-bind-stress",
+  "hub_slug": "hub-s0178",
+  "gold_slugs": [
+    "hub-s0178",
+    "usr-s0178-g0",
+    "usr-s0178-g1",
+    "usr-s0178-g2",
+    "usr-s0178-g3"
+  ],
+  "gold_hop": 1,
+  "n_distractor_hubs": 0,
+  "has_dead_ends": false,
+  "expect_walk_perfect": false,
+  "walk_miss_reason": "cap_binding: 14 DOC fillers rank before USR gold; M=12 truncates gold",
+  "nodes": [
+    {
+      "kind": "HUB",
+      "slug": "hub-s0178",
+      "title": "Cap-stress hub s0178",
+      "nick": "nick-hub-s0178"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill00",
+      "title": "Fill doc s0178 #00",
+      "nick": "nick-doc-s0178-fill00"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill01",
+      "title": "Fill doc s0178 #01",
+      "nick": "nick-doc-s0178-fill01"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill02",
+      "title": "Fill doc s0178 #02",
+      "nick": "nick-doc-s0178-fill02"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill03",
+      "title": "Fill doc s0178 #03",
+      "nick": "nick-doc-s0178-fill03"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill04",
+      "title": "Fill doc s0178 #04",
+      "nick": "nick-doc-s0178-fill04"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill05",
+      "title": "Fill doc s0178 #05",
+      "nick": "nick-doc-s0178-fill05"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill06",
+      "title": "Fill doc s0178 #06",
+      "nick": "nick-doc-s0178-fill06"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill07",
+      "title": "Fill doc s0178 #07",
+      "nick": "nick-doc-s0178-fill07"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill08",
+      "title": "Fill doc s0178 #08",
+      "nick": "nick-doc-s0178-fill08"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill09",
+      "title": "Fill doc s0178 #09",
+      "nick": "nick-doc-s0178-fill09"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill10",
+      "title": "Fill doc s0178 #10",
+      "nick": "nick-doc-s0178-fill10"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill11",
+      "title": "Fill doc s0178 #11",
+      "nick": "nick-doc-s0178-fill11"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill12",
+      "title": "Fill doc s0178 #12",
+      "nick": "nick-doc-s0178-fill12"
+    },
+    {
+      "kind": "DOC",
+      "slug": "doc-s0178-fill13",
+      "title": "Fill doc s0178 #13",
+      "nick": "nick-doc-s0178-fill13"
+    },
+    {
+      "kind": "USR",
+      "slug": "usr-s0178-g0",
+      "title": "Gold user s0178 #0",
+      "nick": "nick-usr-s0178-g0"
+    },
+    {
+      "kind": "USR",
+      "slug": "usr-s0178-g1",
+      "title": "Gold user s0178 #1",
+      "nick": "nick-usr-s0178-g1"
+    },
+    {
+      "kind": "USR",
+      "slug": "usr-s0178-g2",
+      "title": "Gold user s0178 #2",
+      "nick": "nick-usr-s0178-g2"
+    },
+    {
+      "kind": "USR",
+      "slug": "usr-s0178-g3",
+      "title": "Gold user s0178 #3",
+      "nick": "nick-usr-s0178-g3"
+    },
+    {
+      "kind": "BRIDGE",
+      "slug": "bridge-s0178",
+      "title": "Bridge s0178",
+      "nick": "nick-bridge-s0178"
+    },
+    {
+      "kind": "BRIDGE",
+      "slug": "far-s0178",
+      "title": "Far anchor s0178",
+      "nick": "nick-far-s0178"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n00",
+      "title": "Leaf s0178 #0",
+      "nick": "nick-noise-s0178-n00"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n01",
+      "title": "Noise s0178 #1",
+      "nick": "nick-noise-s0178-n01"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n02",
+      "title": "Noise s0178 #2",
+      "nick": "nick-noise-s0178-n02"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n03",
+      "title": "Leaf s0178 #3",
+      "nick": "nick-noise-s0178-n03"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n04",
+      "title": "Noise s0178 #4",
+      "nick": "nick-noise-s0178-n04"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n05",
+      "title": "Noise s0178 #5",
+      "nick": "nick-noise-s0178-n05"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n06",
+      "title": "Leaf s0178 #6",
+      "nick": "nick-noise-s0178-n06"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n07",
+      "title": "Noise s0178 #7",
+      "nick": "nick-noise-s0178-n07"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n08",
+      "title": "Noise s0178 #8",
+      "nick": "nick-noise-s0178-n08"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n09",
+      "title": "Leaf s0178 #9",
+      "nick": "nick-noise-s0178-n09"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n10",
+      "title": "Noise s0178 #10",
+      "nick": "nick-noise-s0178-n10"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n11",
+      "title": "Noise s0178 #11",
+      "nick": "nick-noise-s0178-n11"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n12",
+      "title": "Leaf s0178 #12",
+      "nick": "nick-noise-s0178-n12"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n13",
+      "title": "Noise s0178 #13",
+      "nick": "nick-noise-s0178-n13"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n14",
+      "title": "Noise s0178 #14",
+      "nick": "nick-noise-s0178-n14"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n15",
+      "title": "Leaf s0178 #15",
+      "nick": "nick-noise-s0178-n15"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n16",
+      "title": "Noise s0178 #16",
+      "nick": "nick-noise-s0178-n16"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n17",
+      "title": "Noise s0178 #17",
+      "nick": "nick-noise-s0178-n17"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n18",
+      "title": "Leaf s0178 #18",
+      "nick": "nick-noise-s0178-n18"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n19",
+      "title": "Noise s0178 #19",
+      "nick": "nick-noise-s0178-n19"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n20",
+      "title": "Noise s0178 #20",
+      "nick": "nick-noise-s0178-n20"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n21",
+      "title": "Leaf s0178 #21",
+      "nick": "nick-noise-s0178-n21"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n22",
+      "title": "Noise s0178 #22",
+      "nick": "nick-noise-s0178-n22"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n23",
+      "title": "Noise s0178 #23",
+      "nick": "nick-noise-s0178-n23"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n24",
+      "title": "Leaf s0178 #24",
+      "nick": "nick-noise-s0178-n24"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n25",
+      "title": "Noise s0178 #25",
+      "nick": "nick-noise-s0178-n25"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n26",
+      "title": "Noise s0178 #26",
+      "nick": "nick-noise-s0178-n26"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n27",
+      "title": "Leaf s0178 #27",
+      "nick": "nick-noise-s0178-n27"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n28",
+      "title": "Noise s0178 #28",
+      "nick": "nick-noise-s0178-n28"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n29",
+      "title": "Noise s0178 #29",
+      "nick": "nick-noise-s0178-n29"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n30",
+      "title": "Leaf s0178 #30",
+      "nick": "nick-noise-s0178-n30"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n31",
+      "title": "Noise s0178 #31",
+      "nick": "nick-noise-s0178-n31"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n32",
+      "title": "Noise s0178 #32",
+      "nick": "nick-noise-s0178-n32"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n33",
+      "title": "Leaf s0178 #33",
+      "nick": "nick-noise-s0178-n33"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n34",
+      "title": "Noise s0178 #34",
+      "nick": "nick-noise-s0178-n34"
+    },
+    {
+      "kind": "NOISE",
+      "slug": "noise-s0178-n35",
+      "title": "Noise s0178 #35",
+      "nick": "nick-noise-s0178-n35"
+    },
+    {
+      "kind": "LEAF",
+      "slug": "noise-s0178-n36",
+      "title": "Leaf s0178 #36",
+      "nick": "nick-noise-s0178-n36"
+    }
+  ],
+  "edges": [
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill00",
+      "rel": "contains",
+      "note": "fill-0",
+      "nick": "nick-e-fill-0-hub-s0178-doc-s0178-fill00"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill01",
+      "rel": "contains",
+      "note": "fill-1",
+      "nick": "nick-e-fill-1-hub-s0178-doc-s0178-fill01"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill02",
+      "rel": "contains",
+      "note": "fill-2",
+      "nick": "nick-e-fill-2-hub-s0178-doc-s0178-fill02"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill03",
+      "rel": "contains",
+      "note": "fill-3",
+      "nick": "nick-e-fill-3-hub-s0178-doc-s0178-fill03"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill04",
+      "rel": "contains",
+      "note": "fill-4",
+      "nick": "nick-e-fill-4-hub-s0178-doc-s0178-fill04"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill05",
+      "rel": "contains",
+      "note": "fill-5",
+      "nick": "nick-e-fill-5-hub-s0178-doc-s0178-fill05"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill06",
+      "rel": "contains",
+      "note": "fill-6",
+      "nick": "nick-e-fill-6-hub-s0178-doc-s0178-fill06"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill07",
+      "rel": "contains",
+      "note": "fill-7",
+      "nick": "nick-e-fill-7-hub-s0178-doc-s0178-fill07"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill08",
+      "rel": "contains",
+      "note": "fill-8",
+      "nick": "nick-e-fill-8-hub-s0178-doc-s0178-fill08"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill09",
+      "rel": "contains",
+      "note": "fill-9",
+      "nick": "nick-e-fill-9-hub-s0178-doc-s0178-fill09"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill10",
+      "rel": "contains",
+      "note": "fill-10",
+      "nick": "nick-e-fill-10-hub-s0178-doc-s0178-fill10"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill11",
+      "rel": "contains",
+      "note": "fill-11",
+      "nick": "nick-e-fill-11-hub-s0178-doc-s0178-fill11"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill12",
+      "rel": "contains",
+      "note": "fill-12",
+      "nick": "nick-e-fill-12-hub-s0178-doc-s0178-fill12"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "doc-s0178-fill13",
+      "rel": "contains",
+      "note": "fill-13",
+      "nick": "nick-e-fill-13-hub-s0178-doc-s0178-fill13"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "usr-s0178-g0",
+      "rel": "owns",
+      "note": "ug-0",
+      "nick": "nick-e-ug-0-hub-s0178-usr-s0178-g0"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "usr-s0178-g1",
+      "rel": "owns",
+      "note": "ug-1",
+      "nick": "nick-e-ug-1-hub-s0178-usr-s0178-g1"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "usr-s0178-g2",
+      "rel": "owns",
+      "note": "ug-2",
+      "nick": "nick-e-ug-2-hub-s0178-usr-s0178-g2"
+    },
+    {
+      "src_slug": "hub-s0178",
+      "dst_slug": "usr-s0178-g3",
+      "rel": "owns",
+      "note": "ug-3",
+      "nick": "nick-e-ug-3-hub-s0178-usr-s0178-g3"
+    },
+    {
+      "src_slug": "doc-s0178-fill00",
+      "dst_slug": "bridge-s0178",
+      "rel": "next",
+      "note": "to-bridge",
+      "nick": "nick-e-to-bridge-doc-s0178-fill00-bridge-s0178"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "far-s0178",
+      "rel": "next",
+      "note": "to-far",
+      "nick": "nick-e-to-far-bridge-s0178-far-s0178"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n00",
+      "rel": "links",
+      "note": "noise-0",
+      "nick": "nick-e-noise-0-bridge-s0178-noise-s0178-n00"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n01",
+      "rel": "links",
+      "note": "noise-1",
+      "nick": "nick-e-noise-1-far-s0178-noise-s0178-n01"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n02",
+      "rel": "links",
+      "note": "noise-2",
+      "nick": "nick-e-noise-2-bridge-s0178-noise-s0178-n02"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n03",
+      "rel": "links",
+      "note": "noise-3",
+      "nick": "nick-e-noise-3-far-s0178-noise-s0178-n03"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n04",
+      "rel": "links",
+      "note": "noise-4",
+      "nick": "nick-e-noise-4-bridge-s0178-noise-s0178-n04"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n05",
+      "rel": "links",
+      "note": "noise-5",
+      "nick": "nick-e-noise-5-far-s0178-noise-s0178-n05"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n06",
+      "rel": "links",
+      "note": "noise-6",
+      "nick": "nick-e-noise-6-bridge-s0178-noise-s0178-n06"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n07",
+      "rel": "links",
+      "note": "noise-7",
+      "nick": "nick-e-noise-7-far-s0178-noise-s0178-n07"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n08",
+      "rel": "links",
+      "note": "noise-8",
+      "nick": "nick-e-noise-8-bridge-s0178-noise-s0178-n08"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n09",
+      "rel": "links",
+      "note": "noise-9",
+      "nick": "nick-e-noise-9-far-s0178-noise-s0178-n09"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n10",
+      "rel": "links",
+      "note": "noise-10",
+      "nick": "nick-e-noise-10-bridge-s0178-noise-s0178-n10"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n11",
+      "rel": "links",
+      "note": "noise-11",
+      "nick": "nick-e-noise-11-far-s0178-noise-s0178-n11"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n12",
+      "rel": "links",
+      "note": "noise-12",
+      "nick": "nick-e-noise-12-bridge-s0178-noise-s0178-n12"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n13",
+      "rel": "links",
+      "note": "noise-13",
+      "nick": "nick-e-noise-13-far-s0178-noise-s0178-n13"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n14",
+      "rel": "links",
+      "note": "noise-14",
+      "nick": "nick-e-noise-14-bridge-s0178-noise-s0178-n14"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n15",
+      "rel": "links",
+      "note": "noise-15",
+      "nick": "nick-e-noise-15-far-s0178-noise-s0178-n15"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n16",
+      "rel": "links",
+      "note": "noise-16",
+      "nick": "nick-e-noise-16-bridge-s0178-noise-s0178-n16"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n17",
+      "rel": "links",
+      "note": "noise-17",
+      "nick": "nick-e-noise-17-far-s0178-noise-s0178-n17"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n18",
+      "rel": "links",
+      "note": "noise-18",
+      "nick": "nick-e-noise-18-bridge-s0178-noise-s0178-n18"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n19",
+      "rel": "links",
+      "note": "noise-19",
+      "nick": "nick-e-noise-19-far-s0178-noise-s0178-n19"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n20",
+      "rel": "links",
+      "note": "noise-20",
+      "nick": "nick-e-noise-20-bridge-s0178-noise-s0178-n20"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n21",
+      "rel": "links",
+      "note": "noise-21",
+      "nick": "nick-e-noise-21-far-s0178-noise-s0178-n21"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n22",
+      "rel": "links",
+      "note": "noise-22",
+      "nick": "nick-e-noise-22-bridge-s0178-noise-s0178-n22"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n23",
+      "rel": "links",
+      "note": "noise-23",
+      "nick": "nick-e-noise-23-far-s0178-noise-s0178-n23"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n24",
+      "rel": "links",
+      "note": "noise-24",
+      "nick": "nick-e-noise-24-bridge-s0178-noise-s0178-n24"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n25",
+      "rel": "links",
+      "note": "noise-25",
+      "nick": "nick-e-noise-25-far-s0178-noise-s0178-n25"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n26",
+      "rel": "links",
+      "note": "noise-26",
+      "nick": "nick-e-noise-26-bridge-s0178-noise-s0178-n26"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n27",
+      "rel": "links",
+      "note": "noise-27",
+      "nick": "nick-e-noise-27-far-s0178-noise-s0178-n27"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n28",
+      "rel": "links",
+      "note": "noise-28",
+      "nick": "nick-e-noise-28-bridge-s0178-noise-s0178-n28"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n29",
+      "rel": "links",
+      "note": "noise-29",
+      "nick": "nick-e-noise-29-far-s0178-noise-s0178-n29"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n30",
+      "rel": "links",
+      "note": "noise-30",
+      "nick": "nick-e-noise-30-bridge-s0178-noise-s0178-n30"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n31",
+      "rel": "links",
+      "note": "noise-31",
+      "nick": "nick-e-noise-31-far-s0178-noise-s0178-n31"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n32",
+      "rel": "links",
+      "note": "noise-32",
+      "nick": "nick-e-noise-32-bridge-s0178-noise-s0178-n32"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n33",
+      "rel": "links",
+      "note": "noise-33",
+      "nick": "nick-e-noise-33-far-s0178-noise-s0178-n33"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n34",
+      "rel": "links",
+      "note": "noise-34",
+      "nick": "nick-e-noise-34-bridge-s0178-noise-s0178-n34"
+    },
+    {
+      "src_slug": "far-s0178",
+      "dst_slug": "noise-s0178-n35",
+      "rel": "links",
+      "note": "noise-35",
+      "nick": "nick-e-noise-35-far-s0178-noise-s0178-n35"
+    },
+    {
+      "src_slug": "bridge-s0178",
+      "dst_slug": "noise-s0178-n36",
+      "rel": "links",
+      "note": "noise-36",
+      "nick": "nick-e-noise-36-bridge-s0178-noise-s0178-n36"
+    }
+  ]
+}

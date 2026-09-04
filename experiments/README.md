@@ -1,6 +1,6 @@
-# Experiments (P1 / P2 / P3)
+# Experiments (P1 / P1-HR / P2 / P3)
 
-Synthetic-stratum harnesses for the thesis §10 predictions. No LLM generate. In-process MemNet goldfish only.
+Harnesses for the thesis §10 predictions. No LLM generate. In-process MemNet goldfish only.
 
 ## Stack
 
@@ -16,8 +16,11 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 ## Re-run
 
 ```bash
-# P1 — ShapeWalk vs dump action (eq 30)
+# P1 — ShapeWalk vs dump (synthetic pilot n=500; isomorphic — constant Δ)
 .venv/bin/python experiments/p1/run_p1.py
+
+# P1-HR — ShapeWalk vs dump on human-reviewed n=200 (diverse families)
+.venv/bin/python experiments/p1-hr/run_p1_hr.py
 
 # P2 — M-cap lambda-hat diagnostic (eq 31)
 .venv/bin/python experiments/p2/run_p2.py
@@ -30,7 +33,8 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 
 | Pred | Verdict | Notes |
 |------|---------|-------|
-| P1 | PASS (structural) | equal *gold-evidence presence*, not LLM answer quality; n=500 |
+| P1 synthetic | PASS (structural) | n=500; constant Δ=1934 (clone stratum) |
+| P1-HR | PASS | n=200 human-reviewed; 17 families; n_both_perfect=170; mean Δ≈2932, CI excludes 0 |
 | P2 | PASS (account diagnostic) | truncation / no-false-positive strong; AUROC vs \|W\| only marginal |
 | P3 before-generate | PASS after MemNet #147 | pre-#147: FAIL (order) — see `p3/PRE147.md` |
 | P3 generation half | OPEN | not run |

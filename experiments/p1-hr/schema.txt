@@ -1,0 +1,11 @@
+# Human-reviewed session map for STM Prediction 1 HR stratum.
+# id is optional nickname (not identity). slug/title are observables.
+SCHEMA HUB ; fields=id slug title
+SCHEMA DOC ; fields=id slug title
+SCHEMA USR ; fields=id slug title
+SCHEMA TSK ; fields=id slug title
+SCHEMA BRIDGE ; fields=id slug title
+SCHEMA NOISE ; fields=id slug title
+SCHEMA SPOKE ; fields=id slug title
+SCHEMA LEAF ; fields=id slug title
+SCHEMA DIST ; fields=id slug title
