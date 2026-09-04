@@ -41,7 +41,7 @@
       "mismatches": 0,
       "n_compare": 120
     },
-    "T_gt_0_CANONICAL": "OPEN"
+    "T_gt_0_CANONICAL": "PASS (not this T=0 run; see experiments/p3-tgt0/)"
   },
   "counts": {
     "raw_id_wire_diff_events": 0,

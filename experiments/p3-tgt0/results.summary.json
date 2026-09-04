@@ -1,0 +1,72 @@
+{
+  "memnet_llm_version": "0.19.4",
+  "merge_commit": "1242c467bc9052360b4d61d754e944cc7ddf6cd9",
+  "pr_ranking_fix": 147,
+  "pr_nickname_off_wire": 148,
+  "honesty": "c",
+  "date": "2026-09-04",
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "max_tokens": 256
+  },
+  "protocol": {
+    "n_sessions": 8,
+    "n_perms": 15,
+    "n_pairs": 120,
+    "n_compare": 120,
+    "M": 12,
+    "k": 2,
+    "cue_kind": "HUB",
+    "task": "list DOC slug fields in order, comma-separated",
+    "canonicalisation": "strip id/hid from pin_map text; preserve row order; identical canonical pin_map across orig and perm",
+    "DROP_KEYS": ["id", "hid"],
+    "T0_decoding": "greedy T=0",
+    "T_gt_0": {
+      "temperature": 0.8,
+      "N_SAMPLES_DIST": 5,
+      "DIST_MATCH_BAND": 0.05,
+      "condition": "CANONICAL",
+      "pass_criterion": "(1-mean_exact_match_rate)<=0.05 and (1-min_exact_match_rate)<=0.05"
+    },
+    "harness": "experiments/p3-tgt0/run_p3_tgt0.py"
+  },
+  "verdicts": {
+    "T0_RAW": {
+      "verdict": "PASS",
+      "mismatches": 0,
+      "n_compare": 120
+    },
+    "T0_CANONICAL": {
+      "verdict": "PASS",
+      "mismatches": 0,
+      "n_compare": 120
+    },
+    "T_gt_0_CANONICAL": {
+      "verdict": "PASS",
+      "temperature": 0.8,
+      "N_SAMPLES_DIST": 5,
+      "DIST_MATCH_BAND": 0.05,
+      "n_pairs": 120,
+      "mean_exact_match_rate": 1.0,
+      "min_exact_match_rate": 1.0,
+      "one_minus_mean": 0.0,
+      "one_minus_min": 0.0
+    }
+  },
+  "counts": {
+    "raw_id_wire_diff_events": 0,
+    "canon_text_diff_events": 0,
+    "hid_leaks": 0,
+    "build_fail": 0
+  },
+  "openrouter_calls": 897,
+  "elapsed_s": 1249.7,
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-04 T>0 CANONICAL distributional check; full per-call results.json not attached. No secrets.",
+  "prior_t0": "experiments/p3-gen-0194/results.summary.json",
+  "interpretation": "On memnet-llm 0.19.4 with OpenRouter openai/gpt-4o-mini, T>0 CANONICAL closed on DIST_MATCH_BAND=0.05: mean_exact_match_rate=1.0, min_exact_match_rate=1.0 over 120 pairs (8 sessions x 15 perms, identical canonical pin_map). Same run: T=0 RAW and CANONICAL both PASS 0/120; raw_id_wire_diff_events=0. This closes P3 T>0 generation on this band only. P1 T>0 remains OPEN. No SemVer a or b claim.",
+  "semver_a_claim": false,
+  "semver_b_claim": false
+}
