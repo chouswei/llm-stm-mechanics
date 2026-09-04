@@ -1,0 +1,53 @@
+{
+  "prediction": 1,
+  "stratum": "llm-answer-quality-harder-evidence-vs-noise-Tgt0",
+  "harder_than": "p1-llm KEY-extraction (closed)",
+  "t0_sibling": "p1-llm-hard (T=0 PASS, n_both_perfect=161)",
+  "scoring_denominator": "full_gold_evidence",
+  "equal_quality_gate_primary": "score_mean==1.0 AND NOT noise_leak_any on BOTH sides",
+  "equal_quality_gate_relaxed": "score_mean>=0.95 AND NOT noise_leak_any on BOTH sides",
+  "memnet_version": "0.19.4",
+  "memnet_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "locked_before_outcomes": true,
+    "retuned": false
+  },
+  "protocol": {
+    "k_hop": 2,
+    "M_hard": 12,
+    "temperature": 0.8,
+    "n_seeds": 20,
+    "T_gt0": "RAN"
+  },
+  "llm": {
+    "model": "openai/gpt-4o-mini",
+    "temperature": 0.8,
+    "n_seeds": 20,
+    "n_calls": 8001,
+    "n_retries": 0
+  },
+  "n_sessions": 200,
+  "n_ok": 200,
+  "n_both_perfect": 160,
+  "n_relaxed": 161,
+  "n_noise_leak": 0,
+  "n_walk_imperfect_llm": 39,
+  "n_dump_imperfect_llm": 9,
+  "n_families": 17,
+  "wall_time_s": 1343.2459280490875,
+  "stats_both_perfect_llm": {
+    "n": 160,
+    "mean_delta": 2939.11875,
+    "median_delta": 2847.0,
+    "ci95": [2779.9875, 3096.9],
+    "stdev_delta": 1009.831720955743,
+    "mean_A_walk": 342.1625,
+    "mean_A_dump": 3281.28125
+  },
+  "verdict_primary": "PASS",
+  "verdict_relaxed_secondary": "PASS"
+}

@@ -42,4 +42,4 @@ Scorer self-check (no API, no MemNet):
 python3 experiments/p1-llm-hard/run_p1_llm_hard.py --check-scorer
 ```
 
-Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P1_LLM_MODEL` (default `openai/gpt-4o-mini`). $T>0$ is not this script; it remains OPEN.
+Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P1_LLM_MODEL` (default `openai/gpt-4o-mini`). $T>0$ on this harder task is [`../p1-tgt0/`](../p1-tgt0/). KEY-extraction $T>0$ was not run.
