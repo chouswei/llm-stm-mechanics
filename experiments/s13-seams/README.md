@@ -1,0 +1,1 @@
+Sage **ACCEPT-with-nits** on the §13 seam locks: [#23](https://github.com/chouswei/llm-stm-mechanics/pull/23) Legendre, [#24](https://github.com/chouswei/llm-stm-mechanics/pull/24) Update, [#25](https://github.com/chouswei/llm-stm-mechanics/pull/25) Stochasticity, [#26](https://github.com/chouswei/llm-stm-mechanics/pull/26) Markov. See [`SAGE_SIGNOFF.md`](SAGE_SIGNOFF.md).
