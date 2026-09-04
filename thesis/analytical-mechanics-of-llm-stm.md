@@ -2,7 +2,7 @@
 
 **Szu-Wei Chou**
 
-**2026-09-03**
+**2026-09-03** (results §10 updated 2026-09-04)
 
 > **Header note.** This is a research note accompanying MemNet (https://github.com/chouswei/MemNet). It is analysis. It is not a MemNet SemVer claim and changes no MemNet version.
 
@@ -10,7 +10,7 @@
 
 ## Abstract
 
-Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
+Short-term memory in a large language model is not a store. It is a controlled trajectory. The tokens a model can use at turn $t$ come only from the working-set configuration $W_t$: what is actually resident in the context window and the KV cache. Everything else — weights, a corpus, a session graph $S$ — is inventory. This note argues that analytical mechanics is the right fundamental layer for the *mechanism* of short-term memory. $W_t$ is a phase point. The cue is a control $u$. The momentum $p$ is derived, not asserted. Usefulness is a property of the action $\mathcal{A} = \int L\,dt$ along a trajectory, not of a global ranker and not of a dump of $S$. Three roles separate cleanly and must not be collapsed: the LLM is the integrator, steering is the choice of Hamiltonian, force, or constraint, and memory is the manifold plus the phase point. Because the working set is discrete, we use discrete variational mechanics rather than pretending $W$ is smooth. Because eviction destroys information, we use a dissipative port-Hamiltonian form rather than claiming a symplectic flow. Because window length and row caps are inequalities, we use KKT multipliers, which turns a modelling nuisance into a diagnostic: the multiplier on a cap is strictly positive exactly when that cap is biting. Because the cue is a control, the natural setting is Pontryagin's maximum principle, in which $p$ is the costate and "the experimenter picks the next cue" is the maximisation step. The strongest result is a symmetry. Hidden identifiers are not observable and identity-by-name is not identity, so the offered Shape must be invariant under renaming. That is a gauge invariance. The physical working set is the class in the quotient $\mathcal{W}/G$; a hid-dependent trajectory is a gauge anomaly. A continuous naming chart is used later only as a pedagogical surrogate, not as the derivation of a Noether-I charge. Three predictions are stated with protocols that can fail. On a synthetic stratum they all passed after one product fix: a hid-ranking gauge anomaly in `pin_map` (MemNet PR #147) that Prediction 3 caught before generation. Human-reviewed graphs and LLM-generate strata remain open. Hilbert-space formalism is optional later, as a quantisation of this mechanics. It is never the store.
 
 ---
 
@@ -428,6 +428,8 @@ with nonnegative coefficients preregistered on a development set. This is not cl
 
 **Failure condition.** If RAG dumps have equal or lower action at equal quality across the prespecified local-task stratum, the predicted advantage is false. If the result appears only after changing coefficients, it is also false for the preregistered estimator. A mixed result would narrow the claim to particular graph topologies rather than rescue it universally.
 
+**Result (synthetic stratum, 2026-09-04).** PASS. MemNet @ `eff05dc8` (post PR #147). $n=500$ isomorphic-scale sessions; both conditions scored $1.0$ on all $500$ (gold evidence present). Coefficients locked before outcomes: $a=1$, $b=1$, $c=0$, $d=10$, with $d(\emptyset,W)=|W|$ in (30). Mean $\widehat{\mathcal{A}}$ walk $=422$, dump $=2356$, paired $\Delta=1934$; $95\%$ bootstrap CI $[1934,1934]$ excludes $0$. Dump admitted mean $|W|=35$ vs walk $|W|=11$. Caveat: $\Delta$ was constant across this regular synthetic family — a structural win, not a noisy human-task win. No LLM generate. Human-reviewed $200$ not run.
+
 ### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 
 **Claim.** The finite-difference $\widehat{\lambda}_M$ is a diagnostic of the *account*, not a KKT multiplier read off the engine. Complementary slackness is exact only at an optimum of the control programme. The prediction is that this diagnostic becomes positive precisely when the row cap is active and marginally relaxing $M$ would improve the task objective. Wrongly centred or diffuse Shapes should produce positive $\widehat{\lambda}_M$ more often than correctly centred compact Shapes.
@@ -444,6 +446,8 @@ for a minimised cost $J^{\ast}$, with one-row or four-row finite differences and
 
 Complementary slackness is exact for the optimisation model under its regularity assumptions. An engine trace is not automatically an optimum. The protocol therefore tests the adequacy of the model as well as the product hypothesis.
 
+**Result (synthetic stratum, 2026-09-04).** PASS as an *account* diagnostic. $n=200$ sessions, $M\in\{8,12,16,24,32\}$, $\delta$ one grid step, band $|\widehat\lambda|<0.005$, $J=(1-\mathrm{score})+0.01|W|$. When gold was truncated and score improved at $M+\delta$, $\widehat\lambda_M$ was positive in $449/463$ ($97\%$). When gold already lay inside $W$, $\widehat\lambda_M\le$ band in $667/667$ (never fake-positive with slack). Wrong cue vs correct: positive-$\widehat\lambda$ rate $0.395$ vs $0.166$ (gap $0.229$). Beat raw $|W|$ as a wrong-Shape detector (AUROC $0.599$ vs $0.5$). Engine caps remained hard rejects; $M$ was only the compose analysis knob. No LLM generate.
+
 ### 10.3 Prediction 3: rename invariance
 
 **Claim.** Hidden-id permutations produce no change in offered Shapes, admitted working sets, cap multipliers, or output distributions, once *labels* are canonicalised. Admission order is physical and is not canonicalised away.
@@ -451,6 +455,24 @@ Complementary slackness is exact for the optimisation model under its regularity
 **Protocol.** For every test session create 100 isomorphic hidden-id permutations. Freeze observable fields, edge labels, cue codebook tokens, model, and random seeds. Canonicalise labels by observable identity. Do not sort or otherwise wash out row order: if hid-sort changes sequence and therefore $W$, that is a gauge anomaly [11]. Exact comparison before generation; distributional comparison after generation. At $T>0$ and under GPU noise, "reproducible" means outside a predeclared equivalence band. Exact-match without that band will false-positive.
 
 **Failure condition.** Any reproducible dependence on hidden names is a gauge anomaly. There is no coefficient to tune. This is the sharpest test in the paper.
+
+**Result (before-generate half, 2026-09-04).** The claim failed, then passed after a product honesty fix — exactly what a mechanism test is for.
+
+1. **Pilot on PyPI `memnet-llm==0.19.3`:** FAIL (order). $20$ sessions $\times$ $100$ CREATE-order / nickname permutations $=2000$ comparisons. Label *sets* matched $2000/2000$ (`hid` never leaked onto the wire). Emitted *sequences* matched $0/2000$. Root cause: `pin_map` ranked by hidden `Record.hid` (`_elN`) in BFS / edge emit / shell cap. Admission order is physical [11]; sorting it away would have hidden the anomaly.
+2. **Fix:** MemNet PR #147 — ranking by kind + observable payload; nickname `id` also excluded from the rank key. Same operators; not a usage-method $b$.
+3. **Re-run on `master` @ `eff05dc8`:** PASS. Same $2000$ comparisons: label $2000/2000$, order $2000/2000$. Package regression `test_pin_map_observable_rank.py`: $3$ passed.
+
+Generation half ($T>0$ distributional) not run; not needed to establish the pre-generate gauge law.
+
+### 10.4 Scoreboard
+
+| Prediction | Estimator | Stratum | Verdict |
+|---|---|---|---|
+| P1 local load vs dump | (30) | synthetic $n=500$, equal gold score | PASS |
+| P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS |
+| P3 rename / order invariance | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
+
+Scope lock: synthetic, in-process goldfish, no live cabinet, no LLM generate, no human-reviewed graphs. The three fail-able claims held on this stratum. That supports the variational account; it does not close §13.
 
 ## 11 Quantization later
 
@@ -530,7 +552,7 @@ Taking the mechanics seriously repairs the loose parts. Discrete variational mec
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
-The account can fail. Bounded local loading may not reduce measured action. The $M$-cap multiplier may not diagnose wrong Shapes. Hidden-id permutations may change behaviour. Those outcomes would narrow or reject the mechanism. Until such tests are run, the defensible result is a variational account of the working set, with a strong claim about the layer at which an STM mechanism should be stated.
+The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 passed; P1 and P2 passed on the same synthetic stratum. The defensible result is now stronger than a dictionary: a variational account of the working set whose three fail-able claims held where tested, and whose lead symmetry already paid for a product fix. Human-reviewed graphs, LLM-generate strata, and the open items in §13 remain.
 
 ## Equation index
 
