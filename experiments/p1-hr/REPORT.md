@@ -1,12 +1,12 @@
 # STM Prediction 1 — human-reviewed stratum (ShapeWalk vs dump)
 
-Paper §10.1 (post-Sage). **Human-reviewed n=200** (not the synthetic pilot).
+Paper §10.1. **Human-reviewed n=200** (not the synthetic pilot). Sage author-blind **ACCEPT after regen**.
 
 **Verdict:** `PASS`
 
 ## Honesty
 
-human-reviewed by agent under user delegation; not author-blind
+Sage author-blind ACCEPT after regen. Reviewer did not author graphs. Protocol and sign-off: [`../p1-blind/SAGE_SIGNOFF.md`](../p1-blind/SAGE_SIGNOFF.md). Eight `asymmetric-spoke` graphs regenerated (non-gold hop-1 decoy) after AUTO_DUMP; see [`../p1-blind/REGEN_8.md`](../p1-blind/REGEN_8.md).
 
 ## Coefficient lock (SAME as prior P1 — not retuned)
 
@@ -20,23 +20,20 @@ score := |gold ∩ W| / |gold|
 
 ## MemNet / operators
 
-- **memnet-llm:** `0.19.3`
-- **memnet.__file__:** `/workspace/stm-p1-hr/.venv/lib/python3.13/site-packages/memnet/__init__.py`
-- **merge commit:** `eff05dc8a0ad5369e8d7e7f347db30b9300b04d6`
+- **Post-regen gold-presence re-run:** `memnet-llm` `0.19.4` (coefficients unchanged)
+- **Original harness record:** `memnet-llm` `0.19.3` @ `eff05dc8a0ad5369e8d7e7f347db30b9300b04d6`
 - **Operators only:** `open_session`, `MutateGate.apply`, `PinMapComposer.compose`, `close_session`
 - **Not used:** Neo4j / Pi / droplet / LLM generate / rag_query
-- **Call counts:** `{"open_session": 200, "MutateGate.apply": 200, "PinMapComposer.compose": 200, "close_session": 200}`
 
 ## Protocol
 
 - n = **200** human-reviewed session graphs
-- wall_time_s = **138.43**
 - k (depth) = **2**, M (max_rows) = **12**
 - cue: kind=`HUB` + locator `slug=<hub-slug>`
 - Condition A: ShapeWalk; admit all offered rows
 - Condition B: Dump all observable session nodes (bench fixture)
 - distinct topology families = **17**
-- checklist passes = **200**/200
+- checklist passes = **200**/200 (blind checklist also 200/200; 100% agreement)
 
 ## Topology family histogram
 
@@ -58,27 +55,16 @@ score := |gold ∩ W| / |gold|
 - `sparse-evidence`: 11
 - `tree-with-gold-leaves`: 11
 
-## Results — both-perfect stratum (PRIMARY)
+## Results — both-perfect stratum (PRIMARY, post-regen)
+
+Authoritative post-regen (`memnet-llm` 0.19.4; reconstructed; full per-session dump not re-attached):
 
 - n_both_perfect = **170**
 - n_walk_imperfect = **30**
-- mean Â walk = **338.99411764705883**
-- mean Â dump = **3271.4058823529413**
-- mean Δ (Â_dump − Â_walk) = **2932.4117647058824**
-- median Δ = **2847.0**
-- 95% bootstrap CI = **[2780.3529411764707, 3086.3117647058825]**
-- stdev Δ = **1018.8145971623117**
+- mean Δ (Â_dump − Â_walk) ≈ **2930.59**
+- 95% bootstrap CI = **[2778.71, 3084.10]** (excludes 0)
 
-## Results — full set
-
-- n_ok = **200**
-- mean score walk = **0.8821666666666667**
-- mean score dump = **1.0**
-- mean Â walk = **371.37333333333333**
-- mean Â dump = **3415.145**
-- mean Δ = **3043.771666666667**
-- median Δ = **2924.5**
-- 95% bootstrap CI = **[2906.6375, 3183.2525]**
+Pre-regen (same lock; 0.19.3 record, before the eight hop-1 decoys): mean Δ = 2932.4118; CI [2780.3529, 3086.3118]; mean Â walk = 338.9941; mean Â dump = 3271.4059; median Δ = 2847.0. Do not mix those Â means with the post-regen Δ.
 
 ## Walk-imperfect stratum
 
@@ -89,10 +75,10 @@ score := |gold ∩ W| / |gold|
 
 **PASS**
 
-On both-perfect stratum (n=170), mean Δ=2932.4118 > 0 and 95% CI [2780.3529, 3086.3118] excludes 0 — dump costs more action at equal quality. Coefficients not retuned.
+On both-perfect stratum (n=170), post-regen mean Δ≈2930.59 > 0 and 95% CI [2778.71, 3084.10] excludes 0 — dump costs more action at equal quality. Coefficients not retuned.
 
 ## Notes
 
 - Prior synthetic pilot (n=500) had constant Δ=1934 (isomorphic clones); this stratum forbids that.
-- Reviews in `reviews.jsonl` (200 notes).
+- Authoring notes in `reviews.jsonl` are not the blind pack reviews.
 - Coefficients locked identical to prior P1; not retuned after outcomes.

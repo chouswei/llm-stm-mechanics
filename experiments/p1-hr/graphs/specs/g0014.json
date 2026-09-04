@@ -22,6 +22,12 @@
     },
     {
       "kind": "DOC",
+      "slug": "doc-s0014-decoy",
+      "title": "Hop-1 decoy s0014",
+      "nick": "nick-doc-s0014-decoy"
+    },
+    {
+      "kind": "DOC",
       "slug": "doc-s0014-hvy0",
       "title": "Heavy arm s0014 #0",
       "nick": "nick-doc-s0014-hvy0"
@@ -632,6 +638,13 @@
       "rel": "links",
       "note": "noise-33",
       "nick": "nick-e-noise-33-far-s0014-noise-s0014-n33"
+    },
+    {
+      "src_slug": "hub-s0014",
+      "dst_slug": "doc-s0014-decoy",
+      "rel": "contains",
+      "note": "h1-decoy",
+      "nick": "nick-e-h1-decoy-hub-s0014-doc-s0014-decoy"
     }
   ]
 }
