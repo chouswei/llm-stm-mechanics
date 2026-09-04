@@ -114,7 +114,7 @@ $$
 D_2 L_d(W_{k-1},W_k;u_{k-1})+D_1 L_d(W_k,W_{k+1};u_k)+F^-_k+F^+_k=0.\qquad (6)
 $$
 
-Here $D_1 L_d$ means the partial derivative of $L_d$ with respect to its *first* slot (the earlier configuration), and $D_2 L_d$ with respect to its *second* slot (the later configuration). They are not new operators; they are ordinary gradients with the two arguments of $L_d(W_k,W_{k+1})$ labelled. The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation.
+Here $D_1 L_d$ means the partial derivative of $L_d$ with respect to its *first* slot (the earlier configuration), and $D_2 L_d$ with respect to its *second* slot (the later configuration). They are not new operators; they are ordinary gradients with the two arguments of $L_d(W_k,W_{k+1})$ labelled. The $F_k^\pm$ terms are discrete external forces: steering, tool output, or a commit kick. Discrete Noether theory gives conservation laws for symmetries of $L_d$. Forced and constrained versions remain available. Dissipation can also be included. This is why discrete variational mechanics is not merely a patch; it is the native formulation. The per-turn update is (6). Continuous port-Hamiltonian in §3.3 accounts for forgetting; it is not a competing discrete step (seam lock in §13).
 
 There is an alternative when gradients are needed. Relax membership into continuous attention mass $a_i \ge 0$ on a simplex,
 
@@ -154,7 +154,7 @@ $$
 
 Read the symbols once. $\nabla H$ is the gradient of $H$ in the $(W,p)$ coordinates. $G$ is the input matrix that maps the control vector $u$ into that same phase-space; $Gu$ is the steered force. The superscript $\top$ is transpose: $J^{\top}=-J$ says $J$ is skew-symmetric; $y^{\top}u$ is the ordinary scalar product of the co-port $y$ with the control $u$. The relation $R\succeq 0$ means $R$ is symmetric positive semidefinite — a matrix that can only dissipate, never create, energy. The inequality $\le$ in (11) is the dissipation inequality: stored energy cannot rise faster than the power injected through the port.
 
-The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one.
+The skew structure $J$ accounts for conservative interchange. The resistive structure $R$ accounts for eviction, summarisation loss, and lossy KV compression. The port $(u,y)$ accounts for energy supplied by steering. This is the precise repair for the strongest physics objection to the model: a forgetting memory is an open dissipative system, not a closed Hamiltonian one. Equations (10)–(11) are that continuous dissipative account. The discrete turn update remains (6) (§13).
 
 ## 4 Dictionary and naming
 
@@ -621,7 +621,19 @@ Right momentum $p_k^+$ is conjugate to the later slot; left momentum $p_k^-$ is 
 
 **Can a learned control remain inspectable?** A ranker may approximate $\arg\max_u H_c$, but its chosen control should still be auditable against hard caps, rename invariance, and proposal/admission/eviction logs. Otherwise optimal-control notation only renames opacity.
 
-**Which equation is the actual update?** §3.2 writes discrete Euler-Lagrange; §3.3 writes continuous port-Hamiltonian. They are stacked, not glued. There is no discrete Dirac or discrete port-Hamiltonian step in this paper. A physicist is entitled to ask which equation is the update rule.
+**Seam lock: which equation is the actual update.** The working set $W$ is discrete, so the load-bearing per-turn update is the forced discrete Euler–Lagrange equation (6) on the turn lattice, with discrete Lagrangian $L_d$ (5). Admission, eviction, steering kicks, and commit impulses enter as discrete forces $F_k^\pm$ (and, when needed, a discrete dissipative force in the Marsden–West forced/dissipative sense). This is the update a physicist should read as what advances $W_k$ to $W_{k+1}$.
+
+Pure symplectic Hamiltonian flow cannot model forgetting. Equations (10)–(11) — port-Hamiltonian with resistive $R\succeq 0$ and the dissipation inequality — are the systems account of eviction, summarisation, and lossy KV compression. They justify why $R$ exists and why energy cannot rise faster than port power. They are not claimed to be the discrete per-turn integrator on the hard window.
+
+How they stack, without inventing a discrete Dirac structure:
+
+1. Between integer turns the discrete map $W_k\mapsto W_{k+1}$ is primary.
+2. Dissipation on the discrete side is carried by forced/dissipative discrete EL (forces and optional discrete Rayleigh-type terms), not by silently running (10) on a smooth $W$.
+3. Port-Hamiltonian (10)–(11) is the continuous *surrogate*, and applies cleanly to the attention-mass relaxation (7) before rounding back to a hard working set.
+4. Rayleigh (8)–(9) is the elementary continuous dissipative EL cousin of the same story. Prefer (10)–(11) as the systems statement and (8)–(9) as the elementary picture.
+5. Stochastic LLM sampling ($\xi_t$ in §6.1) sits outside both as integrator noise. It does not choose which mechanical equation is the update.
+
+**Still open.** An explicit discrete Dirac / discrete port-Hamiltonian step that reduces to unforced (6) when $R=0$ and recovers a discrete analogue of (11) is not written in this paper.
 
 **Is the continuous gauge chart a theorem?** The existing lock is a global discrete group $G$. The turn-dependent $\theta_t$ chart is a larger, continuous, local group used as pedagogy. The vanishing $\pi_a$ is a property of that surrogate. The theorem is the quotient $\mathcal{W}/G$.
 
@@ -631,7 +643,7 @@ The next LLM generate is a goldfish. Only $W_t$ is resident. The rest is invento
 
 The three roles are the spine. The LLM is the integrator. It runs the controlled, usually stochastic, equations and does not pick the Lagrangian, hold $S$, measure $S$, or commit $S$. Steering is choosing $H$, a force, or a constraint. ShapeWalk, RAG, rankers, and KV eviction are different controls on one phase space. **Memory = manifold + phase point.** Usefulness is a trajectory of $\mathcal{A}$, not a dump.
 
-Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
+Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator.
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
