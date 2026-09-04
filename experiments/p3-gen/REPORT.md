@@ -1,6 +1,6 @@
 # STM Prediction 3 — generation half (OpenRouter, $T=0$)
 
-After-generate comparison on isomorphic CREATE-order / nickname permutations. Graph and cue match the before-generate harness in [`../p3/`](../p3/). **$T=0$ is the predeclared primary band.** $T>0$ was not run.
+After-generate comparison on isomorphic CREATE-order / nickname permutations. Graph and cue match the before-generate harness in [`../p3/`](../p3/). **$T=0$ is the predeclared primary band.** $T>0$ was not run on this $0.19.3$ split; the CANONICAL band later closed in [`../p3-tgt0/`](../p3-tgt0/).
 
 **Not a MemNet SemVer $a$ or $b$ claim.** Nickname-off-wire is product honesty $c$ (MemNet PR #148 / `memnet-llm` 0.19.4). Post-fix confirmation: [`../p3-gen-0194/`](../p3-gen-0194/).
 
@@ -10,7 +10,7 @@ After-generate comparison on isomorphic CREATE-order / nickname permutations. Gr
 |-----------|---------|------------------|
 | RAW (`pin_map` as emitted, nickname `id` may be present) | **FAIL** | 30/120 |
 | CANONICAL (strip `id`/`hid` from `pin_map` text; preserve order) | **PASS** | 0/120 |
-| $T>0$ CANONICAL | **OPEN** | skipped (OpenRouter cost/latency) |
+| $T>0$ CANONICAL | later **PASS** on $0.19.4$ | skipped here; closed in [`../p3-tgt0/`](../p3-tgt0/) |
 
 - `raw_id_wire_diff_events=120`
 - `canon_text_diff_events=0`

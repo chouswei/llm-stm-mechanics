@@ -1,6 +1,6 @@
-# Experiments (P1 / P1-HR / P1-LLM / P1-blind / P2 / P3 / P3-gen / P3-gen-0194)
+# Experiments (P1 / P1-HR / P1-LLM / P1-blind / P2 / P3 / P3-gen / P3-gen-0194 / P3-tgt0)
 
-Harnesses for the thesis §10 predictions. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; that is the exception, not a change to the synthetic strata.
+Harnesses for the thesis §10 predictions. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; P3 $T>0$ CANONICAL (`p3-tgt0/`) is the distributional band on the same stack. That is the exception, not a change to the synthetic strata.
 
 ## Stack
 
@@ -46,6 +46,12 @@ export OPENROUTER_API_KEY=  # never commit
 # P3-gen-0194 — same protocol on memnet-llm 0.19.4 (honesty c confirmation)
 # Authoritative numbers: experiments/p3-gen-0194/results.summary.json
 # Re-run uses experiments/p3-gen/run_p3_gen.py after pip install memnet-llm==0.19.4
+
+# P3-tgt0 — T>0 CANONICAL band on memnet-llm 0.19.4 (OpenRouter; needs OPENROUTER_API_KEY)
+# Authoritative numbers: experiments/p3-tgt0/results.summary.json
+# Do not overwrite that summary from a different model or package.
+# .venv/bin/pip install "memnet-llm==0.19.4"
+# .venv/bin/python experiments/p3-tgt0/run_p3_tgt0.py
 ```
 
 ## Reported scoreboard (2026-09-04)
@@ -57,6 +63,7 @@ export OPENROUTER_API_KEY=  # never commit
 | P1-LLM | PASS | full-gold scorer; n=170 equal-quality; same post-regen Δ/CI; T=0 gpt-4o-mini; T>0 OPEN. Invalid gold∩W 200/200 must not be cited |
 | P2 | PASS (account diagnostic) | truncation / no-false-positive strong; AUROC vs \|W\| only marginal |
 | P3 before-generate | PASS after MemNet #147 | pre-#147: FAIL (order) — see `p3/PRE147.md` |
-| P3 generation half ($T=0$) | 0.19.3: RAW FAIL 30/120 / CANONICAL PASS 0/120; 0.19.4: both PASS 0/120 | #148 honesty c confirmation; $T>0$ OPEN; no SemVer $a$/$b$ claim |
+| P3 generation half ($T=0$) | 0.19.3: RAW FAIL 30/120 / CANONICAL PASS 0/120; 0.19.4: both PASS 0/120 | #148 honesty c confirmation; no SemVer $a$/$b$ claim |
+| P3 generation half ($T>0$ CANONICAL) | PASS | 0.19.4; T=0.8; N_SAMPLES_DIST=5; DIST_MATCH_BAND=0.05; n_pairs=120; mean/min exact-match rate 1.0; same-run T=0 RAW/CANONICAL PASS 0/120 |
 
 Full per-session dumps are truncated in `*.summary.json`; re-run the scripts for complete artifacts.

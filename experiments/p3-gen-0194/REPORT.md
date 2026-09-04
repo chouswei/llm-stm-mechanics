@@ -1,6 +1,6 @@
 # STM Prediction 3 — generation half post-fix (`memnet-llm` 0.19.4)
 
-Confirmation after [MemNet PR #148](https://github.com/chouswei/MemNet/pull/148) (nickname `id` off `pin_map` emit). Protocol matches [`../p3-gen/`](../p3-gen/). **$T=0$ is the predeclared primary band.** $T>0$ was not run.
+Confirmation after [MemNet PR #148](https://github.com/chouswei/MemNet/pull/148) (nickname `id` off `pin_map` emit). Protocol matches [`../p3-gen/`](../p3-gen/). **$T=0$ is the predeclared primary band.** $T>0$ was not run here; the CANONICAL band later closed in [`../p3-tgt0/`](../p3-tgt0/).
 
 **Product honesty $c$ confirmation, not a new prediction.** This note does not claim a MemNet SemVer $a$ or $b$ cut. Same usage method: cue $\to$ `pin_map` $\to$ mutate.
 
@@ -10,7 +10,7 @@ Confirmation after [MemNet PR #148](https://github.com/chouswei/MemNet/pull/148)
 |-----------|---------|------------------|
 | RAW (`pin_map` as emitted) | **PASS** | 0/120 (was FAIL 30/120 on 0.19.3 @ `eff05dc8`) |
 | CANONICAL (strip `id`/`hid` from `pin_map` text; preserve order) | **PASS** | 0/120 |
-| $T>0$ CANONICAL | **OPEN** | skipped (OpenRouter cost/latency) |
+| $T>0$ CANONICAL | later **PASS** | not this $T=0$ run; closed in [`../p3-tgt0/`](../p3-tgt0/) |
 
 - `raw_id_wire_diff_events=0` (was 120)
 - `canon_text_diff_events=0`

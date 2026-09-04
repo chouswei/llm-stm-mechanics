@@ -17,7 +17,7 @@ Authoritative numbers are in [`results.summary.json`](results.summary.json) / [`
 |-----------|---------|
 | RAW | FAIL — mismatches 30/120 |
 | CANONICAL | PASS — mismatches 0/120 |
-| $T>0$ CANONICAL | OPEN (skipped; $T=0$ is the predeclared primary band) |
+| $T>0$ CANONICAL | later PASS on 0.19.4 (see [`../p3-tgt0/`](../p3-tgt0/); skipped on this $T=0$ split) |
 
 Discarded: local `sshleifer/tiny-gpt2` partials — not part of the verdict.
 

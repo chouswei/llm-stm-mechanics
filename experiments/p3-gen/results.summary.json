@@ -33,7 +33,7 @@
       "mismatches": 0,
       "n_compare": 120
     },
-    "T_gt_0_CANONICAL": "OPEN"
+    "T_gt_0_CANONICAL": "PASS on 0.19.4 (not this 0.19.3 T=0 split; see experiments/p3-tgt0/)"
   },
   "counts": {
     "raw_id_wire_diff_events": 120,
