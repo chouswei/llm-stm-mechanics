@@ -382,7 +382,7 @@ $$
 L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,\lvert W_{t+1}\setminus W_t\rvert+\chi_{\mathrm{invalid}}.\qquad (27)
 $$
 
-Read (27) term by term. $d(W_t,W_{t+1})$ is a set-transition distance between consecutive working sets. The stickiness $m$ prices churn through the kinetic term. $\mathrm{coverage}(W_{t+1},u_t)$ is a scalar reward for how well the new set supports the cue — analysis only, never a `pin_map` field. The operator $\setminus$ is set difference: $W_{t+1}\setminus W_t$ is the set of elements newly admitted this turn, and $\lvert W_{t+1}\setminus W_t\rvert$ is their count. The symbol $\chi_{\mathrm{invalid}}$ is an indicator barrier: $0$ on legal transitions and $+\infty$ on hard-invalid ones (cap violations, unreachable pins), so illegal moves are simply not stationary points of $L_d$. The native discrete momentum is the discrete Legendre transform of $L_d$, not returned by the engine.
+Read (27) term by term. $d(W_t,W_{t+1})$ is the §13 ordered-observable edit distance (37) between consecutive working sets, not an unspecified set distance. The stickiness $m$ prices churn through the kinetic term. $\mathrm{coverage}(W_{t+1},u_t)$ is a scalar reward for how well the new set supports the cue — analysis only, never a `pin_map` field. The operator $\setminus$ is set difference: $W_{t+1}\setminus W_t$ is the set of elements newly admitted this turn, and $\lvert W_{t+1}\setminus W_t\rvert$ is their count. The symbol $\chi_{\mathrm{invalid}}$ is an indicator barrier: $0$ on legal transitions and $+\infty$ on hard-invalid ones (cap violations, unreachable pins), so illegal moves are simply not stationary points of $L_d$. The native discrete momentum is the discrete Legendre transform of $L_d$, not returned by the engine.
 
 **Worked turn.** Assume the LLM is answering why a prior deployment failed. At turn 7, product cue $q_7$ contains codebook tokens for `deployment`, `rollback`, and a relative-session marker. The experimenter maps this to $u_7$. ShapeWalk starts from the legal RelativeSeed, walks up to $k=2$, and offers 18 rows under hard `LIMIT M=24`; this is $\tilde{X}_7$. The caller admits the 12 rows whose observable payload fits alongside system text and recent dialogue, so $\tilde{X}_7\nsubseteq W_7$ as an entire Shape. KV policy then removes two low-value old dialogue spans from $W_7$. The model integrates the resulting state and explains the rollback. If the output warrants durable change, gated Commit $\Delta_7$ writes a new observable relation to $S$. Commit is an impulse that changes the manifold's inventory for future turns. It is not a third retrieval operator.
 
@@ -436,7 +436,7 @@ $$
 \widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],\qquad (30)
 $$
 
-The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-in for the true action, not the action itself. The coefficients $a,b,c,d$ are nonnegative and must be preregistered on a development set before the held-out comparison. $\mathrm{tokens\_admitted}$ counts newly loaded token mass; $\mathrm{critical\_evictions}$ counts removals of task-relevant pins; $\ell_{\mathrm{task}}$ is task loss. This is not claimed to be a universal Lagrangian. It is a measurement model.
+The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-in for the true action, not the action itself. The coefficients $a,b,c,d$ are nonnegative and must be preregistered on a development set before the held-out comparison. Those harnesses may also use a preregistered stand-in for $d$ itself (as the P1 strata did with $d(\emptyset,W):=\lvert W\rvert$); that is a measurement-model choice, not a second definition of $d$ — conceptual $d$ remains the §13 ordered-observable metric (37). $\mathrm{tokens\_admitted}$ counts newly loaded token mass; $\mathrm{critical\_evictions}$ counts removals of task-relevant pins; $\ell_{\mathrm{task}}$ is task loss. This is not claimed to be a universal Lagrangian. It is a measurement model.
 
 **Protocol.** Build at least 500 synthetic and 200 human-reviewed session graphs. Each task has a known minimal evidence set within $k\le2$ hops of a legal RelativeSeed. Create two load conditions: (A) bounded ShapeWalk with fixed hard $M$, and (B) a semantic RAG operator allowed to retrieve from a serialised snapshot of the same observable material. That snapshot is a bench fixture. It is not a product dump of $S$ and not `rag_query`. Match model, prompt instructions, and total output budget. Compare at equal task quality; do not require matched final evidence coverage. A coverage-match plus a token-mass term in $\widehat{\mathcal{A}}_d$ would make the dump lose by construction. Log offered $\tilde{X}_t$, caller admissions, final $W_t$, KV evictions, answer score, and all random seeds. Run deterministic decoding and a temperature condition with at least 20 seeds. Compare $\widehat{\mathcal{A}}_d$ at matched answer quality using paired bootstrap confidence intervals.
 
@@ -580,9 +580,25 @@ This is not support from "quantum memory graph" marketing. Quantum Atomic RAG, Q
 
 ## 13 Open questions
 
-**What is the correct metric on working sets?** Set symmetric difference is easy but treats all resident material equally. Attention-weighted transport is richer but risks making the coordinate system model-specific. A useful metric should be rename-invariant, sensitive to admission order, and estimable without inspecting hidden store keys.
+**Seam lock: metric on working sets.** A useful metric on hard-window working sets must be (i) **rename-invariant** — a function only of observable identity (kind + observable payload / codebook locators), never of `hid`, store keys, or nickname `id`; (ii) **order-sensitive** — admission order in the window is physical [11]; a pure set metric that ignores order cannot see the P3 order-gauge anomaly class; (iii) **estimable from harness logs** — no inspecting hidden store keys.
 
-How should $m$ be measured? Pin stickiness could be estimated from the intervention needed to displace an item from $W$ while task and model remain fixed. It may be item-specific and state-dependent, giving a mass matrix rather than a scalar:
+**Locked representation.** Treat the hard-window working set $W$ as an **ordered sequence** of observable identities (rows / spans identified by observables only). The configuration for metric purposes is that sequence (or its class under $G$), not an unordered bag and not a `hid` list.
+
+**Primary locked metric.** Let $d$ be the **Levenshtein (edit) distance** between two such sequences: insert / delete / substitute at unit cost unless a harness preregisters another cost table. This is simultaneously set-sensitive and order-sensitive, rename-invariant if identities are observable, and log-estimable. If $W=(w_1,\ldots,w_n)$ and $W'=(w'_1,\ldots,w'_{n'})$ are those sequences,
+
+$$
+d(W,W')=\mathrm{Lev}(W,W').\qquad (37)
+$$
+
+**Equivalent split form.** One may write $d=d_{\mathrm{set}}+\lambda d_{\mathrm{ord}}$ with $d_{\mathrm{set}}=\lvert W\triangle W'\rvert$ the symmetric difference of the underlying observable-identity *sets* and $d_{\mathrm{ord}}$ a rank/order distance on the overlapping identities (Kendall $\tau$ distance, or position $L^1$ after aligning by observable identity), $\lambda\ge 0$ preregistered. Edit distance (37) is the default single object; the split is pedagogical / experimental control.
+
+**Rejected as default.** Pure set symmetric difference alone fails order-sensitivity. Attention-weighted optimal transport / soft-mass Wasserstein is richer but uses model-specific coordinates; it may be studied later as a continuous-surrogate metric on (7), not as the hard-window lock. Any metric that reads `hid`, `elementId`, or nickname `id` is excluded.
+
+**Relation to (27) and (30).** In (27), $d(W_t,W_{t+1})$ means (37), not an unspecified set distance. In (30), the operational estimator may still use a **preregistered stand-in** (as the P1 strata did with $a\cdot\lvert W\rvert^2+b\cdot\mathrm{tokens}$ under $d(\emptyset,W):=\lvert W\rvert$). That is a measurement-model choice, not a second definition of $d$. When a harness uses a stand-in, it must say so; the conceptual $d$ remains (37). Gauge: $d(gW,gW')=d(W,W')$ for $g\in G$ (rename). Order is not gauged away.
+
+**Still open (thin).** Attention-weighted / OT metrics on soft mass; learning $\lambda$ or edit costs from data without circularity; whether token-mass weighting inside edit costs is needed for $\widehat{\mathcal{A}}_d$. Mass-matrix $M(W)$ for stickiness $m$ remains the separate open below. The lock is (37) on ordered observable sequences. It is not a claim that P1 measured Lev, and it is not a MemNet SemVer cut.
+
+**Still open: measuring $m$.** How should $m$ be measured? Pin stickiness could be estimated from the intervention needed to displace an item from $W$ while task and model remain fixed. It may be item-specific and state-dependent, giving a mass matrix rather than a scalar:
 
 $$
 T = \frac12 \dot{W}^\top M(W)\dot{W}.\qquad (34)
@@ -714,6 +730,8 @@ Paper form: each display equation ends with $\qquad (n)$. Display equations only
 - (34) state-dependent kinetic energy
 - (35) discrete right Legendre map $p_k^+$
 - (36) discrete left Legendre map $-p_k^-$
+- (37) ordered-observable Levenshtein distance on $W$
+
 ## References
 
 1. Herbert Goldstein, Charles P. Poole Jr., and John L. Safko. *Classical Mechanics*, 3rd ed. Addison-Wesley, 2002. https://books.google.com/books?id=EE-wQgAACAAJ
