@@ -1,0 +1,54 @@
+{
+  "prediction": 1,
+  "stratum": "author-blind-review",
+  "reviewer": "Sage",
+  "author_blind": true,
+  "did_author_graphs": false,
+  "date": "2026-09-04",
+  "protocol": {
+    "blinded_packs": true,
+    "expect_star_hidden": true,
+    "prior_reviews_hidden": true,
+    "action_not_quality_evidence": true
+  },
+  "objective_checklist": {
+    "n": 200,
+    "n_pass": 200,
+    "agreement_with_original_checklist_pass": 1.0
+  },
+  "deep_sample": {
+    "n": 34,
+    "initial_ok": 33,
+    "auto_dump_fail_family": "asymmetric-spoke",
+    "auto_dump_fail_n": 8,
+    "auto_dump_reason": "k<=2 neighbourhood gold-only",
+    "regen": "non-gold decoy at hop 1",
+    "sage_recheck_accept": 8
+  },
+  "regen_sessions": [14, 29, 59, 74, 89, 119, 134, 149],
+  "signoff": "ACCEPT after regen",
+  "blind_map": "sealed; not shipped",
+  "post_regen_gold_presence": {
+    "memnet_llm_version": "0.19.4",
+    "coefficients_retuned": false,
+    "n_both_perfect": 170,
+    "mean_delta": 2930.59,
+    "ci95": [2778.71, 3084.10],
+    "verdict": "PASS"
+  },
+  "post_regen_llm_full_gold_merged": {
+    "n_both_perfect": 170,
+    "mean_delta": 2930.59,
+    "ci95": [2778.71, 3084.10],
+    "verdict": "PASS",
+    "T_gt_0": "OPEN"
+  },
+  "pre_regen_gold_presence_for_comparison": {
+    "mean_delta": 2932.4117647058824,
+    "ci95": [2780.3529411764707, 3086.3117647058825]
+  },
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-04 Sage sign-off and post-regen primary CI. Full pack reviews and blind_map omitted. No secrets.",
+  "graphs": "experiments/p1-hr/",
+  "signoff_path": "experiments/p1-blind/SAGE_SIGNOFF.md"
+}

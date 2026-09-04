@@ -664,6 +664,13 @@ def build_asymmetric_spoke(i: int) -> GraphSpec:
     if n_gold > 3 and len(heavy) > 1:
         gold.append(heavy[1])
     gold = gold[:n_gold]
+    # When gold occupies the entire k≤2 ball (n_gold=4: hub+light+hvy0+hvy1),
+    # insert a non-gold hop-1 decoy so AUTO_DUMP is not vacuously gold-only.
+    # (2026-09-04 Sage author-blind: 8 graphs regenerated; see experiments/p1-blind/REGEN_8.md)
+    if len(gold) >= 4:
+        decoy = f"doc-{ss}-decoy"
+        nodes.append(_node("DOC", decoy, f"Hop-1 decoy {ss}"))
+        edges.append(_edge(hub, decoy, "contains", "h1-decoy"))
     # heavy chain beyond k=2 is dump-only
     target_n = 34 + (i % 26)
     _ensure_far_branch(nodes, edges, ss, heavy[-1])

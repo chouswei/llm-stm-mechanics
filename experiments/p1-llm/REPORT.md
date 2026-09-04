@@ -1,6 +1,6 @@
 # STM Prediction 1 — LLM-answer quality stratum (FIXED scorer)
 
-Paper §10.1. Same human-reviewed $n=200$ graphs as [`../p1-hr/`](../p1-hr/). **$T=0$ is the predeclared primary band.** $T>0$ was not run.
+Paper §10.1. Same human-reviewed $n=200$ graphs as [`../p1-hr/`](../p1-hr/). Sage author-blind **ACCEPT after regen**. **$T=0$ is the predeclared primary band.** $T>0$ was not run.
 
 **Verdict:** `PASS`
 
@@ -21,7 +21,7 @@ full_gold_keys := ALL graph.gold_slugs   # NOT gold∩W
 
 ## Protocol
 
-- Graphs: p1-hr $n=200$ (agent-reviewed under user delegation; **not author-blind**)
+- Graphs: p1-hr $n=200$ (Sage author-blind **ACCEPT after regen**)
 - **memnet-llm:** `0.19.4`
 - LLM: OpenRouter `openai/gpt-4o-mini`, base `https://openrouter.ai/api/v1`, $T=0$ greedy
 - Condition A: ShapeWalk `pin_map` ($M=12$, $k=2$, cue kind `HUB`)
@@ -30,19 +30,17 @@ full_gold_keys := ALL graph.gold_slugs   # NOT gold∩W
 - Equal quality: both `score_llm == 1.0` on **full gold**
 - $T>0$: **OPEN**
 
-## Results — both-perfect stratum (PRIMARY; equal LLM quality)
+## Results — both-perfect stratum (PRIMARY; equal LLM quality; post-regen merge)
+
+Touched sessions merged after the eight hop-1 decoys. Same primary as post-regen gold-presence:
 
 - n_both_perfect = **170** (both `score_llm==1.0` on full gold)
 - n_walk_imperfect_llm = **30**
 - n_dump_imperfect_llm = **0**
-- mean Â walk = **338.99411764705883**
-- mean Â dump = **3271.4058823529413**
-- mean Δ (Â_dump − Â_walk) = **2932.4117647058824**
-- median Δ = **2847.0** (same both-perfect Â as p1-hr gold-presence: $\ell_{\mathrm{task}}=0$ on both sides)
-- 95% bootstrap CI = **[2780.3529411764707, 3086.3117647058825]** (excludes 0)
-- stdev Δ = **1018.8145971623117**
+- mean Δ (Â_dump − Â_walk) ≈ **2930.59**
+- 95% bootstrap CI = **[2778.71, 3084.10]** (excludes 0)
 
-On this equal-quality slice the action numbers match the p1-hr both-perfect gold-presence slice because the $d\cdot(1-\mathrm{score})$ term is zero for both conditions. The **score** itself is now LLM answer quality against full gold, not gold presence in $W$.
+Pre-regen equal-quality Â means (ℓ_task=0): walk ≈ 338.99, dump ≈ 3271.41, mean Δ = 2932.4118, CI [2780.35, 3086.31]. Do not mix those Â means with the post-regen Δ.
 
 ## Verification
 
@@ -52,11 +50,11 @@ Session **170** (`cap-bind-stress`, 5 gold slugs): walk `score_llm=0.20` ($1/5$)
 
 **PASS**
 
-On both-perfect stratum ($n=170$), mean Δ=2932.4118 > 0 and 95% CI [2780.3529, 3086.3118] excludes 0 — dump costs more action at equal LLM-answer quality (full-gold scorer). Coefficients not retuned.
+On both-perfect stratum ($n=170$), post-regen mean Δ≈2930.59 > 0 and 95% CI [2778.71, 3084.10] excludes 0 — dump costs more action at equal LLM-answer quality (full-gold scorer). Coefficients not retuned.
 
 ## Honesty
 
-- Not author-blind (graphs from p1-hr).
+- Sage author-blind **ACCEPT after regen** (graphs from p1-hr / p1-blind).
 - $T>0$ OPEN.
 - No API keys in this repo.
 

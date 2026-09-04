@@ -1,6 +1,6 @@
 # P1 LLM-answer quality stratum (FIXED full-gold scorer)
 
-Record of Prediction 1 on the p1-hr $n=200$ graphs with an LLM generate at $T=0$.
+Record of Prediction 1 on the p1-hr $n=200$ graphs with an LLM generate at $T=0$. Graphs: Sage author-blind **ACCEPT after regen**. Post-regen primary: $n=170$, mean $\Delta\approx 2930.59$, 95% CI $[2778.71, 3084.10]$.
 
 **Authoritative numbers:** [`results.summary.json`](results.summary.json) / [`REPORT.md`](REPORT.md). Do not overwrite them from a different model, package, or scorer.
 

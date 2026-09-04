@@ -452,7 +452,7 @@ def write_report(payload: dict) -> None:
         "",
         "## Honesty",
         "",
-        "human-reviewed by agent under user delegation; not author-blind",
+        "Sage author-blind ACCEPT after regen (experiments/p1-blind/SAGE_SIGNOFF.md)",
         "",
         "## Coefficient lock (SAME as prior P1 — not retuned)",
         "",
@@ -683,7 +683,7 @@ def main() -> int:
     payload = {
         "prediction": 1,
         "stratum": "human-reviewed",
-        "honesty": "human-reviewed by agent under user delegation; not author-blind",
+        "honesty": "Sage author-blind ACCEPT after regen (experiments/p1-blind/SAGE_SIGNOFF.md)",
         "claim": (
             "bounded ShapeWalk equal quality at lower action than RAG-style dump "
             "for k-hop-local evidence tasks"
