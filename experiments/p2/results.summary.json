@@ -1,0 +1,133 @@
+{
+  "verdict": "PASS",
+  "verdict_note": "PASS: (a)(b)(c) hold; \u03bb\u0302 beats raw |W| on AUROC/accuracy",
+  "claim": "\u03bb\u0302_M is an account diagnostic (finite-difference of preregistered J), not a KKT multiplier read off the engine. Engine caps stay hard rejects.",
+  "memnet_version": "0.19.3",
+  "memnet_file": "/workspace/stm-p2/.venv/lib/python3.13/site-packages/memnet/__init__.py",
+  "merge_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "n_sessions": 200,
+  "M_grid": [
+    8,
+    12,
+    16,
+    24,
+    32
+  ],
+  "delta": "grid_step (4 or 8)",
+  "band": 0.005,
+  "mass": 0.01,
+  "J_formula": "(1 - score) + 0.01*|W|, score=|gold\u2229W|/|gold|",
+  "depth": 2,
+  "operators": [
+    "open_session",
+    "MutateGate.apply",
+    "PinMapComposer.compose",
+    "close_session"
+  ],
+  "call_counts": {
+    "open_session": 200,
+    "MutateGate.apply": 200,
+    "PinMapComposer.compose": 2000,
+    "close_session": 200
+  },
+  "n_obs": 1600,
+  "tests": {
+    "a_truncated_and_improves": {
+      "n": 463,
+      "n_lambda_positive": 449,
+      "rate": 0.9697624190064795,
+      "holds_majority": true
+    },
+    "b_slack_gold_inside": {
+      "n": 667,
+      "n_lambda_nonpositive": 667,
+      "rate": 1.0,
+      "holds_majority": true,
+      "positive_with_slack_rate": 0.0
+    },
+    "c_wrong_vs_correct_pos_rate": {
+      "CORRECT_pos_rate": 0.16625,
+      "WRONG_pos_rate": 0.395,
+      "gap": 0.22875,
+      "holds_clear_gap": true,
+      "per_M": {
+        "8": {
+          "CORRECT_pos_rate": 0.665,
+          "WRONG_pos_rate": 0.0
+        },
+        "12": {
+          "CORRECT_pos_rate": 0.0,
+          "WRONG_pos_rate": 0.0
+        },
+        "16": {
+          "CORRECT_pos_rate": 0.0,
+          "WRONG_pos_rate": 0.58
+        },
+        "24": {
+          "CORRECT_pos_rate": 0.0,
+          "WRONG_pos_rate": 1.0
+        }
+      }
+    },
+    "null_vs_raw_W": {
+      "auroc_lambda": 0.599359375,
+      "auroc_W": 0.5,
+      "acc_positive_lambda_implies_wrong": 0.614375,
+      "acc_high_W_implies_wrong": 0.5,
+      "median_W_threshold": 16.0,
+      "lambda_better": true
+    }
+  },
+  "build_fail": 0,
+  "pin_fail": 0,
+  "elapsed_s": 143.17,
+  "observations": [
+    {
+      "session_i": 0,
+      "cue": "CORRECT",
+      "hub": "hub-c-s000",
+      "n_nodes": 48,
+      "M": 8,
+      "M_next": 12,
+      "delta": 4,
+      "W": 8,
+      "W_next": 12,
+      "score": 1.0,
+      "score_next": 1.0,
+      "J": 0.08,
+      "J_next": 0.12,
+      "lambda_hat": -0.009999999999999998,
+      "truncated": false,
+      "gold_in": true,
+      "score_improves": false,
+      "lambda_positive": false,
+      "lambda_nonpositive": true,
+      "in_band": false
+    },
+    {
+      "session_i": 0,
+      "cue": "CORRECT",
+      "hub": "hub-c-s000",
+      "n_nodes": 48,
+      "M": 12,
+      "M_next": 16,
+      "delta": 4,
+      "W": 12,
+      "W_next": 16,
+      "score": 1.0,
+      "score_next": 1.0,
+      "J": 0.12,
+      "J_next": 0.16,
+      "lambda_hat": -0.010000000000000002,
+      "truncated": false,
+      "gold_in": true,
+      "score_improves": false,
+      "lambda_positive": false,
+      "lambda_nonpositive": true,
+      "in_band": false
+    }
+  ],
+  "delta_note": "\u03b4 is one step on the M grid: 4 for 8\u219212 and 12\u219216; 8 for 16\u219224 and 24\u219232",
+  "observations_count": 1600,
+  "observations_note": "truncated; re-run script for full"
+}

@@ -1,0 +1,7 @@
+# Synthetic session map for STM Prediction 2 (M-cap multiplier / account diagnostic).
+# id is optional nickname (not identity). slug/title are observables.
+SCHEMA HUB ; fields=id slug title
+SCHEMA DOC ; fields=id slug title
+SCHEMA USR ; fields=id slug title
+SCHEMA TSK ; fields=id slug title
+SCHEMA FIL ; fields=id slug title

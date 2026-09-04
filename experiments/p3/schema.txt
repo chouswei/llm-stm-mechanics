@@ -1,0 +1,6 @@
+# Synthetic session map for STM Prediction 3 (rename invariance).
+# id is an optional nickname (not identity). slug/title are observables.
+SCHEMA HUB ; fields=id slug title
+SCHEMA DOC ; fields=id slug title
+SCHEMA USR ; fields=id slug title
+SCHEMA TSK ; fields=id slug title

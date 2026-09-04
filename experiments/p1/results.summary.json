@@ -1,0 +1,168 @@
+{
+  "prediction": 1,
+  "claim": "bounded ShapeWalk equal quality at lower action than RAG-style dump for k-hop-local evidence tasks",
+  "memnet_version": "0.19.3",
+  "memnet_file": "/workspace/stm-p1/.venv/lib/python3.13/site-packages/memnet/__init__.py",
+  "memnet_commit": "eff05dc8a0ad5369e8d7e7f347db30b9300b04d6",
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "term_a": "a * |W|^2",
+    "tokens": "sum(len(title)+len(slug))",
+    "ell_task": "1-score",
+    "locked_before_outcomes": true
+  },
+  "protocol": {
+    "k_hop": 2,
+    "M_hard": 12,
+    "cue_kind": "HUB",
+    "walk_admits_all_offered": true,
+    "dump_is_bench_fixture": true,
+    "dump_cap_applied": false,
+    "equal_quality": "both score==1.0",
+    "no_matched_coverage_requirement": true
+  },
+  "n_sessions": 500,
+  "n_ok": 500,
+  "n_both_perfect": 500,
+  "n_build_fail": 0,
+  "nodes_per_session": 35,
+  "scale_note": "Projected 500 @ 0.579s/session \u2248 290s; keeping n=500.",
+  "wall_time_s": 294.9640009403229,
+  "stats_both_perfect": {
+    "mean": 1934.0,
+    "median": 1934.0,
+    "ci95": [
+      1934.0,
+      1934.0
+    ],
+    "n": 500,
+    "n_bootstrap": 10000,
+    "mean_A_walk": 422.0,
+    "mean_A_dump": 2356.0,
+    "mean_score_walk": 1.0,
+    "mean_score_dump": 1.0,
+    "mean_w_walk": 11.0,
+    "mean_w_dump": 35.0,
+    "mean_tok_walk": 301.0,
+    "mean_tok_dump": 1131.0
+  },
+  "stats_full": {
+    "mean": 1934.0,
+    "median": 1934.0,
+    "ci95": [
+      1934.0,
+      1934.0
+    ],
+    "n": 500,
+    "n_bootstrap": 10000,
+    "mean_A_walk": 422.0,
+    "mean_A_dump": 2356.0,
+    "mean_score_walk": 1.0,
+    "mean_score_dump": 1.0,
+    "mean_w_walk": 11.0,
+    "mean_w_dump": 35.0,
+    "mean_tok_walk": 301.0,
+    "mean_tok_dump": 1131.0
+  },
+  "verdict": "PASS",
+  "verdict_reason": "On both-perfect stratum (n=500), mean \u0394=1934.0000 > 0 and 95% CI [1934.0000, 1934.0000] excludes 0 \u2014 dump costs more action at equal quality.",
+  "call_counts": {
+    "open_session": 500,
+    "MutateGate.apply": 500,
+    "PinMapComposer.compose": 500,
+    "close_session": 500
+  },
+  "sample_pair": {
+    "session_i": 0,
+    "gold_slugs": [
+      "hub-s0000",
+      "doc-s0000-n00",
+      "doc-s0000-n01",
+      "doc-s0000-n02",
+      "tsk-s0000-n00"
+    ],
+    "walk": {
+      "score": 1.0,
+      "w_size": 11,
+      "tokens": 301,
+      "action": 422.0,
+      "n_offered_rows": 12,
+      "w_slugs": [
+        "hub-s0000",
+        "bridge-s0000",
+        "doc-s0000-n00",
+        "doc-s0000-n01",
+        "doc-s0000-n02",
+        "doc-s0000-n03",
+        "doc-s0000-n04",
+        "tsk-s0000-n00",
+        "tsk-s0000-n01",
+        "usr-s0000-n00",
+        "usr-s0000-n01"
+      ]
+    },
+    "dump": {
+      "score": 1.0,
+      "w_size": 35,
+      "tokens": 1131,
+      "action": 2356.0,
+      "n_offered_rows": 35
+    },
+    "delta_action": 1934.0
+  },
+  "sessions": [
+    {
+      "session_i": 0,
+      "hub_slug": "hub-s0000",
+      "n_session_nodes": 35,
+      "n_gold": 5,
+      "walk": {
+        "score": 1.0,
+        "w_size": 11,
+        "tokens": 301,
+        "action": 422.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 35,
+        "tokens": 1131,
+        "action": 2356.0,
+        "n_offered_rows": 35
+      },
+      "delta_action": 1934.0,
+      "both_perfect": true,
+      "ok": true
+    },
+    {
+      "session_i": 1,
+      "hub_slug": "hub-s0001",
+      "n_session_nodes": 35,
+      "n_gold": 5,
+      "walk": {
+        "score": 1.0,
+        "w_size": 11,
+        "tokens": 301,
+        "action": 422.0,
+        "n_offered_rows": 12
+      },
+      "dump": {
+        "score": 1.0,
+        "w_size": 35,
+        "tokens": 1131,
+        "action": 2356.0,
+        "n_offered_rows": 35
+      },
+      "delta_action": 1934.0,
+      "both_perfect": true,
+      "ok": true
+    }
+  ],
+  "note": "synthetic-stratum pilot not human-reviewed 200",
+  "sessions_count": 500,
+  "sessions_note": "truncated; re-run script for full"
+}
