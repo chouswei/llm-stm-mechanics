@@ -184,7 +184,7 @@ A **holonomic constraint** depends only on the current configuration, $g(W_t)=0$
 
 The most important dictionary distinction is operational. $W_t$ is LLM-side. $\tilde{X}_t$ is the offered Shape. The relation $\tilde{X}_t\subseteq W_t$ holds only if the caller admits the whole Shape. Steering proposes $\tilde{X}$; the caller's admission decides $W$; eviction then acts on $W$. These are three distinct places control enters. Collapsing the first two hides one.
 
-[^W-not-Q]: $W$ is not called $Q$ because $Q$ is already taken in MemNet for the `RelativeSeed` seed set; $|Q|>1$ is `CueConflict`.
+[^W-not-Q]: $W$ is not called $Q$ because $Q$ is already taken in MemNet for the `RelativeSeed` seed set; $\lvert Q\rvert>1$ is `CueConflict`.
 
 ## 5 The role of the LLM
 
@@ -235,7 +235,7 @@ Here $p$ is the adjoint or costate $p_{\mathrm{adj}}$. Mechanical momentum $p_{\
 Window length, hop radius, row cap $M$, and load-rate caps are inequalities. They are not plain equality constraints with ordinary Lagrange multipliers. Let
 
 $$
-g_M(W)=|W|-M\le 0.\qquad (16)
+g_M(W)=\lvert W\rvert-M\le 0.\qquad (16)
 $$
 
 The augmented cost uses a KKT multiplier $\lambda_M\ge0$. Necessary conditions include primal feasibility, dual feasibility, stationarity, and complementary slackness [6][7][8]:
@@ -247,7 +247,7 @@ $$
 Therefore
 
 $$
-\lambda_M>0 \implies |W|=M.\qquad (18)
+\lambda_M>0 \implies \lvert W\rvert=M.\qquad (18)
 $$
 
 Under regularity and an active optimum, a positive shadow price occurs precisely when relaxing the cap would improve the objective. This yields a measurable result: $\lambda_M>0$ exactly when the goldfish row cap is biting. The same applies to window length, hop radius, and rate caps. Estimate $\lambda_M$ by finite differences of optimal task loss around $M$, not by softening the engine reject. The engine cap remains hard.
@@ -379,20 +379,20 @@ Let the product cue $q_t$ be a finite sequence of codebook tokens. At the analys
 A schematic discrete Lagrangian is
 
 $$
-L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,|W_{t+1}\setminus W_t|+\chi_{\mathrm{invalid}}.\qquad (27)
+L_d(W_t,W_{t+1};u_t)=\frac{m}{2}\,d(W_t,W_{t+1})^2-\alpha\,\mathrm{coverage}(W_{t+1},u_t)+\beta\,\lvert W_{t+1}\setminus W_t\rvert+\chi_{\mathrm{invalid}}.\qquad (27)
 $$
 
-Read (27) term by term. $d(W_t,W_{t+1})$ is a set-transition distance between consecutive working sets. The stickiness $m$ prices churn through the kinetic term. $\mathrm{coverage}(W_{t+1},u_t)$ is a scalar reward for how well the new set supports the cue — analysis only, never a `pin_map` field. The operator $\setminus$ is set difference: $W_{t+1}\setminus W_t$ is the set of elements newly admitted this turn, and $|W_{t+1}\setminus W_t|$ is their count. The symbol $\chi_{\mathrm{invalid}}$ is an indicator barrier: $0$ on legal transitions and $+\infty$ on hard-invalid ones (cap violations, unreachable pins), so illegal moves are simply not stationary points of $L_d$. The native discrete momentum is the discrete Legendre transform of $L_d$, not returned by the engine.
+Read (27) term by term. $d(W_t,W_{t+1})$ is a set-transition distance between consecutive working sets. The stickiness $m$ prices churn through the kinetic term. $\mathrm{coverage}(W_{t+1},u_t)$ is a scalar reward for how well the new set supports the cue — analysis only, never a `pin_map` field. The operator $\setminus$ is set difference: $W_{t+1}\setminus W_t$ is the set of elements newly admitted this turn, and $\lvert W_{t+1}\setminus W_t\rvert$ is their count. The symbol $\chi_{\mathrm{invalid}}$ is an indicator barrier: $0$ on legal transitions and $+\infty$ on hard-invalid ones (cap violations, unreachable pins), so illegal moves are simply not stationary points of $L_d$. The native discrete momentum is the discrete Legendre transform of $L_d$, not returned by the engine.
 
 **Worked turn.** Assume the LLM is answering why a prior deployment failed. At turn 7, product cue $q_7$ contains codebook tokens for `deployment`, `rollback`, and a relative-session marker. The experimenter maps this to $u_7$. ShapeWalk starts from the legal RelativeSeed, walks up to $k=2$, and offers 18 rows under hard `LIMIT M=24`; this is $\tilde{X}_7$. The caller admits the 12 rows whose observable payload fits alongside system text and recent dialogue, so $\tilde{X}_7\nsubseteq W_7$ as an entire Shape. KV policy then removes two low-value old dialogue spans from $W_7$. The model integrates the resulting state and explains the rollback. If the output warrants durable change, gated Commit $\Delta_7$ writes a new observable relation to $S$. Commit is an impulse that changes the manifold's inventory for future turns. It is not a third retrieval operator.
 
 The constraints are
 
 $$
-\mathrm{hop}(\tilde{X}_7)\le k,\qquad |\tilde{X}_7|\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.\qquad (28)
+\mathrm{hop}(\tilde{X}_7)\le k,\qquad \lvert\tilde{X}_7\rvert\le M,\qquad \mathrm{rate}(W_7,W_8)\le r.\qquad (28)
 $$
 
-Plain language: $\mathrm{hop}(\tilde{X})$ is the farthest graph distance from the seed still present in the offered Shape; $|\tilde{X}|$ is the row count; $\mathrm{rate}(W_t,W_{t+1})$ is how fast the working set is allowed to change (for example $|W_{t+1}\setminus W_t|$). All three are $\le$ inequalities — hard caps, not soft targets.
+Plain language: $\mathrm{hop}(\tilde{X})$ is the farthest graph distance from the seed still present in the offered Shape; $\lvert\tilde{X}\rvert$ is the row count; $\mathrm{rate}(W_t,W_{t+1})$ is how fast the working set is allowed to change (for example $\lvert W_{t+1}\setminus W_t\rvert$). All three are $\le$ inequalities — hard caps, not soft targets.
 
 Their KKT multipliers estimate which cap is active in the *optimal-control account*. Product behaviour remains hard reject. If the row-cap multiplier becomes positive and task loss rises, the diagnostic says the offered Shape is pressing against $M$. It does not say to make $M$ buyable.
 
@@ -405,10 +405,10 @@ RAG [16] is one load operator from a corpus into the window. A retriever maps qu
 The relevant cost is not only retrieval relevance. It includes token mass, duplication, displacement of resident pins, and positional degradation:
 
 $$
-C_{\mathrm{RAG}}=c_{\mathrm{tok}}|\tilde{X}|+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.\qquad (29)
+C_{\mathrm{RAG}}=c_{\mathrm{tok}}\lvert\tilde{X}\rvert+c_{\mathrm{dup}}D(\tilde{X})+c_{\mathrm{evict}}E(W_{t-1},W_t)+c_{\mathrm{task}}\ell_{\mathrm{task}}.\qquad (29)
 $$
 
-Each $c_{\cdot}$ is a nonnegative weight fixed by the experimenter. $|\tilde{X}|$ prices token mass; $D(\tilde{X})$ prices duplication inside the offer; $E(W_{t-1},W_t)$ prices how much resident material was displaced; $\ell_{\mathrm{task}}$ is the task loss (for example $1$ minus answer quality). None of these scalars is emitted by the engine.
+Each $c_{\cdot}$ is a nonnegative weight fixed by the experimenter. $\lvert\tilde{X}\rvert$ prices token mass; $D(\tilde{X})$ prices duplication inside the offer; $E(W_{t-1},W_t)$ prices how much resident material was displaced; $\ell_{\mathrm{task}}$ is the task loss (for example $1$ minus answer quality). None of these scalars is emitted by the engine.
 
 The "lost in the middle" result [11] implies that equal evidence with equal inclusion can induce different task costs under different positions. Therefore global rank alone cannot determine $W$'s usefulness.
 
@@ -442,13 +442,13 @@ The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-
 
 **Failure condition.** If RAG dumps have equal or lower action at equal quality across the prespecified local-task stratum, the predicted advantage is false. If the result appears only after changing coefficients, it is also false for the preregistered estimator. A mixed result would narrow the claim to particular graph topologies rather than rescue it universally.
 
-**Result (synthetic stratum, 2026-09-04).** PASS as a *structural* claim only. MemNet @ `eff05dc8` (post PR #147). $n=500$ sessions. Score here means **equal gold-evidence presence** ($|\mathrm{gold}\cap W|/|\mathrm{gold}|$), not LLM answer quality — both conditions scored $1.0$ on all $500$. Coefficients locked before outcomes: $a=1$, $b=1$, $c=0$, $d=10$, with $d(\emptyset,W)=|W|$ in (30). Mean $\widehat{\mathcal{A}}$ walk $=422$, dump $=2356$, paired $\Delta=1934$; $95\%$ bootstrap CI $[1934,1934]$ excludes $0$. Dump admitted mean $|W|=35$ vs walk $|W|=11$. $\Delta$ was constant across this regular synthetic family. No LLM generate. Do not read this PASS as the full §10.1 claim.
+**Result (synthetic stratum, 2026-09-04).** PASS as a *structural* claim only. MemNet @ `eff05dc8` (post PR #147). $n=500$ sessions. Score here means **equal gold-evidence presence** ($\lvert\mathrm{gold}\cap W\rvert/\lvert\mathrm{gold}\rvert$), not LLM answer quality — both conditions scored $1.0$ on all $500$. Coefficients locked before outcomes: $a=1$, $b=1$, $c=0$, $d=10$, with $d(\emptyset,W)=\lvert W\rvert$ in (30). Mean $\widehat{\mathcal{A}}$ walk $=422$, dump $=2356$, paired $\Delta=1934$; $95\%$ bootstrap CI $[1934,1934]$ excludes $0$. Dump admitted mean $\lvert W\rvert=35$ vs walk $\lvert W\rvert=11$. $\Delta$ was constant across this regular synthetic family. No LLM generate. Do not read this PASS as the full §10.1 claim.
 
 **Result (human-reviewed stratum, 2026-09-04).** PASS on the same coefficient lock (not retuned). $n=200$ graphs, **17** topology families, checklist $200/200$. Reviewer: Sage, author-blind (did not author graphs); stratum sign-off **ACCEPT after regen**. Eight `asymmetric-spoke` graphs were regenerated with a non-gold hop-1 decoy after AUTO_DUMP ($k\le 2$ neighbourhood gold-only). Post-regen gold-presence (`memnet-llm` $0.19.4$, coefficients unchanged): both-perfect $n=170$; mean $\Delta\approx 2930.59$; $95\%$ CI $[2778.71, 3084.10]$ excludes $0$. Walk-imperfect $n=30$ (all cap-binding under $M=12$). Distinct $\Delta$ values remain non-constant (not the synthetic constant-$\Delta$ failure mode). Gold-evidence presence, not LLM answer quality. No LLM generate. Harness: [`experiments/p1-hr/`](../experiments/p1-hr/). Blind record: [`experiments/p1-blind/`](../experiments/p1-blind/).
 
 **Result (author-blind review, 2026-09-04).** Sage reviewed blinded packs: no `expect_*`, no prior reviews, no $\widehat{\mathcal{A}}$ as quality evidence. Objective blind checklist $200/200$ PASS; $100\%$ agreement with original `checklist_pass`. Deep sample $n=34$: initially $33$ OK. Eight `asymmetric-spoke` AUTO_DUMP fails listed, regenerated, Sage re-check **ACCEPT** $8/8$. Stratum sign-off: **ACCEPT after regen** ([`experiments/p1-blind/SAGE_SIGNOFF.md`](../experiments/p1-blind/SAGE_SIGNOFF.md)). The sealed pack map is not shipped.
 
-**Result (LLM-answer quality stratum, 2026-09-04).** PASS. Same $n=200$ p1-hr graphs, same coefficient lock ($a=1$, $b=1$, $c=0$, $d=10$; **not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy. Protocol: walk (`pin_map`, $M=12$, $k=2$) versus dump bench fixture. Prompt-only KEY on $\mathrm{gold}\cap W$. **Fixed scorer:** $\mathrm{score\_llm}=|\mathrm{pred}\cap\mathrm{full\_gold\_keys}|/|\mathrm{full\_gold\_keys}|$, where $\mathrm{full\_gold\_keys}$ is *all* `graph.gold_slugs`, **not** $\mathrm{gold}\cap W$. Post-regen merge on touched sessions: both-perfect (both $\mathrm{score\_llm}=1.0$ on full gold) $n=170$; $n_{\mathrm{walk\_imperfect\_llm}}=30$; $n_{\mathrm{dump\_imperfect\_llm}}=0$. Primary matches gold-presence: mean $\Delta\approx 2930.59$, $95\%$ CI $[2778.71, 3084.10]$ excludes $0$. Verdict **PASS**. Verification: session $170$ walk $\mathrm{score\_llm}=0.20$ ($1/5$) versus dump $1.00$. $T>0$ **OPEN**. Harness: [`experiments/p1-llm/`](../experiments/p1-llm/).
+**Result (LLM-answer quality stratum, 2026-09-04).** PASS. Same $n=200$ p1-hr graphs, same coefficient lock ($a=1$, $b=1$, $c=0$, $d=10$; **not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy. Protocol: walk (`pin_map`, $M=12$, $k=2$) versus dump bench fixture. Prompt-only KEY on $\mathrm{gold}\cap W$. **Fixed scorer:** $\mathrm{score\_llm}=\lvert\mathrm{pred}\cap\mathrm{full\_gold\_keys}\rvert/\lvert\mathrm{full\_gold\_keys}\rvert$, where $\mathrm{full\_gold\_keys}$ is *all* `graph.gold_slugs`, **not** $\mathrm{gold}\cap W$. Post-regen merge on touched sessions: both-perfect (both $\mathrm{score\_llm}=1.0$ on full gold) $n=170$; $n_{\mathrm{walk\_imperfect\_llm}}=30$; $n_{\mathrm{dump\_imperfect\_llm}}=0$. Primary matches gold-presence: mean $\Delta\approx 2930.59$, $95\%$ CI $[2778.71, 3084.10]$ excludes $0$. Verdict **PASS**. Verification: session $170$ walk $\mathrm{score\_llm}=0.20$ ($1/5$) versus dump $1.00$. $T>0$ **OPEN**. Harness: [`experiments/p1-llm/`](../experiments/p1-llm/).
 
 **Scorer honesty.** An earlier LLM run scored against $\mathrm{gold}\cap W$ (extraction fidelity) and falsely reported $200/200$ LLM-perfect. That run is **invalid** and must not be cited. This full-gold run supersedes it.
 
@@ -470,7 +470,7 @@ Use one-row or four-row finite differences and confidence intervals over model s
 
 Complementary slackness is exact for the optimisation model under its regularity assumptions. An engine trace is not automatically an optimum. The protocol therefore tests the adequacy of the model as well as the product hypothesis.
 
-**Result (synthetic stratum, 2026-09-04).** PASS as an *account* diagnostic. $n=200$ sessions, $M\in\{8,12,16,24,32\}$, $\delta$ one grid step, band $|\widehat\lambda|<0.005$, $J=(1-\mathrm{score})+0.01|W|$. When gold was truncated and score improved at $M+\delta$, $\widehat\lambda_M$ was positive in $449/463$ ($97\%$). When gold already lay inside $W$, $\widehat\lambda_M\le$ band in $667/667$ (never fake-positive with slack). Wrong cue vs correct: positive-$\widehat\lambda$ rate $0.395$ vs $0.166$ (gap $0.229$). As a wrong-Shape detector versus raw $|W|$, AUROC was only *marginally* above chance ($0.599$ vs $0.5$) — the claim that survives is the truncation / no-false-positive diagnostic, not discrimination power. Engine caps remained hard rejects; $M$ was only the compose analysis knob. No LLM generate.
+**Result (synthetic stratum, 2026-09-04).** PASS as an *account* diagnostic. $n=200$ sessions, $M\in\{8,12,16,24,32\}$, $\delta$ one grid step, band $\lvert\widehat\lambda\rvert<0.005$, $J=(1-\mathrm{score})+0.01\lvert W\rvert$. When gold was truncated and score improved at $M+\delta$, $\widehat\lambda_M$ was positive in $449/463$ ($97\%$). When gold already lay inside $W$, $\widehat\lambda_M\le$ band in $667/667$ (never fake-positive with slack). Wrong cue vs correct: positive-$\widehat\lambda$ rate $0.395$ vs $0.166$ (gap $0.229$). As a wrong-Shape detector versus raw $\lvert W\rvert$, AUROC was only *marginally* above chance ($0.599$ vs $0.5$) — the claim that survives is the truncation / no-false-positive diagnostic, not discrimination power. Engine caps remained hard rejects; $M$ was only the compose analysis knob. No LLM generate.
 
 ### 10.3 Prediction 3: rename invariance
 
@@ -525,7 +525,7 @@ Deterministic observable order after #147, and nickname-off-wire after #148, are
 | P1 local load vs dump | (30) | synthetic $n=500$, equal *gold presence* | PASS (structural; constant $\Delta$) |
 | P1 local load vs dump | (30) | human-reviewed $n=200$, 17 families, equal *gold presence*; author-blind **ACCEPT after regen** | PASS (structural; post-regen CI $[2778.71,3084.10]$) |
 | P1 local load vs dump | (30) | LLM-answer quality, p1-hr $n=200$, $T=0$ `gpt-4o-mini`, **full-gold** scorer | PASS (full-gold scorer; $n=170$ equal-quality; post-regen CI $[2778.71,3084.10]$); $T>0$ OPEN |
-| P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS (truncation / no-false-positive); AUROC vs $|W|$ marginal |
+| P2 $\widehat\lambda_M$ vs wrong Shape | (31) | synthetic $n=200$ | PASS (truncation / no-false-positive); AUROC vs $\lvert W\rvert$ marginal |
 | P3 rename / order (before generate) | (19) law | $2000$ perms; fail then fix then pass | PASS after #147 |
 | P3 generation half ($T=0$) | (19) law | OpenRouter `gpt-4o-mini`; $8\times 15=120$ | $0.19.3$ @ `eff05dc8`: RAW FAIL $30/120$ / CANONICAL PASS $0/120$; $0.19.4$ (#148 honesty $c$): RAW PASS $0/120$ / CANONICAL PASS $0/120$ |
 | P3 generation half ($T>0$ CANONICAL) | (19) law | OpenRouter `gpt-4o-mini`; $T=0.8$; $N_{\mathrm{SAMPLES\_DIST}}=5$; $\mathrm{DIST\_MATCH\_BAND}=0.05$; $120$ pairs | PASS (mean/min exact-match rate $1.0$); $T=0$ RAW/CANONICAL also PASS $0/120$ on the same run |
