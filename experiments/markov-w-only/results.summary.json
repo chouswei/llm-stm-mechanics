@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-05",
+  "memnet_llm_version": "0.19.4",
+  "stratum": "structural MemNet goldfish; no LLM generate",
+  "graphs": "n=200 post-regen p1-hr",
+  "sigma": "ordered observable hard-window W only (no p estimator)",
+  "match": "Walk vs Alt via equivalent slug-locator cue without kind (same Shape family)",
+  "n": 200,
+  "n_matched": 200,
+  "n_matched_min": 30,
+  "band": 0.05,
+  "main": {
+    "admission": "Markov-honest; admit from (W, offer) only",
+    "observables": "offer_{t+1} / W_{t+1}",
+    "mismatch_rate": 0.0,
+    "verdict": "PASS"
+  },
+  "positive_control": {
+    "admission": "hidden path-label in admission",
+    "mismatch_rate": 1.0,
+    "verdict": "FAIL as required"
+  },
+  "harness_validity": "HARNESS_VALID",
+  "final_claim": "NOT_FALSIFIED",
+  "final_verdict": "PASS",
+  "interpretation": "W-only Markov not rejected on this stratum. Not a proof that sigma=(W,p) is Markov. Not an empirical closure of soft-KV / tool-state / LLM-dialogue hidden history. Alt histories were equivalent-cue, not deep divergent dialogue summaries. Protocol locked before outcomes.",
+  "semver_a_claim": false,
+  "semver_b_claim": false,
+  "harness_location": "off-repo; this directory ships PROTOCOL + summary only",
+  "reconstructed": true,
+  "reconstructed_note": "Shipped from authoritative 2026-09-05 counts; full per-graph results.json not attached. No secrets."
+}
