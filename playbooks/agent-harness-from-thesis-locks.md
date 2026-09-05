@@ -134,7 +134,7 @@ Rules:
 
 - T=0: drift statements OK (fixed seed for ties).
 - T>0: object is a **path measure**; fix T or average seeds / use a predeclared distributional band.
-- Onsager–Machlup is a **candidate** for continuous surrogates — not a theorem for categorical token noise.
+- Onsager–Machlup is a **candidate** for continuous surrogates — not a theorem for categorical token noise. A derivation would be a large-deviation rate for composed offer+admission+sampler, or a discrete-admission $\to$ Langevin+OM limit on chart (7) (§13 stochasticity lock).
 
 ---
 
@@ -196,5 +196,5 @@ Enough to replay which surface moved and to run gauge / Markov / cap diagnostics
 ## Pointers
 
 - Thesis: `thesis/analytical-mechanics-of-llm-stm.md`  
-- §13 seam locks: Legendre, update rule, stochasticity, Markov (+ W-only empirical), metric (37), inspectability, gauge chart ≠ theorem, dissipation circularity  
+- §13 seam locks: Legendre (+ analysis-only $p$ maps (35)–(36)), update rule (+ discrete Dirac requirements; structure not written), stochasticity (OM candidate / derivation bar), Markov (+ W-only empirical), metric (37), measuring $m$ (off-wire), symmetries besides renaming, inspectability, gauge chart ≠ theorem, dissipation circularity  
 - Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`)
