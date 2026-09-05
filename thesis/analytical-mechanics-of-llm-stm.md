@@ -26,7 +26,7 @@ This thesis is analysis. It is not MemNet product doctrine. It changes no MemNet
 6. $\mathcal{A}$ is an analysis integral over the agent's turns, not engine-retained state. There is no cross-turn trajectory store. That is exactly the stuffed-map failure that dropping prior pin maps exists to prevent.
 7. **No engine-emitted coverage, $d$, $\lambda$, or $m$.** Schematic terms in $L_d$ are analysis. They are not `pin_map` fields. The ban is the same as for $p$.
 8. **An experimental snapshot is not a dump-$S$ API.** Serialising observable material for a RAG bench is a protocol step. It is not a product dump of $S$ and not `rag_query`.
-9. **No learned ranker inside Recall.** Approximating $\arg\max_u H_c$ is experimenter or harness work. It is not a MemNet verb and not a silent merge into RelativeSeed. RelativeSeed still never absorbs.
+9. **No learned ranker inside Recall.** Approximating $\arg\max_u H_c$ is experimenter or harness work. It is not a MemNet verb and not a silent merge into RelativeSeed. RelativeSeed still never absorbs. The §13 inspectability lock restates this operationally.
 
 ---
 
@@ -260,7 +260,7 @@ Control enters at three places:
 2. **Admission:** the caller constructs actual $W_t$ from the proposal, instructions, dialogue, and tool results.
 3. **Eviction:** a KV policy removes elements or attention mass from $W_t$ after admission.
 
-A global ranker controls proposal. It does not determine admission and cannot know the final eviction trajectory by itself. This is why a single relevance score cannot be the mechanism of STM.
+A global ranker controls proposal. It does not determine admission and cannot know the final eviction trajectory by itself. This is why a single relevance score cannot be the mechanism of STM. A ranker that only proposes is allowed; collapsing the three surfaces, or skipping their logs, fails the §13 inspectability lock.
 
 **RAG firewall.** RAG is a legitimate object of study as a load operator. It is still not a sanctioned MemNet operator. Phase-space comparison does not add `rag_query` to the wire.
 
@@ -663,7 +663,21 @@ Right momentum $p_k^+$ is conjugate to the later slot; left momentum $p_k^-$ is 
 
 **Still open.** A derived Onsager–Machlup / large-deviation rate functional for the composed `pin_map` + LLM categorical sampler is not written here, nor is the relation (if any) of the operational estimator $\widehat{\mathcal{A}}_d$ to that rate functional, nor a continuum limit from discrete admission noise to Langevin plus Onsager–Machlup. The lock is the two-regime split and the measurement discipline; it is not a theorem that discrete token noise is Onsager–Machlup.
 
-**Can a learned control remain inspectable?** A ranker may approximate $\arg\max_u H_c$, but its chosen control should still be auditable against hard caps, rename invariance, and proposal/admission/eviction logs. Otherwise optimal-control notation only renames opacity.
+**Seam lock: learned control inspectability.** Yes, conditionally. A learned policy may approximate $u_t\in\arg\max_u H_c$ (15) as experimenter / harness work. Optimal-control notation does not license opacity. The control remains inspectable only if an audit bar holds. This is not a certified trained ranker.
+
+**Audit bar.** All of the following are required.
+
+1. **Emit the chosen control.** Logged $u$ (cue / proposal choice) must be reconstructible from harness logs as observables — not a silent internal score that never appears on the wire.
+2. **Hard caps stay hard.** Engine $M$ / hop / rate / window rejects remain hard. A learned policy must not soften caps into soft penalties inside Recall or RelativeSeed. Cap biting stays a KKT/account diagnostic (§6.2), not a buyable product knob.
+3. **Rename invariance.** Features and outputs of the policy must be $G$-invariant: no `hid` / store key / nickname `id` in ranking features; isomorphic relabellings yield the same control distribution (same gauge test spirit as §8 / P3).
+4. **Three surfaces stay separate.** Proposal, admission, and eviction (§6.3) must be separately logged. A single relevance score that collapses all three fails the bar.
+5. **Doctrine 9.** Approximating $\arg\max_u H_c$ is not a MemNet verb and not a silent merge into RelativeSeed / `pin_map`. Peak\_L firewall unchanged: product `Peak_L` is not $\arg\max L$.
+
+**Fail-able checks.** Protocol, not a claimed run. (i) Hid-feature ablation / permutation: if shuffling hid-only features changes chosen $u$, FAIL inspectable gauge. (ii) Cap-violation rate at the engine must be zero under the learned policy on the test stratum. (iii) From logs alone, an auditor can replay which surface moved (proposal vs admission vs eviction).
+
+**What fails the bar.** A black-box ranker with no emitted $u$; soft-cap training that bypasses engine rejects; hid-leaking features; collapsing proposal/admission/eviction into one opaque score while citing PMP.
+
+**Still open (thin).** Concrete certification suite and acceptance thresholds; whether an LLM-as-ranker can meet the bar without feature-level logs; how close a learned $u$ must be to a true $H_c$ maximiser (approximation quality is not inspectability). The lock is the conditional yes and the audit bar. It is not a certification run.
 
 **Seam lock: which equation is the actual update.** The working set $W$ is discrete, so the load-bearing per-turn update is the forced discrete Euler–Lagrange equation (6) on the turn lattice, with discrete Lagrangian $L_d$ (5). Admission, steering kicks, and commit impulses enter as discrete forces $F_k^\pm$. On the hard window, eviction is carried as a discrete dissipative force in the Marsden–West forced/dissipative discrete EL sense; that carrying is schematic until a discrete Dirac / discrete port-Hamiltonian step exists. Continuous resistive $R$ in (10) remains the continuous forgetting account, not a second competing discrete eviction channel. This is the update a physicist should read as what advances $W_k$ to $W_{k+1}$.
 
@@ -687,7 +701,7 @@ The next LLM generate is a goldfish. Only $W_t$ is resident. The rest is invento
 
 The three roles are the spine. The LLM is the integrator. It runs the controlled, usually stochastic, equations and does not pick the Lagrangian, hold $S$, measure $S$, or commit $S$. Steering is choosing $H$, a force, or a constraint. ShapeWalk, RAG, rankers, and KV eviction are different controls on one phase space. **Memory = manifold + phase point.** The active process is claimed (hypothesis) Markov in measured $(W,p)$ given $S$ under the §13 Markov lock. Usefulness is a trajectory of $\mathcal{A}$, not a dump.
 
-Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator; under the §13 stochasticity lock, deterministic $\mathcal{A}$ statements are drift-level.
+Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. A learned approximation of $\arg\max_u H_c$ remains harness-side and is inspectable only under the §13 audit bar. Stochastic decoding makes the LLM a Langevin-type integrator; under the §13 stochasticity lock, deterministic $\mathcal{A}$ statements are drift-level.
 
 Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
 
