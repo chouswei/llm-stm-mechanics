@@ -418,7 +418,7 @@ RAG is a legitimate experimental control. The RAG firewall still holds: it is no
 
 KV eviction controls the third surface. H2O retains a balance of recent tokens and accumulated-attention heavy hitters [20]. SnapKV uses an observation window to select clustered prompt positions per attention head [21]. Both act by throwing mass out of $W$ when capacity binds.
 
-Their action is dissipative. If a selected KV entry is gone, ordinary Hamiltonian inversion cannot recover it. In the port-Hamiltonian form, each policy changes the resistive structure $R$. A policy that removes task-irrelevant mass has low task-weighted dissipation; one that removes a critical pin has high task-weighted dissipation even if byte counts match.
+Their action is dissipative. If a selected KV entry is gone, ordinary Hamiltonian inversion cannot recover it. In the port-Hamiltonian form, each policy changes the resistive structure $R$. A policy that removes task-irrelevant mass has low task-weighted dissipation; one that removes a critical pin has high task-weighted dissipation even if byte counts match. That language is licensed only under the §13 circularity lock: preregister weights / critical-pin definitions on a development set and evaluate on held-out tasks.
 
 This suggests a common benchmark across ShapeWalk, RAG, H2O, and SnapKV. Hold the model and task fixed. Instrument proposal, admission, and eviction separately. Measure transition distance, resident token mass, task loss, and estimated cap multipliers. They are then comparable controls on one phase space rather than unrelated product categories.
 
@@ -436,7 +436,7 @@ $$
 \widehat{\mathcal{A}}_d=\sum_t\bigl[a\,d(W_t,W_{t+1})^2+b\,\mathrm{tokens\_admitted}_t+c\,\mathrm{critical\_evictions}_t+d\,\ell_{\mathrm{task},t}\bigr],\qquad (30)
 $$
 
-The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-in for the true action, not the action itself. The coefficients $a,b,c,d$ are nonnegative and must be preregistered on a development set before the held-out comparison. Those harnesses may also use a preregistered stand-in for $d$ itself (as the P1 strata did with $d(\emptyset,W):=\lvert W\rvert$); that is a measurement-model choice, not a second definition of $d$ — conceptual $d$ remains the §13 ordered-observable metric (37). $\mathrm{tokens\_admitted}$ counts newly loaded token mass; $\mathrm{critical\_evictions}$ counts removals of task-relevant pins; $\ell_{\mathrm{task}}$ is task loss. This is not claimed to be a universal Lagrangian. It is a measurement model.
+The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-in for the true action, not the action itself. The coefficients $a,b,c,d$ are nonnegative and must be preregistered on a development set before the held-out comparison. Those harnesses may also use a preregistered stand-in for $d$ itself (as the P1 strata did with $d(\emptyset,W):=\lvert W\rvert$); that is a measurement-model choice, not a second definition of $d$ — conceptual $d$ remains the §13 ordered-observable metric (37). $\mathrm{tokens\_admitted}$ counts newly loaded token mass; $\mathrm{critical\_evictions}$ counts removals of task-relevant pins and inherits the §13 preregistration discipline (freeze the checklist before held-out $\widehat{\mathcal{A}}$); $\ell_{\mathrm{task}}$ is task loss. This is not claimed to be a universal Lagrangian. It is a measurement model.
 
 **Protocol.** Build at least 500 synthetic and 200 human-reviewed session graphs. Each task has a known minimal evidence set within $k\le2$ hops of a legal RelativeSeed. Create two load conditions: (A) bounded ShapeWalk with fixed hard $M$, and (B) a semantic RAG operator allowed to retrieve from a serialised snapshot of the same observable material. That snapshot is a bench fixture. It is not a product dump of $S$ and not `rag_query`. Match model, prompt instructions, and total output budget. Compare at equal task quality; do not require matched final evidence coverage. A coverage-match plus a token-mass term in $\widehat{\mathcal{A}}_d$ would make the dump lose by construction. Log offered $\tilde{X}_t$, caller admissions, final $W_t$, KV evictions, answer score, and all random seeds. Run deterministic decoding and a temperature condition with at least 20 seeds. Compare $\widehat{\mathcal{A}}_d$ at matched answer quality using paired bootstrap confidence intervals.
 
@@ -646,7 +646,26 @@ Right momentum $p_k^+$ is conjugate to the later slot; left momentum $p_k^-$ is 
 
 **Still open.** A concrete optimisation programme that would yield a production estimator of either object on real traces — including genuinely nonsmooth mixed-integer programmes — is not chosen here. The lock is conceptual and conditional; it is not an experimental measurement of the seam.
 
-**Can dissipation be task-weighted without circularity?** Evicting a token matters because of future use, which is only partially observed. One route is to estimate counterfactual task loss after forced eviction. Another is to learn a dissipative metric on held-out tasks. Both risk overfitting the Lagrangian to the benchmark.
+**Seam lock: task-weighted dissipation without circularity.** Answer: **Yes, conditionally.** Evicting a token matters because of future use, which is only partially observed. Task-weighting is allowed only if the two layers stay separate and the circularity ban holds. This is not a measured task-weighted $R$, and it is not a MemNet SemVer cut.
+
+**Two layers (keep separate).**
+
+1. **Structural dissipation.** Byte/token mass removed; ordered-observable edit distance of the eviction (metric lock (37)); count of rows leaving $W$. Estimable without task labels. Non-circular by construction.
+2. **Task-weighted dissipation.** The same structural loss reweighted by how much the removed material mattered for a task (critical pins, counterfactual $\Delta\ell_{\mathrm{task}}$). This is where circularity bites.
+
+**Circularity ban.** Do not fit eviction weights, critical-pin definitions, or a dissipative metric on the **same** trajectories / tasks used to claim that a policy has lower $\widehat{\mathcal{A}}$ or better STM quality. That would bake the benchmark into $L$ / $R$ and make the claim circular — same spirit as: do not retune $a,b,c,d$ after outcomes in §10.1.
+
+**Allowed routes (all require preregistration).**
+
+1. **Held-out split.** Preregister task weights / critical-pin checklist / dissipative metric on a development set; freeze them; evaluate policies and $\widehat{\mathcal{A}}$ on held-out tasks only.
+2. **Counterfactual forced-eviction probe.** Estimate task weight of a resident pin by forced removal and measured $\Delta\ell_{\mathrm{task}}$ — but the probe schedule (which pins, when, how many) must be preregistered before outcomes, not cherry-picked after seeing which policy wins.
+3. **Keep $\ell$ out of $R$.** Port-Hamiltonian $R$ (§3.3) is the systems account of forgetting; experimenter running cost $\ell$ and $\widehat{\mathcal{A}}_d$'s $d\cdot\ell_{\mathrm{task}}$ term (§10.1) are analysis scalars. Task-weighting may multiply a structural eviction measure by a preregistered weight; it must not silently rewrite $R$ from the same-run task loss and then cite lower dissipation as an independent success.
+
+**Relation to (30).** The $\mathrm{critical\_evictions}$ term is already a task-weighted stand-in. It is legitimate only under the same preregister / freeze / held-out discipline as $a,b,c,d$.
+
+**What fails.** Same-run fit of weights; redefining "critical" after looking at winners; using attention scores as task weights without a held-out check when the claim is about task quality.
+
+**Still open (thin).** A concrete production estimator of task-weighted $R$; how probe noise propagates into $\widehat{\mathcal{A}}$; whether attention-heavy-hitter scores (H2O) can be calibrated as structural rather than task-circular under a declared protocol. The lock is the conditional yes, the two-layer split, and the circularity ban. It is not a measured task-weighted $R$.
 
 **Which symmetries besides renaming exist?** Cue-basis transformations may be canonical if they preserve observable trajectories. Order invariance is not generally a symmetry because long-context models are position-sensitive [11]. Session-graph automorphisms that preserve all codebook and payload observables are candidates for a larger gauge group.
 
