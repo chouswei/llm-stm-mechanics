@@ -310,7 +310,7 @@ $$
 
 The measurable Shape is an equivalence class $[\tilde{X}_t]$ under $G$, not a bag of cabinet keys. This is gauge invariance: multiple internal descriptions denote one physical working-set trajectory.
 
-For a finite permutation group, invariance gives exact orbit equivalence rather than a differential Noether charge. That orbit equivalence on the quotient $\mathcal{W}/G$ is the theorem. What follows is a continuous pedagogical surrogate, not a derivation from the existing MemNet lock. The lock is a global bijection $\rho$ on hidden ids, applied once to the cabinet. Local turn-dependent renaming is a strictly larger group. Embed renaming in a continuous redundant naming chart only to show what a Noether-II constraint *would* look like. Let $\theta^a_t$ be coordinates that choose an internal naming gauge while observables $x_t$ encode incidence and payload. Write
+For a finite permutation group, invariance gives exact orbit equivalence rather than a differential Noether charge. That orbit equivalence on the quotient $\mathcal{W}/G$ is the theorem. That split is the seam lock in §13. What follows is a continuous pedagogical surrogate, not a derivation from the existing MemNet lock. The lock is a global bijection $\rho$ on hidden ids, applied once to the cabinet. Local turn-dependent renaming is a strictly larger group. Embed renaming in a continuous redundant naming chart only to show what a Noether-II constraint *would* look like. Let $\theta^a_t$ be coordinates that choose an internal naming gauge while observables $x_t$ encode incidence and payload. Write
 
 $$
 W_t=(x_t,\theta_t),\qquad (20)
@@ -676,7 +676,19 @@ How they stack, without inventing a discrete Dirac structure:
 
 **Still open.** An explicit discrete Dirac / discrete port-Hamiltonian step that reduces to unforced (6) when $R=0$ and recovers a discrete analogue of (11) is not written in this paper.
 
-**Is the continuous gauge chart a theorem?** The existing lock is a global discrete group $G$. The turn-dependent $\theta_t$ chart is a larger, continuous, local group used as pedagogy. The vanishing $\pi_a$ is a property of that surrogate. The theorem is the quotient $\mathcal{W}/G$.
+**Seam lock: continuous gauge chart is not a theorem.** Answer: **No.**
+
+**Theorem (what is locked).** $G$ is the group of global bijections $\rho$ on hidden ids that preserve incidence, observable payloads, and codebook-token relations (applied once to the cabinet). $L_d$ is $G$-invariant (19). Physical Shape / working-set trajectories live in the quotient $\mathcal{W}/G$ (orbit equivalence). That is discrete Noether / exact orbit equivalence for a finite permutation group — not a differential Noether-I charge. Executable test: hid permutations with labels canonicalised, order not washed out (§8.3 / P3).
+
+**Not a theorem (pedagogy).** The continuous redundant naming chart $W=(x,\theta)$ with local turn-dependent shifts $\theta\mapsto\theta+\epsilon$ (20)–(21) and vanishing naming momentum $\pi_a=0$ (22)–(23) is a **strictly larger** local continuous group used only to show what a Noether-II constraint *would* look like. $\pi_a\equiv0$ is a property of that surrogate chart, not a conserved payload of the product, not an engine field, and not a derivation of the MemNet lock from continuous gauge theory.
+
+**Misreadings to ban.**
+
+- Reading $\pi\equiv0$ as "the" conserved quantity / hash count.
+- Claiming turn-dependent local renaming is already the product lock.
+- Treating the continuous chart as proving P3; P3 tests the discrete quotient.
+
+**Still open (thin).** Whether a useful intermediate discrete-but-local (turn-dependent) rename group should ever be product-locked; relating continuous Noether-II more formally to the discrete quotient without enlarging the claim.
 
 ## 14 Conclusion
 
@@ -686,7 +698,7 @@ The three roles are the spine. The LLM is the integrator. It runs the controlled
 
 Taking the mechanics seriously repairs the loose parts. Discrete variational mechanics handles discrete $W$. A Rayleigh or port-Hamiltonian term handles forgetting. Under the §13 update lock, (6) is the turn update and (10) is the forgetting account. Mechanical momentum is derived as $p_{\mathrm{mech}}=\partial L/\partial\dot{W}=m\dot{W}$; it is never asserted as a node property. The costate $p_{\mathrm{adj}}$ coincides with that object only under the §13 Legendre seam lock. KKT multipliers handle inequality caps and yield a cap-biting diagnostic. Pontryagin makes cue selection an optimal-control step and sharpens the experimenter role. Stochastic decoding makes the LLM a Langevin-type integrator; under the §13 stochasticity lock, deterministic $\mathcal{A}$ statements are drift-level.
 
-Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a picture of that fact, not the reason.
+Most importantly, analytical mechanics pays for itself through Noether. Hidden-name invariance is a gauge symmetry. Physical action lives on the quotient $\mathcal{W}/G$ because $L_d$ is $G$-invariant. A hidden-id-dependent trajectory is not merely ugly engineering; it is a gauge anomaly with a direct permutation test. The surrogate's $\pi\equiv0$ is a pedagogical picture of that fact, not a theorem and not the reason.
 
 The account can fail, and one run did: Prediction 3 failed on stock $0.19.3$ because `pin_map` ranked by hid. That is the point of a mechanism test. After ranking by observables (PR #147), P3 before-generate passed. The generation half at $T=0$ then split on $0.19.3$ @ `eff05dc8`: RAW FAIL ($30/120$) from nickname `id` still on the `pin_map` wire; CANONICAL PASS ($0/120$) after stripping `id`/`hid`. After MemNet PR #148 (`memnet-llm` 0.19.4, honesty $c$), the same protocol confirmed both RAW and CANONICAL PASS ($0/120$); `raw_id_wire_diff_events=0`. The $T>0$ CANONICAL band then closed on that stack (temperature $0.8$; $N_{\mathrm{SAMPLES\_DIST}}=5$; $\mathrm{DIST\_MATCH\_BAND}=0.05$; mean and min exact-match rate $1.0$ on $120$ pairs; same-run $T=0$ RAW/CANONICAL also PASS $0/120$). That is confirmation, not a new prediction, and not a SemVer $a$ or $b$ claim. P1 and P2 passed on the synthetic stratum; P1 human-reviewed passed on gold presence. Sage closed the author-blind review of that stratum (**ACCEPT after regen**; eight `asymmetric-spoke` graphs regenerated). P1 LLM-answer quality on that same stratum closed at $T=0$ under the **full-gold** KEY-extraction scorer ($n=170$ equal-quality; dump costs more action at equal quality; post-regen primary matches gold-presence). A harder evidence-versus-noise task on the same graphs also closed at $T=0$ ($n=161$ equal-quality; $n_{\mathrm{noise\_leak}}=0$; mean $\Delta\approx 2940.65$; CI $[2782.09, 3098.31]$). The §10.1 temperature band on that harder task then closed at $T=0.8$ with $n_{\mathrm{seeds}}=20$ ($n=160$ strict equal-quality; mean $\Delta\approx 2939.12$; CI $[2779.99, 3096.9]$; $n_{\mathrm{noise\_leak}}=0$). KEY-extraction $T>0$ was not run. An earlier gold$\cap W$ extraction-fidelity score that reported $200/200$ LLM-perfect is invalid and is not the claim. The open items in §13 remain.
 
