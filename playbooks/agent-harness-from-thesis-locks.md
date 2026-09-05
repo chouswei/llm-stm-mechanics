@@ -40,6 +40,24 @@ Per turn t:
 
 ---
 
+## 2.5 User input
+
+User input is **steering / experimenter**, not the integrator and not inventory S by default.
+
+Three placements (may stack on one turn):
+
+1. **As cue / control u** — human message (or a product cue derived from it) maps to u_t: what to propose, admit, commit. Same experimenter slot as an agent choosing the next `pin_map` cue. Log under `cue_q` / `control_u`.
+2. **As admitted mass in W** — if user text is pasted into the window, it is part of ordered W_t (configuration), same as any other span. Not S unless gated Commit writes it.
+3. **As discrete impulse / force** — corrections, user-triggered tool handoffs, “stop/redo” may enter as F± on the turn update without dumping S.
+
+**Not:** a reason to collapse proposal / admission / eviction into one score; not identity-by-name on the graph (“the user said X” ≠ merge nodes by name).
+
+**Log:** user turns → `cue_q` / `control_u`; if text entered the window → also admission (ordered observable / span ids); if Commit → `commit?` line.
+
+**Temperature / Markov:** user text in W is part of measured σ; undeclared UI state (draft buffers, unsent edits) outside W is hidden history (Markov lock).
+
+---
+
 ## 3. Three control surfaces (always log separately)
 
 1. **Proposal** — what was offered (X̃, order preserved).
@@ -158,11 +176,14 @@ turn_t
 
 Enough to replay which surface moved and to run gauge / Markov / cap diagnostics.
 
+- User input: always `cue_q` / `control_u`; plus admission (ordered observable / span ids) if text entered W; plus `commit?` if Commit wrote S. Record placement (cue / W-span / F±). Never dump-S by default.
+
 ---
 
 ## 12. Quick self-check (before calling it “done”)
 
 - [ ] Three surfaces logged separately  
+- [ ] User input placed as cue / W-span / F± (not dump-S; not collapsed surfaces)  
 - [ ] No hid in ranker features or metric  
 - [ ] Hard caps hard; λ̂ only as diagnostic  
 - [ ] Coeffs / critical checklist frozen before held-out  
