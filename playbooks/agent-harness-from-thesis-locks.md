@@ -3,7 +3,7 @@
 **Source:** `thesis/analytical-mechanics-of-llm-stm.md` in [llm-stm-mechanics](https://github.com/chouswei/llm-stm-mechanics)  
 **Status:** operational checklist derived from locked §13 seams + §6–§10. Not a MemNet SemVer claim.
 
-Use this when wiring an LLM agent that uses session memory (MemNet ShapeWalk or any inventory S + working set W). When a task fails, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) (harness = how to wire; that = how to debug).
+Use this when wiring an LLM agent that uses session memory (MemNet ShapeWalk or any inventory S + working set W). When a task fails, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) (harness = how to wire; that = how to debug). Desk surface map (AI Investor CompanyMemory): [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ---
 
@@ -198,4 +198,5 @@ Enough to replay which surface moved and to run gauge / Markov / cap diagnostics
 - Thesis: `thesis/analytical-mechanics-of-llm-stm.md`  
 - §13 seam locks: Legendre (+ analysis-only $p$ maps (35)–(36)), update rule (+ discrete Dirac requirements; structure not written), stochasticity (OM candidate / derivation bar), Markov (+ W-only empirical), metric (37), measuring $m$ (off-wire), symmetries besides renaming, inspectability, gauge chart ≠ theorem, dissipation circularity  
 - Debug when a task fails: [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md)  
+- Desk surface map (AI Investor CompanyMemory; not a desk code change): [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md)  
 - Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`; ShapeWalk vs lexical RAG live driver: `experiments/shapewalk-vs-rag/`)

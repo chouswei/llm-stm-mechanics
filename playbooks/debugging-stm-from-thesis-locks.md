@@ -3,7 +3,7 @@
 **Source:** `thesis/analytical-mechanics-of-llm-stm.md` in [llm-stm-mechanics](https://github.com/chouswei/llm-stm-mechanics)  
 **Status:** operational debugging checklist derived from locked §13 seams. Pair with [`playbooks/agent-harness-from-thesis-locks.md`](agent-harness-from-thesis-locks.md): harness = how to wire; this = how to triage when a task fails. Not a MemNet SemVer claim. Honesty $c$ / wire leaks are **symptoms**, not version cuts.
 
-Use this when an LLM agent with session memory (MemNet ShapeWalk or any inventory $S$ + working set $W$) fails a task. Do **not** put $m$, $p$, momentum, coverage, $\lambda$, or stickiness on `pin_map` as product fields — analysis / diagnostics only.
+Use this when an LLM agent with session memory (MemNet ShapeWalk or any inventory $S$ + working set $W$) fails a task. Do **not** put $m$, $p$, momentum, coverage, $\lambda$, or stickiness on `pin_map` as product fields — analysis / diagnostics only. Desk surface map (AI Investor CompanyMemory): [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ---
 
@@ -188,6 +188,6 @@ Never log hid as a ranking feature. Observable identities only in the metric (37
 ## 6. Pointers
 
 - Thesis: `thesis/analytical-mechanics-of-llm-stm.md`  
-- Pair: [`playbooks/agent-harness-from-thesis-locks.md`](agent-harness-from-thesis-locks.md) (wire); this file (triage)  
+- Pair: [`playbooks/agent-harness-from-thesis-locks.md`](agent-harness-from-thesis-locks.md) (wire); this file (triage); desk surface map [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md) (AI Investor CompanyMemory; not a desk code change)  
 - §13 seam locks: metric (37), Markov, Legendre, update, stochasticity, gauge/P3 (chart ≠ theorem), inspectability, dissipation circularity, measuring $m$, symmetries besides renaming, user-input placement (harness §2.5)  
 - Empirical: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`)
