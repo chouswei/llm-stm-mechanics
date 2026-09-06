@@ -2,7 +2,7 @@
 
 **Szu-Wei Chou**
 
-**2026-09-03** (results §10 updated 2026-09-04; §13 W-only Markov 2026-09-05)
+**2026-09-03** (results §10 updated 2026-09-04; §13 W-only Markov 2026-09-05; ShapeWalk vs RAG bake-off 2026-09-06)
 
 > **Header note.** This is a research note accompanying MemNet (https://github.com/chouswei/MemNet). It is analysis. It is not a MemNet SemVer claim and changes no MemNet version.
 
@@ -455,6 +455,8 @@ The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-
 **Result (harder LLM-answer quality / evidence-versus-noise, 2026-09-04).** PASS. Same $n=200$ p1-hr graphs, same coefficient lock (**not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy. This is a **harder discrimination task** than KEY-extraction above (keep that result). **No** `KEY=` / `key:` markers. Prompt-only `evidence: 'E{session_i}-{slug}'` on $\mathrm{gold}\cap W$; prompt-only `noise: 'N{session_i}-{slug}'` on non-gold in $W$. Task: list every evidence value, ignore noise; alphabetical, comma-separated. Scorer: $\mathrm{score\_llm}=\lvert\mathrm{pred}\cap\mathrm{full\_gold\_evidence}\rvert/\lvert\mathrm{full\_gold\_evidence}\rvert$, where $\mathrm{full\_gold\_evidence}$ is the evidence tag for *all* `graph.gold_slugs`, **not** $\mathrm{gold}\cap W$. $\mathrm{noise\_leak}$ if any $N\ldots$ token appears in $\mathrm{pred}$. Equal-quality gate: both $\mathrm{score\_llm}=1.0$ **and** no noise leak. Post-regen: $n_{\mathrm{both\_perfect}}=161$; $n_{\mathrm{noise\_leak}}=0$; $n_{\mathrm{walk\_imperfect\_llm}}=35$; $n_{\mathrm{dump\_imperfect\_llm}}=9$. Mean $\Delta\approx 2940.65$; $95\%$ CI $[2782.09, 3098.31]$ excludes $0$. Elapsed $\sim 674.8$s. Verdict **PASS**. $T>0$ closed on this same harder task below. Harness: [`experiments/p1-llm-hard/`](../experiments/p1-llm-hard/).
 
 **Result ($T>0$ harder LLM-answer quality / evidence-versus-noise, 2026-09-04).** PASS. Same harder task and coefficient lock (**not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, temperature $0.8$, $n_{\mathrm{seeds}}=20$ per (graph, condition). $\mathrm{score\_mean}$ := mean over seeds of full-gold evidence score; $\mathrm{noise\_leak\_any}$ if any seed leaks an $N\ldots$ token. Primary equal-quality: both $\mathrm{score\_mean}=1.0$ and no $\mathrm{noise\_leak\_any}$. $n_{\mathrm{both\_perfect}}=160$; $n_{\mathrm{noise\_leak}}=0$; mean $\Delta\approx 2939.12$; $95\%$ CI $[2779.99, 3096.9]$ excludes $0$. Relaxed secondary ($\mathrm{score\_mean}\ge 0.95$, no leak): $n=161$, mean $\Delta\approx 2940.64$ — not the strict claim. Elapsed $\sim 1343$s; $\sim 8001$ OpenRouter calls. Closes the §10.1 temperature band on this harder task. Harness: [`experiments/p1-tgt0/`](../experiments/p1-tgt0/).
+
+**Result (ShapeWalk vs Dump vs lexical RAG top-$k$, 2026-09-06).** PASS. Same harder evidence-versus-noise task and coefficient lock (**not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy. Three arms: ShapeWalk `pin_map` ($M=12$, $k=2$), dump (uncapped), lexical Jaccard top-$k=12$ (no graph walk; not embedding-RAG). Primary claim is equal-quality triples, not pairwise rescue. Authoritative numbers: [`experiments/shapewalk-vs-rag/results.summary.json`](../experiments/shapewalk-vs-rag/results.summary.json). Not a replacement of the p1-llm-hard dump contrast. Not a SemVer $a$/$b$ claim.
 
 ### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 

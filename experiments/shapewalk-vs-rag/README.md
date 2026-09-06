@@ -4,7 +4,7 @@ Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs: **S
 
 **Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Do not retune $k$, Jaccard, $\widehat{\mathcal{A}}$ coeffs, or the PASS band after seeing outcomes.
 
-**Authoritative numbers:** none yet. This directory ships **no** `results.summary.json`. A live run writes [`results.live.json`](results.live.json) by default. Do **not** invent a PASS. Do not treat `results.live.json` as the paper record until `SHAPEWALK_VS_RAG_WRITE=1` after a locked protocol run.
+**Authoritative numbers:** [`results.summary.json`](results.summary.json) / [`REPORT.md`](REPORT.md). Do not overwrite them from a different model, package, or scorer. A live re-run writes [`results.live.json`](results.live.json) by default. Do **not** treat `results.live.json` as the paper record unless `SHAPEWALK_VS_RAG_WRITE=1` after a locked protocol run.
 
 ## Stack
 
@@ -50,4 +50,4 @@ Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P
 
 ## What this is not
 
-Not SemVer. Not embedding-RAG. Not a proof RAG is always worse. Not a replacement of [`../p1-llm-hard/results.summary.json`](../p1-llm-hard/results.summary.json). Not an authoritative PASS until `WRITE=1` after a locked live run.
+Not SemVer. Not embedding-RAG. Not a proof RAG is always worse. Not a replacement of [`../p1-llm-hard/results.summary.json`](../p1-llm-hard/results.summary.json). Primary claim is equal-quality triples, not pairwise rescue.
