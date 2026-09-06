@@ -87,5 +87,5 @@ Among **equal-quality triples** (all three arms equal-quality on the same sessio
 ## Still later (not this protocol version)
 
 - Embedding RAG arm — **started** (this lexical PASS record is unchanged): [`../shapewalk-vs-rag-embed/`](../shapewalk-vs-rag-embed/)
-- $T>0$ band
+- $T>0$ band — **started** (this $T=0$ lexical PASS record is unchanged): [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/)
 - KEY-extraction variant

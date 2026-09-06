@@ -48,6 +48,10 @@ Live writes [`results.live.json`](results.live.json) by default. It does **not**
 
 Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P1_LLM_MODEL` (default `openai/gpt-4o-mini`).
 
+## Sibling $T>0$ band
+
+Lexical $T>0$ (same arms; $T=0.8$, $n_{\mathrm{seeds}}=20$) is [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/). That driver must **not** overwrite this $T=0$ PASS.
+
 ## What this is not
 
 Not SemVer. Not embedding-RAG. Not a proof RAG is always worse. Not a replacement of [`../p1-llm-hard/results.summary.json`](../p1-llm-hard/results.summary.json). Primary claim is equal-quality triples, not pairwise rescue.

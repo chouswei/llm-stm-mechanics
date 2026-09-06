@@ -1,6 +1,6 @@
-# Experiments (P1 / P1-HR / P1-LLM / P1-LLM-hard / P1-tgt0 / P1-blind / ShapeWalk-vs-RAG / ShapeWalk-vs-RAG-embed / P2 / P3 / P3-gen / P3-gen-0194 / P3-tgt0 / Markov W-only)
+# Experiments (P1 / P1-HR / P1-LLM / P1-LLM-hard / P1-tgt0 / P1-blind / ShapeWalk-vs-RAG / ShapeWalk-vs-RAG-embed / ShapeWalk-vs-RAG-tgt0 / P2 / P3 / P3-gen / P3-gen-0194 / P3-tgt0 / Markov W-only)
 
-Harnesses for the thesis §10 predictions and the §13 W-only Markov record. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`, harder evidence-versus-noise `p1-llm-hard/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; P1 $T>0$ harder (`p1-tgt0/`) and P3 $T>0$ CANONICAL (`p3-tgt0/`) are the temperature bands on the same stack. That is the exception, not a change to the synthetic strata. W-only Markov (`markov-w-only/`) is a structural goldfish falsification (no LLM); it is not a proof that $\sigma=(W,p)$ is Markov. ShapeWalk vs RAG (`shapewalk-vs-rag/`) is a **locked three-arm OpenRouter bake-off** (ShapeWalk `pin_map`, dump, lexical top-$k$ RAG) on the same p1-hr graphs; authoritative numbers are `experiments/shapewalk-vs-rag/results.summary.json` (**PASS**). ShapeWalk vs Embedding RAG (`shapewalk-vs-rag-embed/`) is a **locked three-arm OpenRouter bake-off** (ShapeWalk `pin_map`, dump, MiniLM cosine top-$k$); authoritative numbers are `experiments/shapewalk-vs-rag-embed/results.summary.json` (**PASS**). It does **not** overwrite the lexical PASS.
+Harnesses for the thesis §10 predictions and the §13 W-only Markov record. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`, harder evidence-versus-noise `p1-llm-hard/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; P1 $T>0$ harder (`p1-tgt0/`) and P3 $T>0$ CANONICAL (`p3-tgt0/`) are the temperature bands on the same stack. That is the exception, not a change to the synthetic strata. W-only Markov (`markov-w-only/`) is a structural goldfish falsification (no LLM); it is not a proof that $\sigma=(W,p)$ is Markov. ShapeWalk vs RAG (`shapewalk-vs-rag/`) is a **locked three-arm OpenRouter bake-off** (ShapeWalk `pin_map`, dump, lexical top-$k$ RAG) on the same p1-hr graphs; authoritative numbers are `experiments/shapewalk-vs-rag/results.summary.json` (**PASS**). ShapeWalk vs Embedding RAG (`shapewalk-vs-rag-embed/`) is a **locked three-arm OpenRouter bake-off** (ShapeWalk `pin_map`, dump, MiniLM cosine top-$k$); authoritative numbers are `experiments/shapewalk-vs-rag-embed/results.summary.json` (**PASS**). It does **not** overwrite the lexical PASS. ShapeWalk vs RAG $T>0$ (`shapewalk-vs-rag-tgt0/`) is the **same lexical three-arm bake-off** on the p1-tgt0 temperature band ($T=0.8$, $n_{\mathrm{seeds}}=20$, `score_mean` / `noise_leak_any`); protocol + live driver; **no** `results.summary.json` until a locked `WRITE=1` run. It does **not** overwrite the $T=0$ lexical PASS or `p1-tgt0`. Embedding $T>0$ stays still-later.
 
 ## Stack
 
@@ -61,6 +61,18 @@ python3 experiments/shapewalk-vs-rag-embed/run_shapewalk_vs_rag_embed.py --dry
 # .venv/bin/python experiments/shapewalk-vs-rag-embed/run_shapewalk_vs_rag_embed.py
 # Live writes results.live.json unless SHAPEWALK_VS_RAG_EMBED_WRITE=1
 
+# ShapeWalk vs Dump vs RAG lexical top-k — T>0 band (protocol + live driver)
+# Parent T=0 lock: experiments/shapewalk-vs-rag/results.summary.json (do not overwrite)
+# Protocol: experiments/shapewalk-vs-rag-tgt0/PROTOCOL.md
+# Same arms as T=0 lexical; scoring matches p1-tgt0 (T=0.8, n_seeds=20).
+# Full live: 200×3×20 = 12000 generate calls; use --limit for smoke.
+# No results.summary.json unless SHAPEWALK_VS_RAG_TGT0_WRITE=1.
+python3 experiments/shapewalk-vs-rag-tgt0/run_shapewalk_vs_rag_tgt0.py --check-scorer
+python3 experiments/shapewalk-vs-rag-tgt0/run_shapewalk_vs_rag_tgt0.py --dry
+# export OPENROUTER_API_KEY=   # never commit
+# .venv/bin/pip install "memnet-llm==0.19.5"
+# .venv/bin/python experiments/shapewalk-vs-rag-tgt0/run_shapewalk_vs_rag_tgt0.py
+
 # P1-tgt0 — T>0 harder evidence-vs-noise (T=0.8, n_seeds=20)
 # Authoritative numbers: experiments/p1-tgt0/results.summary.json
 # Live 200×20 driver lived off-repo; this script is the scorer lock.
@@ -110,5 +122,6 @@ export OPENROUTER_API_KEY=  # never commit
 | W-only Markov ($\sigma=W$) | NOT_FALSIFIED (PASS) | 0.19.4; n_matched=200; main mismatch_rate=0; positive-control mismatch_rate=1.0; HARNESS_VALID; not a proof of $\sigma=(W,p)$ |
 | ShapeWalk vs RAG (lexical top-$k$) | PASS | 0.19.4; T=0 gpt-4o-mini; $k=M=12$; n_triple=83; mean Δ_RAG≈211.57, CI [184.66, 236.75]; mean Δ_dump≈3108.59, CI [2886.52, 3335.23]; n_noise_leak=0; not embedding-RAG; not SemVer; not a replacement of p1-llm-hard |
 | ShapeWalk vs Embedding RAG (MiniLM top-$k$) | PASS | 0.19.5; T=0 gpt-4o-mini generate-only; MiniLM cosine $k=M=12$; n_pair=88; mean Δ_embed≈210.94, CI [183.34, 237.69]; secondary walk+Dump n=170, mean Δ≈2936.35, CI [2784.14, 3091.5]; n_noise_leak=0; not a proof embeddings always lose; not a retune of the lexical PASS; not SemVer |
+| ShapeWalk vs RAG (lexical $T>0$) | OPEN (protocol) | same arms as T=0 lexical; T=0.8; n_seeds=20; score_mean / noise_leak_any (p1-tgt0); n_triple_min=30; B=10000 seed 42; no results.summary.json yet; not a replacement of T=0 PASS or p1-tgt0; embedding T>0 still-later; not SemVer |
 
 Full per-session dumps are truncated in `*.summary.json`; re-run the scripts for complete artifacts.
