@@ -6,7 +6,7 @@ Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; f
 
 **Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Do not retune $k$, the MiniLM embedder, $\widehat{\mathcal{A}}$ coeffs, or the PASS band after seeing outcomes.
 
-**Authoritative numbers:** none in this scaffold. Do **not** invent [`results.summary.json`](results.summary.json) PASS. A live run writes [`results.live.json`](results.live.json) by default. Do **not** treat `results.live.json` as the paper record unless `SHAPEWALK_VS_RAG_EMBED_WRITE=1` after a locked protocol run.
+**Authoritative numbers:** [`results.summary.json`](results.summary.json) / [`REPORT.md`](REPORT.md). Do not overwrite them from a different model, package, embedder, or scorer. A live re-run writes [`results.live.json`](results.live.json) by default. Do **not** treat `results.live.json` as the paper record unless `SHAPEWALK_VS_RAG_EMBED_WRITE=1` after a locked protocol run.
 
 ## Stack
 
