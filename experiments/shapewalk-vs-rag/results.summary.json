@@ -1,0 +1,101 @@
+{
+  "prediction": "ShapeWalk vs Dump vs RAG lexical top-k (PROTOCOL.md)",
+  "verdict": "PASS",
+  "verdict_reason": "Equal-quality triples: mean Δ_RAG>0 and CI excludes 0; mean Δ_dump>0 and CI excludes 0; n_triple>=30; coefficients not retuned; scorer is full-gold evidence + noise_leak gate.",
+  "protocol": "experiments/shapewalk-vs-rag/PROTOCOL.md",
+  "stratum": "experiments/p1-hr/ (Sage author-blind ACCEPT after regen; n=200)",
+  "task": "harder evidence-versus-noise (same as p1-llm-hard; no KEY= markers)",
+  "scorer": "full_gold_evidence recall + noise_leak gate; equal_quality := score_llm==1.0 AND no noise_leak",
+  "full_gold_evidence": true,
+  "harder_than": "experiments/p1-llm-hard/ KEY-extraction and gold-presence strata",
+  "arms": [
+    "shapewalk_pin_map",
+    "dump",
+    "rag_lexical_jaccard_top_k"
+  ],
+  "rag_k": 12,
+  "walk": {
+    "k_hop": 2,
+    "max_rows": 12,
+    "cue_kind": "HUB"
+  },
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "note": "not retuned; conceptual d remains Lev (37)"
+  },
+  "memnet_llm_version": "0.19.4",
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0.0,
+    "decoding": "greedy T=0 (predeclared primary band)"
+  },
+  "T_gt_0": false,
+  "n_sessions": 200,
+  "n_ok": 200,
+  "n_error": 0,
+  "n_noise_leak": 0,
+  "n_triple": 83,
+  "n_triple_min": 30,
+  "n_pair_walk_rag": 83,
+  "n_pair_walk_dump": 170,
+  "stats_triple": {
+    "delta_rag": {
+      "mean": 211.56626506024097,
+      "median": 231.0,
+      "ci95": [
+        184.66265060240963,
+        236.74698795180723
+      ],
+      "n": 83,
+      "n_bootstrap": 10000
+    },
+    "delta_dump": {
+      "mean": 3108.590361445783,
+      "median": 3045.0,
+      "ci95": [
+        2886.5180722891564,
+        3335.2289156626507
+      ],
+      "n": 83,
+      "n_bootstrap": 10000
+    }
+  },
+  "stats_pairwise_walk_rag": {
+    "mean": 211.56626506024097,
+    "median": 231.0,
+    "ci95": [
+      184.66265060240963,
+      236.74698795180723
+    ],
+    "n": 83,
+    "n_bootstrap": 10000
+  },
+  "stats_pairwise_walk_dump": {
+    "mean": 2936.3529411764707,
+    "median": 2847.0,
+    "ci95": [
+      2784.141176470588,
+      3091.5
+    ],
+    "n": 170,
+    "n_bootstrap": 10000
+  },
+  "call_counts": {
+    "open_session": 200,
+    "MutateGate.apply": 200,
+    "PinMapComposer.compose": 200,
+    "close_session": 200
+  },
+  "elapsed_s": 788.7611541748047,
+  "dry_run": false,
+  "live_driver_shipped": true,
+  "authoritative_summary": true,
+  "honesty": "no SemVer a/b claim; package pin 0.19.4 only",
+  "note": "Authoritative paper record. Do not overwrite from a different model, package, or scorer. Primary claim is equal-quality triples, not pairwise rescue."
+}
