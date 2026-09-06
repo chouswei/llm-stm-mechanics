@@ -1,0 +1,81 @@
+{
+  "prediction": "ShapeWalk vs Dump vs Embedding RAG top-k (PROTOCOL.md)",
+  "verdict": "PASS",
+  "verdict_reason": "Equal-quality pairs (ShapeWalk + EmbedRAG): mean Δ_embed>0 and CI excludes 0; n_pair>=30; coefficients not retuned; scorer is full-gold evidence + noise_leak gate. Not a proof embeddings always lose.",
+  "protocol": "experiments/shapewalk-vs-rag-embed/PROTOCOL.md",
+  "parent_lexical_lock": "experiments/shapewalk-vs-rag/ (PASS; do not overwrite)",
+  "stratum": "experiments/p1-hr/ (Sage author-blind ACCEPT after regen; n=200)",
+  "task": "harder evidence-versus-noise (same as p1-llm-hard; no KEY= markers)",
+  "scorer": "full_gold_evidence recall + noise_leak gate; equal_quality := score_llm==1.0 AND no noise_leak",
+  "full_gold_evidence": true,
+  "arms": [
+    "shapewalk_pin_map",
+    "dump",
+    "rag_embedding_minilm_cosine_top_k"
+  ],
+  "embedder": "sentence-transformers/all-MiniLM-L6-v2",
+  "rag_k": 12,
+  "walk": {
+    "k_hop": 2,
+    "max_rows": 12,
+    "cue_kind": "HUB"
+  },
+  "coefficient_lock": {
+    "a": 1.0,
+    "b": 1.0,
+    "c": 0.0,
+    "d": 10.0,
+    "d_empty_W": "|W|",
+    "note": "not retuned; conceptual d remains Lev (37)"
+  },
+  "memnet_llm_version": "0.19.5",
+  "llm": {
+    "provider": "OpenRouter",
+    "model": "openai/gpt-4o-mini",
+    "base": "https://openrouter.ai/api/v1",
+    "temperature": 0.0,
+    "decoding": "greedy T=0 (predeclared primary band)",
+    "use": "generate only; embeddings are local MiniLM"
+  },
+  "T_gt_0": false,
+  "n_sessions": 200,
+  "n_ok": 200,
+  "n_error": 0,
+  "n_noise_leak": 0,
+  "n_pair": 88,
+  "n_pair_min": 30,
+  "n_pair_walk_embed": 88,
+  "n_pair_walk_dump": 170,
+  "stats_pairwise_walk_embed": {
+    "mean": 210.9431818181818,
+    "median": 242.5,
+    "ci95": [
+      183.3409090909091,
+      237.6931818181818
+    ],
+    "n": 88,
+    "n_bootstrap": 10000
+  },
+  "stats_pairwise_walk_dump": {
+    "mean": 2936.3529411764707,
+    "median": 2847.0,
+    "ci95": [
+      2784.141176470588,
+      3091.5
+    ],
+    "n": 170,
+    "n_bootstrap": 10000
+  },
+  "call_counts": {
+    "open_session": 200,
+    "MutateGate.apply": 200,
+    "PinMapComposer.compose": 200,
+    "close_session": 200
+  },
+  "elapsed_s": 857.456933259964,
+  "dry_run": false,
+  "live_driver_shipped": true,
+  "authoritative_summary": true,
+  "honesty": "no SemVer a/b claim; package pin 0.19.5 only",
+  "note": "Authoritative paper record for embedding arm. Do not overwrite from a different model, package, embedder, or scorer. Primary claim is equal-quality walk+embed pairs. Lexical PASS remains separate."
+}

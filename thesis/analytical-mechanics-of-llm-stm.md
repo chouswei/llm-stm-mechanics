@@ -2,7 +2,7 @@
 
 **Szu-Wei Chou**
 
-**2026-09-03** (results §10 updated 2026-09-04; §13 W-only Markov 2026-09-05; ShapeWalk vs RAG bake-off 2026-09-06)
+**2026-09-03** (results §10 updated 2026-09-04; §13 W-only Markov 2026-09-05; ShapeWalk vs RAG bake-off 2026-09-06; Embedding RAG arm 2026-09-06)
 
 > **Header note.** This is a research note accompanying MemNet (https://github.com/chouswei/MemNet). It is analysis. It is not a MemNet SemVer claim and changes no MemNet version.
 
@@ -457,6 +457,8 @@ The hat on $\widehat{\mathcal{A}}_d$ marks an *estimator*: an operational stand-
 **Result ($T>0$ harder LLM-answer quality / evidence-versus-noise, 2026-09-04).** PASS. Same harder task and coefficient lock (**not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, temperature $0.8$, $n_{\mathrm{seeds}}=20$ per (graph, condition). $\mathrm{score\_mean}$ := mean over seeds of full-gold evidence score; $\mathrm{noise\_leak\_any}$ if any seed leaks an $N\ldots$ token. Primary equal-quality: both $\mathrm{score\_mean}=1.0$ and no $\mathrm{noise\_leak\_any}$. $n_{\mathrm{both\_perfect}}=160$; $n_{\mathrm{noise\_leak}}=0$; mean $\Delta\approx 2939.12$; $95\%$ CI $[2779.99, 3096.9]$ excludes $0$. Relaxed secondary ($\mathrm{score\_mean}\ge 0.95$, no leak): $n=161$, mean $\Delta\approx 2940.64$ — not the strict claim. Elapsed $\sim 1343$s; $\sim 8001$ OpenRouter calls. Closes the §10.1 temperature band on this harder task. Harness: [`experiments/p1-tgt0/`](../experiments/p1-tgt0/).
 
 **Result (ShapeWalk vs Dump vs lexical RAG top-$k$, 2026-09-06).** PASS. Same harder evidence-versus-noise task and coefficient lock (**not retuned**). `memnet-llm` $0.19.4$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy. Three arms: ShapeWalk `pin_map` ($M=12$, $k=2$), dump (uncapped), lexical Jaccard top-$k=12$ (no graph walk; not embedding-RAG). Primary claim is equal-quality triples, not pairwise rescue. Authoritative numbers: [`experiments/shapewalk-vs-rag/results.summary.json`](../experiments/shapewalk-vs-rag/results.summary.json). Not a replacement of the p1-llm-hard dump contrast. Not a SemVer $a$/$b$ claim.
+
+**Result (ShapeWalk vs Dump vs Embedding RAG top-$k$, 2026-09-06).** PASS. Same harder evidence-versus-noise task and coefficient lock (**not retuned**). `memnet-llm` $0.19.5$. LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$ greedy, generate only. Embedder: local `sentence-transformers/all-MiniLM-L6-v2` cosine top-$k=12$ (no OpenAI-embed RAG). Primary claim is equal-quality **pairs** (ShapeWalk + Embedding RAG), not dump rescue and not a replacement of the lexical PASS above. $n_{\mathrm{pair}}=88$; mean $\Delta_{\mathrm{embed}}\approx 210.94$; $95\%$ CI $[183.34, 237.69]$ excludes $0$. Secondary walk+Dump: $n=170$; mean $\Delta\approx 2936.35$; CI $[2784.14, 3091.5]$. Authoritative numbers: [`experiments/shapewalk-vs-rag-embed/results.summary.json`](../experiments/shapewalk-vs-rag-embed/results.summary.json). Not a proof embeddings always lose. Not a SemVer $a$/$b$ claim.
 
 ### 10.2 Prediction 2: the M-cap multiplier detects a wrong Shape
 
