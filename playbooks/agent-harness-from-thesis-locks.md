@@ -198,4 +198,4 @@ Enough to replay which surface moved and to run gauge / Markov / cap diagnostics
 - Thesis: `thesis/analytical-mechanics-of-llm-stm.md`  
 - §13 seam locks: Legendre (+ analysis-only $p$ maps (35)–(36)), update rule (+ discrete Dirac requirements; structure not written), stochasticity (OM candidate / derivation bar), Markov (+ W-only empirical), metric (37), measuring $m$ (off-wire), symmetries besides renaming, inspectability, gauge chart ≠ theorem, dissipation circularity  
 - Debug when a task fails: [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md)  
-- Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`; ShapeWalk vs lexical RAG scaffold: `experiments/shapewalk-vs-rag/`)
+- Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`; ShapeWalk vs lexical RAG live driver: `experiments/shapewalk-vs-rag/`)

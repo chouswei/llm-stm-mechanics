@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""ShapeWalk vs Dump vs RAG lexical top-k — protocol + harness scaffold.
+"""ShapeWalk vs Dump vs RAG lexical top-k — live three-arm OpenRouter driver.
 
-Lock: experiments/shapewalk-vs-rag/PROTOCOL.md (preregistered; no Result here).
-Authoritative Â / PASS numbers do not exist until a locked live run. This
-script does not write results.summary.json unless SHAPEWALK_VS_RAG_WRITE=1.
+Lock: experiments/shapewalk-vs-rag/PROTOCOL.md (preregistered; do not retune).
+Authoritative Â / PASS numbers do not exist until a locked live run is written
+under SHAPEWALK_VS_RAG_WRITE=1. Default live writes results.live.json only.
 
 Three W builders:
-  shapewalk — live: MemNet pin_map (same spirit as p1-llm-hard walk).
+  shapewalk — live: MemNet PinMapComposer.compose / pin_map (not BFS).
               dry: BFS k-hop cap-M stand-in (NOT pin_map; labelled).
-  dump      — all observable nodes from the graph spec (P1 dump fixture).
-  rag       — lexical token-Jaccard top-k; deterministic; no embeddings.
+  dump      — live: all observable session nodes (P1 dump fixture; uncapped).
+              dry: all observable nodes from the graph spec.
+  rag       — lexical token-Jaccard top-k; deterministic; no embeddings; no hid.
 
 Scorer copied (minimal) from experiments/p1-llm-hard/: full-gold evidence
 recall + noise_leak gate. Do not change p1-llm-hard.
@@ -18,7 +19,9 @@ Env:
   OPENROUTER_API_KEY           required for a live generate (never commit)
   OPENROUTER_BASE_URL          default https://openrouter.ai/api/v1
   P1_LLM_MODEL                 default openai/gpt-4o-mini
-  SHAPEWALK_VS_RAG_WRITE       if 1, allow writing results.summary.json
+  SHAPEWALK_VS_RAG_WRITE       if 1, also write results.summary.json after a
+                               real live run (do not set from a different
+                               model / package / scorer)
   SHAPEWALK_VS_RAG_DRY         if 1, W-stats only (not a paper verdict)
 
 No secrets in this file. No MemNet SemVer claim.
@@ -28,13 +31,21 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import re
+import statistics
 import sys
+import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 HERE = Path(__file__).resolve().parent
-P1_HR_SPECS = HERE.parent / "p1-hr" / "graphs" / "specs"
+P1_HR_DIR = HERE.parent / "p1-hr"
+P1_HR_SPECS = P1_HR_DIR / "graphs" / "specs"
+SCHEMA_PATH = P1_HR_DIR / "schema.txt"
 SUMMARY_PATH = HERE / "results.summary.json"
 LIVE_PATH = HERE / "results.live.json"
 
@@ -55,6 +66,8 @@ BOOTSTRAP_SEED = 42
 DEFAULT_BASE = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = "openai/gpt-4o-mini"
 TEMPERATURE = 0.0
+MAX_TOKENS = 256
+HTTP_RETRIES = 6
 
 TOKEN_RE = re.compile(r"[EN]\d+-[A-Za-z0-9._-]+")
 LEX_TOKEN_RE = re.compile(r"[a-z0-9]+")
@@ -87,6 +100,7 @@ class GraphObs:
     gold_slugs: tuple[str, ...]
     nodes: tuple[NodeObs, ...]
     edges: tuple[tuple[str, str], ...]  # undirected hop graph (src, dst)
+    raw: dict[str, Any]
 
     def hub(self) -> NodeObs:
         for n in self.nodes:
@@ -195,7 +209,7 @@ def build_w_rag(graph: GraphObs, *, k: int = RAG_K) -> list[NodeObs]:
 
 
 def build_w_dump(graph: GraphObs) -> list[NodeObs]:
-    """Uncapped dump of observable nodes (spec order)."""
+    """Uncapped dump of observable nodes (spec order). Dry / JSON fixture."""
     return list(graph.nodes)
 
 
@@ -254,6 +268,7 @@ def load_graph_json(path: Path) -> GraphObs:
         gold_slugs=tuple(str(s) for s in raw["gold_slugs"]),
         nodes=nodes,
         edges=edges,
+        raw=raw,
     )
 
 
@@ -292,6 +307,149 @@ def summarise_arm(rows: list[dict]) -> dict:
         "mean_gold_in_w": sum(r["n_gold_in_w"] for r in rows) / n,
         "mean_gold_coverage_in_w": sum(r["gold_coverage_in_w"] for r in rows) / n,
         "mean_tokens": sum(r["tokens"] for r in rows) / n,
+    }
+
+
+def locked_block() -> dict:
+    return {
+        "memnet_package": MEMNET_PACKAGE,
+        "k_hop": K_HOP,
+        "M_walk": M_WALK,
+        "rag_k": RAG_K,
+        "cue_kind": CUE_KIND,
+        "coef": {"a": COEF_A, "b": COEF_B, "c": COEF_C, "d": COEF_D},
+        "d_empty_W": "|W|",
+        "conceptual_d": "Lev (37)",
+        "n_triple_min": N_TRIPLE_MIN,
+        "bootstrap_B": BOOTSTRAP_B,
+        "bootstrap_seed": BOOTSTRAP_SEED,
+        "temperature": TEMPERATURE,
+        "model": DEFAULT_MODEL,
+        "scorer": "full_gold_evidence",
+        "equal_quality": "score_llm==1.0 AND no noise_leak",
+        "retuned": False,
+        "semver_claim": False,
+    }
+
+
+def format_working_set(session_i: int, w: list[NodeObs], gold_slugs: tuple[str, ...]) -> str:
+    """Prompt-only evidence/noise tags. Observables only (no nick/hid)."""
+    gold = set(gold_slugs)
+    lines: list[str] = []
+    for n in w:
+        title = n.title.replace("'", "")
+        if n.slug in gold:
+            tag = f"evidence: '{evidence_value(session_i, n.slug)}'"
+        else:
+            tag = f"noise: '{noise_value(session_i, n.slug)}'"
+        lines.append(f"(:{n.kind} {{slug: '{n.slug}', title: '{title}'}}) {tag}")
+    return "\n".join(lines)
+
+
+def build_prompt(session_i: int, w: list[NodeObs], gold_slugs: tuple[str, ...]) -> str:
+    body = format_working_set(session_i, w, gold_slugs)
+    return f"{TASK_INSTRUCTION}\n\nworking set:\n{body}"
+
+
+def evaluate_arm(graph: GraphObs, w: list[NodeObs], pred_text: str) -> dict:
+    gold_ev = full_gold_evidence(graph.session_i, list(graph.gold_slugs))
+    pred = parse_pred_values(pred_text)
+    score = score_llm_full_gold_evidence(pred, gold_ev)
+    leak = noise_leak(pred)
+    tokens = sum(node_tokens(n.title, n.slug) for n in w)
+    ahat = action_estimate(w_size=len(w), tokens=tokens, score=score)
+    gold = gold_in_w(graph, w)
+    return {
+        "w_size": len(w),
+        "tokens": tokens,
+        "n_gold_in_w": len(gold),
+        "gold_in_w": gold,
+        "score_llm": score,
+        "noise_leak": leak,
+        "A_hat": ahat,
+        "equal_quality": equal_quality(score, pred),
+        "pred": sorted(pred),
+        "w_slugs": [n.slug for n in w],
+    }
+
+
+def bootstrap_ci(
+    deltas: list[float], n_boot: int = BOOTSTRAP_B, seed: int = BOOTSTRAP_SEED
+) -> dict:
+    if not deltas:
+        return {"mean": None, "median": None, "ci95": [None, None], "n": 0, "n_bootstrap": n_boot}
+    rng = random.Random(seed)
+    n = len(deltas)
+    means = []
+    for _ in range(n_boot):
+        sample = [deltas[rng.randrange(n)] for _ in range(n)]
+        means.append(statistics.fmean(sample))
+    means.sort()
+    lo = means[max(0, int(0.025 * n_boot))]
+    hi = means[min(n_boot - 1, int(0.975 * n_boot))]
+    return {
+        "mean": statistics.fmean(deltas),
+        "median": statistics.median(deltas),
+        "ci95": [lo, hi],
+        "n": n,
+        "n_bootstrap": n_boot,
+    }
+
+
+def ci_excludes_zero_positive(ci: list) -> bool:
+    lo, hi = ci[0], ci[1]
+    if lo is None or hi is None:
+        return False
+    return float(lo) > 0.0
+
+
+def primary_verdict(n_triple: int, rag_stats: dict, dump_stats: dict) -> tuple[str, str]:
+    if n_triple < N_TRIPLE_MIN:
+        return (
+            "FAIL",
+            f"n_triple={n_triple} < n_triple_min={N_TRIPLE_MIN}. Pairwise equal-quality "
+            "is secondary and does not rescue a triple FAIL.",
+        )
+    rag_mean = rag_stats.get("mean")
+    dump_mean = dump_stats.get("mean")
+    rag_ok = (
+        rag_mean is not None
+        and float(rag_mean) > 0.0
+        and ci_excludes_zero_positive(rag_stats.get("ci95") or [None, None])
+    )
+    dump_ok = (
+        dump_mean is not None
+        and float(dump_mean) > 0.0
+        and ci_excludes_zero_positive(dump_stats.get("ci95") or [None, None])
+    )
+    if rag_ok and dump_ok:
+        return (
+            "PASS",
+            "Equal-quality triples: mean Δ_RAG>0 and CI excludes 0; mean Δ_dump>0 "
+            "and CI excludes 0; n_triple>="
+            f"{N_TRIPLE_MIN}; coefficients not retuned; scorer is full-gold "
+            "evidence + noise_leak gate.",
+        )
+    bits = []
+    if not rag_ok:
+        bits.append(
+            f"Δ_RAG mean={rag_mean} ci={rag_stats.get('ci95')} "
+            "(need mean>0 and CI excluding 0)"
+        )
+    if not dump_ok:
+        bits.append(
+            f"Δ_dump mean={dump_mean} ci={dump_stats.get('ci95')} "
+            "(need mean>0 and CI excluding 0)"
+        )
+    return "FAIL", "; ".join(bits)
+
+
+def write_flag_set() -> bool:
+    return os.environ.get("SHAPEWALK_VS_RAG_WRITE", "").strip() in {
+        "1",
+        "true",
+        "TRUE",
+        "yes",
     }
 
 
@@ -346,6 +504,7 @@ def check_scorer() -> int:
         gold_slugs=("hub-s0000",),
         nodes=(hub, decoy, near, twin_b, twin_a),
         edges=(),
+        raw={},
     )
     w = build_w_rag(graph, k=3)
     assert len(w) == 3
@@ -367,6 +526,7 @@ def check_scorer() -> int:
             NodeObs("NOISE", "hid-leak", "zzzz"),
         ),
         edges=(),
+        raw={},
     )
     # Features are kind/slug/title only; a slug containing "hid" is still an
     # observable locator (not the hid field). Nickname is not on NodeObs.
@@ -382,6 +542,27 @@ def check_scorer() -> int:
 
     dump_w = build_w_dump(graph)
     assert len(dump_w) == len(graph.nodes)
+
+    prompt = build_prompt(0, [hub, decoy], ("hub-s0000",))
+    assert "evidence: 'E0-hub-s0000'" in prompt
+    assert "noise: 'N0-zzzz-noise'" in prompt
+    # Instruction mentions the absence of KEY=; working-set lines must not add KEY markers.
+    body = format_working_set(0, [hub, decoy], ("hub-s0000",))
+    assert "KEY=" not in body
+    assert "key:" not in body
+    assert "nick" not in prompt
+
+    empty = bootstrap_ci([])
+    assert empty["n"] == 0
+    assert empty["mean"] is None
+    v_fail, _ = primary_verdict(0, empty, empty)
+    assert v_fail == "FAIL"
+    # Positive deltas with CI excluding 0: use a large n of identical positive Δ.
+    pos = bootstrap_ci([10.0] * 40)
+    v_pass, _ = primary_verdict(40, pos, pos)
+    assert v_pass == "PASS"
+    v_n, _ = primary_verdict(10, pos, pos)
+    assert v_n == "FAIL"
 
     print("HARD session 170: walk score_llm=0.20 (1/5) if only resident evidence")
     print("dump score_llm=1.00; noise_leak if any N… in pred")
@@ -403,26 +584,12 @@ def run_dry(*, limit: int | None) -> int:
     }
     payload: dict = {
         "dry_run": True,
+        "live_driver_shipped": True,
         "note": (
             "Not a paper verdict. ShapeWalk here is BFS k-hop cap-M, not "
             "pin_map. RAG lexical top-k is the real v1 scorer. See PROTOCOL.md."
         ),
-        "locked": {
-            "memnet_package": MEMNET_PACKAGE,
-            "k_hop": K_HOP,
-            "M_walk": M_WALK,
-            "rag_k": RAG_K,
-            "cue_kind": CUE_KIND,
-            "coef": {"a": COEF_A, "b": COEF_B, "c": COEF_C, "d": COEF_D},
-            "d_empty_W": "|W|",
-            "conceptual_d": "Lev (37)",
-            "n_triple_min": N_TRIPLE_MIN,
-            "bootstrap_B": BOOTSTRAP_B,
-            "bootstrap_seed": BOOTSTRAP_SEED,
-            "temperature": TEMPERATURE,
-            "model": DEFAULT_MODEL,
-            "retuned": False,
-        },
+        "locked": locked_block(),
         "n_graphs": len(graphs),
         "arms": {},
     }
@@ -445,19 +612,442 @@ def run_dry(*, limit: int | None) -> int:
     return 0
 
 
-def maybe_refuse_summary_write() -> None:
-    write = os.environ.get("SHAPEWALK_VS_RAG_WRITE", "").strip() in {
-        "1",
-        "true",
-        "TRUE",
-        "yes",
+def gql_from_raw(raw: dict) -> str:
+    """P1-hr mutate fixture: CREATE/MATCH by observable slug, never hid."""
+    lines: list[str] = []
+    nodes = raw["nodes"]
+    for n in nodes:
+        title = str(n["title"]).replace("'", "")
+        nick = str(n.get("nick") or f"nick-{n['slug']}").replace("'", "")
+        lines.append(
+            "CREATE (:{kind} {{id: '{nick}', slug: '{slug}', title: '{title}'}})".format(
+                kind=n["kind"], nick=nick, slug=n["slug"], title=title
+            )
+        )
+    by_slug = {n["slug"]: n for n in nodes}
+    for e in raw.get("edges", []):
+        src = e["src_slug"]
+        dst = e["dst_slug"]
+        if src not in by_slug or dst not in by_slug:
+            continue
+        sk = by_slug[src]["kind"]
+        dk = by_slug[dst]["kind"]
+        note = str(e.get("note", "")).replace("'", "")
+        nick = str(e.get("nick") or f"nick-e-{src}-{dst}").replace("'", "")
+        rel = e["rel"]
+        lines.append(
+            f"MATCH (a:{sk} {{slug: '{src}'}}), "
+            f"(b:{dk} {{slug: '{dst}'}})"
+        )
+        lines.append(
+            f"CREATE (a)-[:{rel} {{id: '{nick}', note: '{note}'}}]->(b)"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def _configure_memnet_env() -> None:
+    os.environ.setdefault("MEMNET_TEST_INLINE", "1")
+    os.environ.setdefault("MEMNET_SERVE_INTERNAL", "1")
+    os.environ.pop("MEMNET_NEO4J_URL", None)
+    os.environ.pop("MEMNET_AGENSGRAPH_URL", None)
+
+
+def _import_memnet():
+    _configure_memnet_env()
+    try:
+        from memnet import __version__ as MEMNET_VERSION
+        from memnet.exceptions import MemNetError
+        from memnet.mutate_gate import MutateGate
+        from memnet.pin_map_composer import PinMapComposer
+        from memnet.session import close_session, open_session
+    except ImportError as exc:
+        raise RuntimeError(
+            f"memnet is required for live ShapeWalk. Install {MEMNET_PACKAGE}."
+        ) from exc
+    return MEMNET_VERSION, MemNetError, MutateGate, PinMapComposer, close_session, open_session
+
+
+class Engine:
+    """Product Python API: open, mutate, pin_map, close. Same as p1-hr."""
+
+    def __init__(self) -> None:
+        (
+            self.memnet_version,
+            self.MemNetError,
+            self._MutateGate,
+            self._PinMapComposer,
+            self._close_session,
+            self._open_session,
+        ) = _import_memnet()
+        self.calls = {
+            "open_session": 0,
+            "MutateGate.apply": 0,
+            "PinMapComposer.compose": 0,
+            "close_session": 0,
+        }
+
+    def open(self):
+        self.calls["open_session"] += 1
+        return self._open_session(map_file=str(SCHEMA_PATH), ttl_minutes=60)
+
+    def mutate(self, ss, gql: str) -> None:
+        self.calls["MutateGate.apply"] += 1
+        lines = [ln for ln in gql.splitlines() if ln.strip()]
+        self._MutateGate(ss).apply(lines, mode="mutate")
+
+    def pin_map(self, ss, hub_slug: str):
+        self.calls["PinMapComposer.compose"] += 1
+        rows, text = self._PinMapComposer(ss).compose(
+            anchor=None,
+            kind=CUE_KIND,
+            locators=[("slug", hub_slug)],
+            depth=K_HOP,
+            max_rows=M_WALK,
+            active_only=True,
+            require_anchor=False,
+        )
+        return rows, text or ""
+
+    def close(self, ss) -> None:
+        self.calls["close_session"] += 1
+        self._close_session(ss.session_id)
+
+
+def admitted_from_rows(rows) -> list[NodeObs]:
+    """Caller admits offered Shape rows (node rows only; skip EDG/LAW)."""
+    out: list[NodeObs] = []
+    for r in rows:
+        if r.tag == "EDG" or getattr(r, "kind", None) == "edge":
+            continue
+        if r.tag == "LAW":
+            continue
+        slug = str(r.fields.get("slug", ""))
+        title = str(r.fields.get("title", ""))
+        if not slug:
+            continue
+        out.append(NodeObs(kind=str(r.tag), slug=slug, title=title))
+    return out
+
+
+def dump_from_session(ss) -> list[NodeObs]:
+    """Uncapped bench dump of observable session nodes (not a product dump)."""
+    out: list[NodeObs] = []
+    for r in ss.store.list_records(active_only=True):
+        if r.tag == "EDG":
+            continue
+        slug = str(r.fields.get("slug", ""))
+        title = str(r.fields.get("title", ""))
+        if not slug:
+            continue
+        out.append(NodeObs(kind=str(r.tag), slug=slug, title=title))
+    return out
+
+
+def live_w_for_session(eng: Engine, graph: GraphObs) -> dict[str, list[NodeObs]]:
+    """One MemNet session: pin_map ShapeWalk + dump; RAG from JSON observables."""
+    ss = eng.open()
+    try:
+        eng.mutate(ss, gql_from_raw(graph.raw))
+        rows, _text = eng.pin_map(ss, graph.hub_slug)
+        walk = admitted_from_rows(rows)
+        dump = dump_from_session(ss)
+        rag = build_w_rag(graph)
+        return {"shapewalk": walk, "dump": dump, "rag": rag}
+    finally:
+        try:
+            eng.close(ss)
+        except Exception:
+            pass
+
+
+def _chat_complete(base: str, key: str, model: str, prompt: str) -> str:
+    url = base.rstrip("/") + "/chat/completions"
+    body = json.dumps(
+        {
+            "model": model,
+            "temperature": TEMPERATURE,
+            "max_tokens": MAX_TOKENS,
+            "messages": [{"role": "user", "content": prompt}],
+        }
+    ).encode("utf-8")
+    last_err: Exception | None = None
+    for attempt in range(HTTP_RETRIES):
+        req = urllib.request.Request(
+            url,
+            data=body,
+            method="POST",
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://github.com/chouswei/llm-stm-mechanics",
+                "X-Title": "llm-stm-mechanics shapewalk-vs-rag",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                payload = json.loads(resp.read().decode("utf-8"))
+            choices = payload.get("choices") or []
+            if not choices:
+                raise RuntimeError(f"OpenRouter empty choices: {payload!r}"[:500])
+            msg = (choices[0].get("message") or {}).get("content") or ""
+            return str(msg)
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")[:800]
+            last_err = RuntimeError(f"OpenRouter HTTP {exc.code}: {detail}")
+            if exc.code in {429, 500, 502, 503} and attempt + 1 < HTTP_RETRIES:
+                time.sleep(2 ** attempt)
+                continue
+            raise last_err from exc
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            last_err = exc
+            if attempt + 1 < HTTP_RETRIES:
+                time.sleep(2 ** attempt)
+                continue
+            raise
+    raise last_err or RuntimeError("OpenRouter call failed")
+
+
+def generate(prompt: str, key: str, base: str, model: str) -> str:
+    return _chat_complete(base, key, model, prompt)
+
+
+def compact_arm(row: dict) -> dict:
+    return {
+        "w_size": row["w_size"],
+        "n_gold_in_w": row["n_gold_in_w"],
+        "score_llm": row["score_llm"],
+        "noise_leak": row["noise_leak"],
+        "A_hat": row["A_hat"],
+        "equal_quality": row["equal_quality"],
+        "tokens": row["tokens"],
     }
-    if write:
+
+
+def run_live(*, limit: int | None, key: str, base: str, model: str) -> int:
+    graphs = load_p1_hr_graphs(limit=limit)
+    if not graphs:
+        print(f"No p1-hr specs under {P1_HR_SPECS}", file=sys.stderr)
+        return 1
+    if not SCHEMA_PATH.is_file():
+        print(f"Missing schema {SCHEMA_PATH}", file=sys.stderr)
+        return 1
+
+    t0 = time.time()
+    eng = Engine()
+    memnet_version = str(eng.memnet_version)
+    if not memnet_version.startswith("0.19.4"):
         print(
-            "SHAPEWALK_VS_RAG_WRITE=1 is set, but this scaffold has no locked "
-            "live verdict to write. Refusing to create results.summary.json.",
+            f"warning: installed memnet {memnet_version} is not the protocol "
+            f"pin {MEMNET_PACKAGE}",
             file=sys.stderr,
         )
+
+    sessions: list[dict] = []
+    n_error = 0
+    arm_names = ("shapewalk", "dump", "rag")
+
+    print(
+        f"LIVE three-arm OpenRouter generate. n={len(graphs)} "
+        f"model={model} T={TEMPERATURE} pin_map M={M_WALK} k={K_HOP} "
+        f"RAG k={RAG_K} memnet={memnet_version}. Not a paper summary unless "
+        "SHAPEWALK_VS_RAG_WRITE=1 after this locked run."
+    )
+
+    for graph in graphs:
+        try:
+            ws = live_w_for_session(eng, graph)
+            arm_rows: dict[str, dict] = {}
+            for name in arm_names:
+                w = ws[name]
+                prompt = build_prompt(graph.session_i, w, graph.gold_slugs)
+                text = generate(prompt, key, base, model)
+                arm_rows[name] = evaluate_arm(graph, w, text)
+            a_walk = arm_rows["shapewalk"]["A_hat"]
+            row = {
+                "session_i": graph.session_i,
+                "family": graph.family,
+                "hub_slug": graph.hub_slug,
+                "n_gold": len(graph.gold_slugs),
+                "shapewalk": arm_rows["shapewalk"],
+                "dump": arm_rows["dump"],
+                "rag": arm_rows["rag"],
+                "delta_rag": arm_rows["rag"]["A_hat"] - a_walk,
+                "delta_dump": arm_rows["dump"]["A_hat"] - a_walk,
+                "triple_equal_quality": all(
+                    arm_rows[n]["equal_quality"] for n in arm_names
+                ),
+                "ok": True,
+                "error": None,
+            }
+        except Exception as exc:  # noqa: BLE001
+            n_error += 1
+            row = {
+                "session_i": graph.session_i,
+                "family": graph.family,
+                "ok": False,
+                "error": f"{type(exc).__name__}: {exc}",
+                "triple_equal_quality": False,
+            }
+        sessions.append(row)
+        if row.get("ok"):
+            sw, du, rg = row["shapewalk"], row["dump"], row["rag"]
+            print(
+                f"session {graph.session_i:04d} "
+                f"walk |W|={sw['w_size']} gold∩W={sw['n_gold_in_w']} "
+                f"score={sw['score_llm']:.3f} leak={int(sw['noise_leak'])} "
+                f"Â={sw['A_hat']:.2f} | "
+                f"dump |W|={du['w_size']} gold∩W={du['n_gold_in_w']} "
+                f"score={du['score_llm']:.3f} leak={int(du['noise_leak'])} "
+                f"Â={du['A_hat']:.2f} | "
+                f"rag |W|={rg['w_size']} gold∩W={rg['n_gold_in_w']} "
+                f"score={rg['score_llm']:.3f} leak={int(rg['noise_leak'])} "
+                f"Â={rg['A_hat']:.2f} triple={int(row['triple_equal_quality'])}",
+                flush=True,
+            )
+        else:
+            print(
+                f"session {graph.session_i:04d} FAIL {row.get('error')}",
+                flush=True,
+            )
+
+    ok_rows = [s for s in sessions if s.get("ok")]
+    triples = [s for s in ok_rows if s.get("triple_equal_quality")]
+    pair_rag = [
+        s
+        for s in ok_rows
+        if s["shapewalk"]["equal_quality"] and s["rag"]["equal_quality"]
+    ]
+    pair_dump = [
+        s
+        for s in ok_rows
+        if s["shapewalk"]["equal_quality"] and s["dump"]["equal_quality"]
+    ]
+
+    stats_triple_rag = bootstrap_ci([s["delta_rag"] for s in triples])
+    stats_triple_dump = bootstrap_ci([s["delta_dump"] for s in triples])
+    stats_pair_rag = bootstrap_ci([s["delta_rag"] for s in pair_rag])
+    stats_pair_dump = bootstrap_ci([s["delta_dump"] for s in pair_dump])
+    n_triple = len(triples)
+    verdict, reason = primary_verdict(n_triple, stats_triple_rag, stats_triple_dump)
+
+    n_leak = 0
+    for s in ok_rows:
+        if any(s[n]["noise_leak"] for n in arm_names):
+            n_leak += 1
+
+    elapsed = time.time() - t0
+    write_summary = write_flag_set()
+    payload = {
+        "dry_run": False,
+        "live_driver_shipped": True,
+        "authoritative_summary": write_summary,
+        "note": (
+            "Live three-arm generate. results.summary.json is written only if "
+            "SHAPEWALK_VS_RAG_WRITE=1. This file is not a SemVer claim."
+            if write_summary
+            else (
+                "Live three-arm generate wrote results.live.json only. "
+                "Not an authoritative summary. Do not invent PASS for the "
+                "paper without WRITE=1 after this locked protocol run."
+            )
+        ),
+        "locked": locked_block(),
+        "llm": {
+            "provider": "OpenRouter",
+            "model": model,
+            "base": base,
+            "temperature": TEMPERATURE,
+            "decoding": "greedy T=0 (predeclared primary band)",
+        },
+        "memnet_llm_version": memnet_version,
+        "n_sessions": len(graphs),
+        "n_ok": len(ok_rows),
+        "n_error": n_error,
+        "n_triple": n_triple,
+        "n_pair_walk_rag": len(pair_rag),
+        "n_pair_walk_dump": len(pair_dump),
+        "n_noise_leak": n_leak,
+        "stats_triple": {
+            "delta_rag": stats_triple_rag,
+            "delta_dump": stats_triple_dump,
+        },
+        "stats_pairwise_walk_rag": stats_pair_rag,
+        "stats_pairwise_walk_dump": stats_pair_dump,
+        "verdict": verdict,
+        "verdict_reason": reason,
+        "elapsed_s": elapsed,
+        "call_counts": eng.calls,
+        "sessions": sessions,
+    }
+    LIVE_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    print(
+        f"n_triple={n_triple} Δ_RAG mean={stats_triple_rag['mean']} "
+        f"CI={stats_triple_rag['ci95']} Δ_dump mean={stats_triple_dump['mean']} "
+        f"CI={stats_triple_dump['ci95']} verdict={verdict}"
+    )
+    print(f"Wrote {LIVE_PATH}.")
+
+    if write_summary:
+        summary = {
+            "stratum": "shapewalk-vs-dump-vs-rag-lexical-topk",
+            "protocol": "experiments/shapewalk-vs-rag/PROTOCOL.md",
+            "honesty": (
+                "graphs: Sage author-blind ACCEPT after regen "
+                "(experiments/p1-blind/SAGE_SIGNOFF.md); not a SemVer a/b claim"
+            ),
+            "memnet_llm_version": memnet_version,
+            "coefficient_lock": {
+                "a": COEF_A,
+                "b": COEF_B,
+                "c": COEF_C,
+                "d": COEF_D,
+                "d_empty_W": "|W|",
+                "tokens": "sum(len(title)+len(slug))",
+                "ell_task": "1-score_llm",
+                "locked_before_outcomes": True,
+                "retuned": False,
+            },
+            "llm": payload["llm"],
+            "protocol_lock": payload["locked"],
+            "n_sessions": len(graphs),
+            "n_ok": len(ok_rows),
+            "n_error": n_error,
+            "n_triple": n_triple,
+            "n_triple_min": N_TRIPLE_MIN,
+            "n_pair_walk_rag": len(pair_rag),
+            "n_pair_walk_dump": len(pair_dump),
+            "n_noise_leak": n_leak,
+            "stats_triple": payload["stats_triple"],
+            "stats_pairwise_walk_rag": stats_pair_rag,
+            "stats_pairwise_walk_dump": stats_pair_dump,
+            "elapsed_s": elapsed,
+            "verdict": verdict,
+            "verdict_reason": reason,
+            "sessions": [
+                {
+                    "session_i": s["session_i"],
+                    "family": s.get("family"),
+                    "ok": s.get("ok"),
+                    "triple_equal_quality": s.get("triple_equal_quality"),
+                    "delta_rag": s.get("delta_rag"),
+                    "delta_dump": s.get("delta_dump"),
+                    "shapewalk": compact_arm(s["shapewalk"]) if s.get("ok") else None,
+                    "dump": compact_arm(s["dump"]) if s.get("ok") else None,
+                    "rag": compact_arm(s["rag"]) if s.get("ok") else None,
+                    "error": s.get("error"),
+                }
+                for s in sessions
+            ],
+            "harness": "experiments/shapewalk-vs-rag/run_shapewalk_vs_rag.py",
+            "T_gt_0": "OPEN",
+        }
+        SUMMARY_PATH.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        print(f"Wrote {SUMMARY_PATH} (SHAPEWALK_VS_RAG_WRITE=1).")
+    else:
+        print(f"Did not write {SUMMARY_PATH} (set SHAPEWALK_VS_RAG_WRITE=1 after a locked run).")
+
+    print(reason)
+    return 0 if n_error == 0 else 1
 
 
 def main() -> int:
@@ -476,7 +1066,7 @@ def main() -> int:
         "--limit",
         type=int,
         default=None,
-        help="Optional cap on number of p1-hr graphs (dry only).",
+        help="Optional cap on number of p1-hr graphs (dry or live smoke).",
     )
     args = parser.parse_args()
     if args.check_scorer or os.environ.get("SHAPEWALK_VS_RAG_CHECK", "").strip() in {
@@ -501,43 +1091,17 @@ def main() -> int:
         print(
             "OPENROUTER_API_KEY missing. Export it (never commit), "
             "or run --check-scorer / --dry.\n"
-            "No results.summary.json in this scaffold; PROTOCOL.md is the lock. "
-            "Live three-arm LLM generate is not shipped as a 200-session driver.",
+            "Live driver is shipped: with a key this script runs the full "
+            "200-session three-arm generate (pin_map ShapeWalk, dump, RAG "
+            f"lexical top-k={RAG_K}). No results.summary.json unless "
+            "SHAPEWALK_VS_RAG_WRITE=1 after a locked run. PROTOCOL.md is the lock.",
             file=sys.stderr,
         )
-        maybe_refuse_summary_write()
         return 2
 
-    maybe_refuse_summary_write()
-    print(
-        "Live OpenRouter three-arm generate is not shipped as a full "
-        "200-session driver in this scaffold. Install "
-        f"{MEMNET_PACKAGE}, reuse experiments/p1-hr graphs, "
-        f"pin_map M={M_WALK} k={K_HOP} vs dump vs RAG lexical top-k={RAG_K}, "
-        f"model={os.environ.get('P1_LLM_MODEL', DEFAULT_MODEL)}, "
-        f"T={TEMPERATURE}, score_llm=full_gold_evidence, no KEY= markers. "
-        "Do not commit the API key. Do not invent results.summary.json."
-    )
-    LIVE_PATH.write_text(
-        json.dumps(
-            {
-                "live_driver_shipped": False,
-                "note": (
-                    "Not a paper verdict. Run --dry for W stats; PROTOCOL.md "
-                    "for the lock. results.summary.json must come from a "
-                    "locked live run with WRITE=1 after the driver exists."
-                ),
-                "model": os.environ.get("P1_LLM_MODEL", DEFAULT_MODEL),
-                "temperature": TEMPERATURE,
-                "rag_k": RAG_K,
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-    print(f"Wrote {LIVE_PATH}. Did not write {SUMMARY_PATH}.")
-    return 0
+    base = os.environ.get("OPENROUTER_BASE_URL", DEFAULT_BASE).strip() or DEFAULT_BASE
+    model = os.environ.get("P1_LLM_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
+    return run_live(limit=args.limit, key=key, base=base, model=model)
 
 
 if __name__ == "__main__":

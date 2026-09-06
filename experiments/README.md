@@ -1,6 +1,6 @@
 # Experiments (P1 / P1-HR / P1-LLM / P1-LLM-hard / P1-tgt0 / P1-blind / ShapeWalk-vs-RAG / P2 / P3 / P3-gen / P3-gen-0194 / P3-tgt0 / Markov W-only)
 
-Harnesses for the thesis §10 predictions and the §13 W-only Markov record. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`, harder evidence-versus-noise `p1-llm-hard/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; P1 $T>0$ harder (`p1-tgt0/`) and P3 $T>0$ CANONICAL (`p3-tgt0/`) are the temperature bands on the same stack. That is the exception, not a change to the synthetic strata. W-only Markov (`markov-w-only/`) is a structural goldfish falsification (no LLM); it is not a proof that $\sigma=(W,p)$ is Markov. ShapeWalk vs RAG (`shapewalk-vs-rag/`) is a **protocol + harness scaffold** adding a lexical top-$k$ RAG arm beside ShapeWalk and dump on the same p1-hr graphs; it has **no** locked `results.summary.json` yet.
+Harnesses for the thesis §10 predictions and the §13 W-only Markov record. P1, P2, and P3 before-generate are in-process MemNet goldfish only (no LLM generate). P1 LLM-answer quality (`p1-llm/`, harder evidence-versus-noise `p1-llm-hard/`) and P3 generation half (`p3-gen/`, post-fix record `p3-gen-0194/`) call an OpenRouter chat API at $T=0$; P1 $T>0$ harder (`p1-tgt0/`) and P3 $T>0$ CANONICAL (`p3-tgt0/`) are the temperature bands on the same stack. That is the exception, not a change to the synthetic strata. W-only Markov (`markov-w-only/`) is a structural goldfish falsification (no LLM); it is not a proof that $\sigma=(W,p)$ is Markov. ShapeWalk vs RAG (`shapewalk-vs-rag/`) is a **locked protocol + live three-arm OpenRouter driver** (ShapeWalk `pin_map`, dump, lexical top-$k$ RAG) on the same p1-hr graphs; it has **no** locked `results.summary.json` until `SHAPEWALK_VS_RAG_WRITE=1` after a real run.
 
 ## Stack
 
@@ -38,12 +38,12 @@ Seeds and locked coefficients are in each `run_*.py` / REPORT.
 # export OPENROUTER_API_KEY=
 # .venv/bin/python experiments/p1-llm-hard/run_p1_llm_hard.py
 
-# ShapeWalk vs Dump vs RAG lexical top-k — protocol scaffold (no summary yet)
+# ShapeWalk vs Dump vs RAG lexical top-k — live driver (no summary until WRITE=1)
 # Protocol: experiments/shapewalk-vs-rag/PROTOCOL.md
-# Dry W stats (no LLM). Live generate needs OPENROUTER_API_KEY; never commit.
+# Dry W stats (no LLM; ShapeWalk is BFS stand-in). Live needs OPENROUTER_API_KEY.
 python3 experiments/shapewalk-vs-rag/run_shapewalk_vs_rag.py --check-scorer
 python3 experiments/shapewalk-vs-rag/run_shapewalk_vs_rag.py --dry
-# export OPENROUTER_API_KEY=
+# export OPENROUTER_API_KEY=   # never commit
 # .venv/bin/pip install "memnet-llm==0.19.4"
 # .venv/bin/python experiments/shapewalk-vs-rag/run_shapewalk_vs_rag.py
 
@@ -94,6 +94,6 @@ export OPENROUTER_API_KEY=  # never commit
 | P3 generation half ($T=0$) | 0.19.3: RAW FAIL 30/120 / CANONICAL PASS 0/120; 0.19.4: both PASS 0/120 | #148 honesty c confirmation; no SemVer $a$/$b$ claim |
 | P3 generation half ($T>0$ CANONICAL) | PASS | 0.19.4; T=0.8; N_SAMPLES_DIST=5; DIST_MATCH_BAND=0.05; n_pairs=120; mean/min exact-match rate 1.0; same-run T=0 RAW/CANONICAL PASS 0/120 |
 | W-only Markov ($\sigma=W$) | NOT_FALSIFIED (PASS) | 0.19.4; n_matched=200; main mismatch_rate=0; positive-control mismatch_rate=1.0; HARNESS_VALID; not a proof of $\sigma=(W,p)$ |
-| ShapeWalk vs RAG (lexical top-$k$) | TBD | Protocol scaffold only; no `results.summary.json`; $k=M=12$; not embedding-RAG; not SemVer |
+| ShapeWalk vs RAG (lexical top-$k$) | TBD | Live driver shipped; no `results.summary.json` until WRITE=1; $k=M=12$; not embedding-RAG; not SemVer |
 
 Full per-session dumps are truncated in `*.summary.json`; re-run the scripts for complete artifacts.
