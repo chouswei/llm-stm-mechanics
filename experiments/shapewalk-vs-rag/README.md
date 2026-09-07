@@ -50,7 +50,7 @@ Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P
 
 ## Sibling $T>0$ band
 
-Lexical $T>0$ (same arms; $T=0.8$, $n\_{\mathrm{seeds}}=20$) is [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/). That driver must **not** overwrite this $T=0$ PASS.
+Lexical $T>0$ (same arms; $T=0.8$, $n\_{\mathrm{seeds}}=20$) is [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/) (locked **PASS**). That driver must **not** overwrite this $T=0$ PASS.
 
 ## What this is not
 

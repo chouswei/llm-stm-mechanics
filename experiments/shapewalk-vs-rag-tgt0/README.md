@@ -4,11 +4,9 @@ Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs, sam
 
 **Parent $T=0$ lock:** [`../shapewalk-vs-rag/results.summary.json`](../shapewalk-vs-rag/results.summary.json) (**PASS**; $n\_{\mathrm{triple}}=83$). Do **not** overwrite it. Do not retune $k$, Jaccard, or $a,b,c,d$. Operational empty-$W$ / bake-off $d=\lvert W\rvert$; conceptual $d$ remains Lev (37).
 
-This directory is **protocol + harness only** until a locked live run is written under `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. Dry / smoke / `--limit` output is **not** a paper Result and **not** a PASS.
+**Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Authoritative numbers: [`results.summary.json`](results.summary.json) (**PASS**; $n_{\mathrm{triple}}=81$). Narrative: [`REPORT.md`](REPORT.md). Do not overwrite that summary from a different model, package, temperature, seed count, or scorer.
 
-**Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Authoritative $\widehat{\mathcal{A}}$ / PASS numbers do **not** exist in this directory until a locked live run is written under `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. There is **no** fabricated `results.summary.json` in the scaffold.
-
-A live re-run writes [`results.live.json`](results.live.json) by default.
+A live re-run writes [`results.live.json`](results.live.json) by default. It does **not** write `results.summary.json` unless `SHAPEWALK_VS_RAG_TGT0_WRITE=1`.
 
 ## Stack
 
@@ -53,7 +51,7 @@ ShapeWalk **live** uses real `PinMapComposer.compose` (cue kind `HUB`, locators 
 
 Per seed the driver records full-gold `score_llm` and `noise_leak`. Per arm: `score_mean`, `noise_leak_any`, and $\widehat{\mathcal{A}}$ with $\ell=1-\mathrm{score\_mean}$. Summary fields: $n\_{\mathrm{triple}}$, mean $\Delta\_{\mathrm{RAG}}$ / $\Delta\_{\mathrm{dump}}$, bootstrap CIs ($B=10000$, seed $42$), PASS/FAIL per PROTOCOL.
 
-Live writes [`results.live.json`](results.live.json) by default. It does **not** write `results.summary.json` unless `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. Do not set `WRITE=1` from a different model, package, temperature, seed count, or scorer. This driver **never** writes the parent $T=0$ summary.
+Do not set `WRITE=1` from a different model, package, temperature, seed count, or scorer. This driver **never** writes the parent $T=0$ summary.
 
 Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P1_LLM_MODEL` (default `openai/gpt-4o-mini`).
 

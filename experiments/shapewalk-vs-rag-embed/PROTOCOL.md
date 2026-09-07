@@ -108,6 +108,6 @@ Lexical RAG is **not** in the live loop and is **not** a PASS/FAIL input here.
 ## Still later (not this protocol version)
 
 - Embedding $T>0$ band (sibling later; this $T=0$ embed PASS is unchanged)
-- Lexical $T>0$ band — **started** (does not overwrite this embed PASS): [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/)
+- Lexical $T>0$ band — **PASS** (does not overwrite this embed PASS): [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/)
 - KEY-extraction variant
 - Other embedders / embed APIs
