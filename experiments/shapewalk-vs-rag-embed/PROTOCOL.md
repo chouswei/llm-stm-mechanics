@@ -9,7 +9,7 @@ This is a **protocol + harness scaffold**. Authoritative $\widehat{\mathcal{A}}$
 The lexical three-arm bake-off remains **authoritative** for ShapeWalk vs Dump vs **lexical** RAG:
 
 - Protocol: [`../shapewalk-vs-rag/PROTOCOL.md`](../shapewalk-vs-rag/PROTOCOL.md)
-- Record: [`../shapewalk-vs-rag/results.summary.json`](../shapewalk-vs-rag/results.summary.json) (**PASS**; $n_{\mathrm{triple}}=83$; mean $\Delta_{\mathrm{RAG}}\approx 211.57$; mean $\Delta_{\mathrm{dump}}\approx 3108.59$)
+- Record: [`../shapewalk-vs-rag/results.summary.json`](../shapewalk-vs-rag/results.summary.json) (**PASS**; $n\_{\mathrm{triple}}=83$; mean $\Delta\_{\mathrm{RAG}}\approx 211.57$; mean $\Delta\_{\mathrm{dump}}\approx 3108.59$)
 
 Do **not** overwrite that summary. Do **not** retune $a,b,c,d$, $k=12$, or the lexical Jaccard arm. Lexical RAG is **not** required in this live loop; it may be cited as a prior contrast only.
 
@@ -42,7 +42,7 @@ Local weights; deterministic given those weights. **No OpenAI (or other) embed A
 ### Preregistered $k$
 
 $$
-k_{\mathrm{RAG}} = M_{\mathrm{walk}} = 12
+k\_{\mathrm{RAG}} = M\_{\mathrm{walk}} = 12
 $$
 
 Equal-cap comparison with ShapeWalk's hard `max_rows`. Same $k$ as the lexical arm (unchanged). Dump remains uncapped.
@@ -70,17 +70,17 @@ Single-turn from empty; $c=0$ (no critical evictions in this stratum).
 
 Among **equal-quality pairs** (ShapeWalk and Embedding RAG both equal-quality on the same session), ShapeWalk has **lower mean** $\widehat{\mathcal{A}}$ than Embedding RAG. Report paired mean $\Delta$ and 95% bootstrap CIs ($B=10\,000$, seed $42$), same style as the lexical pairwise dump contrast.
 
-- $\Delta_{\mathrm{embed}}=\widehat{\mathcal{A}}_{\mathrm{embed}}-\widehat{\mathcal{A}}_{\mathrm{walk}}$
+- $\Delta\_{\mathrm{embed}}=\widehat{\mathcal{A}}\_{\mathrm{embed}}-\widehat{\mathcal{A}}\_{\mathrm{walk}}$
 
 **PASS** (pairs) iff all of:
 
-- $n_{\mathrm{pair}}\ge n_{\mathrm{pair\_min}}=30$
-- mean $\Delta_{\mathrm{embed}}>0$ and 95% CI excludes $0$
+- $n\_{\mathrm{pair}}\ge n\_{\mathrm{pair\_min}}=30$
+- mean $\Delta\_{\mathrm{embed}}>0$ and 95% CI excludes $0$
 - coefficients not retuned; scorer is full-gold evidence + `noise_leak` gate
 
-**FAIL** if Embedding RAG has equal or lower mean $\widehat{\mathcal{A}}$ at equal quality (mean $\Delta\le 0$ or CI includes $0$), or if $n_{\mathrm{pair}}<30$.
+**FAIL** if Embedding RAG has equal or lower mean $\widehat{\mathcal{A}}$ at equal quality (mean $\Delta\le 0$ or CI includes $0$), or if $n\_{\mathrm{pair}}<30$.
 
-**Secondary (not a rescue of a pair FAIL):** pairwise equal-quality vs Dump (walk+Dump), same CI style as the lexical pairwise dump contrast. Report it; do not treat dump pairwise PASS as the primary claim if the embed pair fails the $n$ gate or the $\Delta_{\mathrm{embed}}$ band.
+**Secondary (not a rescue of a pair FAIL):** pairwise equal-quality vs Dump (walk+Dump), same CI style as the lexical pairwise dump contrast. Report it; do not treat dump pairwise PASS as the primary claim if the embed pair fails the $n$ gate or the $\Delta\_{\mathrm{embed}}$ band.
 
 Lexical RAG is **not** in the live loop and is **not** a PASS/FAIL input here.
 

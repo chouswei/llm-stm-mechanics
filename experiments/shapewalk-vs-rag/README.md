@@ -1,6 +1,6 @@
 # ShapeWalk vs Dump vs RAG top-k
 
-Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs: **ShapeWalk** (`PinMapComposer.compose` / `pin_map`), **Dump** (P1 continuity), and **RAG lexical top-$k$** (no graph walk). Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; full-gold evidence + `noise_leak` gate). Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**.
+Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs: **ShapeWalk** (`PinMapComposer.compose` / `pin_map`), **Dump** (P1 continuity), and **RAG lexical top-$k$** (no graph walk). Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; full-gold evidence + `noise_leak` gate). Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**. Operational empty-$W$ / bake-off $d=\lvert W\rvert$; conceptual $d$ remains Lev (37). Do not collapse them.
 
 **Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Do not retune $k$, Jaccard, $\widehat{\mathcal{A}}$ coeffs, or the PASS band after seeing outcomes.
 
@@ -11,7 +11,7 @@ Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs: **S
 - `memnet-llm==0.19.4` (package pin; no SemVer $a$/$b$ claim)
 - Graphs: [`../p1-hr/`](../p1-hr/) (Sage author-blind ACCEPT after regen)
 - LLM (live only): OpenRouter `openai/gpt-4o-mini`, $T=0$
-- $k_{\mathrm{RAG}}=M_{\mathrm{walk}}=12$ (see PROTOCOL)
+- $k\_{\mathrm{RAG}}=M\_{\mathrm{walk}}=12$ (see PROTOCOL)
 
 ## Re-run
 
@@ -42,7 +42,7 @@ export OPENROUTER_API_KEY=  # your key; never commit it
 
 ShapeWalk **live** uses real `PinMapComposer.compose` (cue kind `HUB`, locators `[("slug", hub_slug)]`, `depth=2`, `max_rows=12`, `active_only=True`; admit node rows only). Dump serialises all observable session nodes (uncapped). RAG stays deterministic token-Jaccard top-$k=12$ with **no** `hid` in features or sort keys.
 
-Per session the driver records $|W|$, $\mathrm{gold}\cap W$, `score_llm`, `noise_leak`, and $\widehat{\mathcal{A}}$ for each arm. Summary fields: $n_{\mathrm{triple}}$, mean $\Delta_{\mathrm{RAG}}$ / $\Delta_{\mathrm{dump}}$, bootstrap CIs ($B=10000$, seed $42$), PASS/FAIL per PROTOCOL.
+Per session the driver records $|W|$, $\mathrm{gold}\cap W$, `score_llm`, `noise_leak`, and $\widehat{\mathcal{A}}$ for each arm. Summary fields: $n\_{\mathrm{triple}}$, mean $\Delta\_{\mathrm{RAG}}$ / $\Delta\_{\mathrm{dump}}$, bootstrap CIs ($B=10000$, seed $42$), PASS/FAIL per PROTOCOL.
 
 Live writes [`results.live.json`](results.live.json) by default. It does **not** write `results.summary.json` unless `SHAPEWALK_VS_RAG_WRITE=1`. Do not set `WRITE=1` from a different model, package, or scorer.
 
@@ -50,7 +50,7 @@ Optional env: `OPENROUTER_BASE_URL` (default `https://openrouter.ai/api/v1`), `P
 
 ## Sibling $T>0$ band
 
-Lexical $T>0$ (same arms; $T=0.8$, $n_{\mathrm{seeds}}=20$) is [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/). That driver must **not** overwrite this $T=0$ PASS.
+Lexical $T>0$ (same arms; $T=0.8$, $n\_{\mathrm{seeds}}=20$) is [`../shapewalk-vs-rag-tgt0/`](../shapewalk-vs-rag-tgt0/). That driver must **not** overwrite this $T=0$ PASS.
 
 ## What this is not
 

@@ -25,10 +25,10 @@ Existing P1 (`p1/`, `p1-hr/`, `p1-llm/`, `p1-llm-hard/`) compares **ShapeWalk vs
 ### Preregistered $k$
 
 $$
-k_{\mathrm{RAG}} = M_{\mathrm{walk}} = 12
+k\_{\mathrm{RAG}} = M\_{\mathrm{walk}} = 12
 $$
 
-Equal-cap comparison with ShapeWalk's hard `max_rows`. This is **not** a match to mean ShapeWalk $|W|$ (p1-hr full $n=200$ reports $\mathrm{mean}|W|_{\mathrm{walk}}\approx 9.13$). Dump remains uncapped.
+Equal-cap comparison with ShapeWalk's hard `max_rows`. This is **not** a match to mean ShapeWalk $|W|$ (p1-hr full $n=200$ reports $\mathrm{mean}|W|\_{\mathrm{walk}}\approx 9.13$). Dump remains uncapped.
 
 ## Shared measurement (Â)
 
@@ -53,17 +53,17 @@ Single-turn from empty; $c=0$ (no critical evictions in this stratum).
 
 Among **equal-quality triples** (all three arms equal-quality on the same session), ShapeWalk has **lower mean** $\widehat{\mathcal{A}}$ than RAG and than Dump. Report paired mean $\Delta$ and 95% bootstrap CIs ($B=10\,000$, seed $42$), same style as p1-llm-hard.
 
-- $\Delta_{\mathrm{RAG}}=\widehat{\mathcal{A}}_{\mathrm{RAG}}-\widehat{\mathcal{A}}_{\mathrm{walk}}$
-- $\Delta_{\mathrm{dump}}=\widehat{\mathcal{A}}_{\mathrm{dump}}-\widehat{\mathcal{A}}_{\mathrm{walk}}$
+- $\Delta\_{\mathrm{RAG}}=\widehat{\mathcal{A}}\_{\mathrm{RAG}}-\widehat{\mathcal{A}}\_{\mathrm{walk}}$
+- $\Delta\_{\mathrm{dump}}=\widehat{\mathcal{A}}\_{\mathrm{dump}}-\widehat{\mathcal{A}}\_{\mathrm{walk}}$
 
 **PASS** (triples) iff all of:
 
-- $n_{\mathrm{triple}}\ge n_{\mathrm{triple\_min}}=30$
-- mean $\Delta_{\mathrm{RAG}}>0$ and 95% CI excludes $0$
-- mean $\Delta_{\mathrm{dump}}>0$ and 95% CI excludes $0$
+- $n\_{\mathrm{triple}}\ge n\_{\mathrm{triple\_min}}=30$
+- mean $\Delta\_{\mathrm{RAG}}>0$ and 95% CI excludes $0$
+- mean $\Delta\_{\mathrm{dump}}>0$ and 95% CI excludes $0$
 - coefficients not retuned; scorer is full-gold evidence + `noise_leak` gate
 
-**FAIL** if RAG or Dump has equal or lower mean $\widehat{\mathcal{A}}$ at equal quality (mean $\Delta\le 0$ or CI includes $0$), or if $n_{\mathrm{triple}}<30$.
+**FAIL** if RAG or Dump has equal or lower mean $\widehat{\mathcal{A}}$ at equal quality (mean $\Delta\le 0$ or CI includes $0$), or if $n\_{\mathrm{triple}}<30$.
 
 **Secondary (not a rescue of a triple FAIL):** pairwise equal-quality vs ShapeWalk (walk+RAG; walk+Dump), same CI style. Report it; do not treat pairwise PASS as the primary claim if triples fail the $n$ gate.
 

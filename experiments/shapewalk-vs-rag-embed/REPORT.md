@@ -11,20 +11,20 @@ Authoritative numbers: [`results.summary.json`](results.summary.json). Protocol 
 - Graphs: `experiments/p1-hr/` (Sage author-blind **ACCEPT after regen**; $n=200$)
 - LLM: OpenRouter `openai/gpt-4o-mini`, $T=0$
 - Arms: ShapeWalk (`PinMapComposer.compose`, $k=2$, $M=12$), Dump (uncapped), Embedding RAG cosine top-$k=12$
-- Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**
+- Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**. Operational empty-$W$ / bake-off $d=\lvert W\rvert$; conceptual $d$ remains Lev (37).
 - Scorer: full-gold evidence + `noise_leak` gate (same as p1-llm-hard)
 
 ## Primary claim (equal-quality walk+embed pairs)
 
-$n_{\mathrm{pair}}=88$ (min $30$).
+$n\_{\mathrm{pair}}=88$ (min $30$).
 
 | Contrast | mean $\Delta$ | 95% CI | $n$ |
 |----------|---------------|--------|-----|
-| $\widehat{\mathcal{A}}_{\mathrm{embed}}-\widehat{\mathcal{A}}_{\mathrm{walk}}$ | 210.943182 | [183.340909, 237.693182] | 88 |
+| $\widehat{\mathcal{A}}\_{\mathrm{embed}}-\widehat{\mathcal{A}}\_{\mathrm{walk}}$ | 210.943182 | [183.340909, 237.693182] | 88 |
 
 Mean $\Delta>0$ and CI excludes $0$ → ShapeWalk lower action at matched quality. Bootstrap $B=10000$, seed $42$.
 
-**PASS** under PROTOCOL: $n_{\mathrm{pair}}\ge 30$; walk+embed contrast positive with CI excluding $0$; coeffs/scorer/embedder unchanged.
+**PASS** under PROTOCOL: $n\_{\mathrm{pair}}\ge 30$; walk+embed contrast positive with CI excluding $0$; coeffs/scorer/embedder unchanged.
 
 ## Secondary (pairwise walk+Dump; not a rescue)
 
@@ -36,7 +36,7 @@ Primary claim is equal-quality **pairs** (ShapeWalk + Embedding RAG), not dump r
 
 ## Run hygiene
 
-- $n_{\mathrm{ok}}=200$, $n_{\mathrm{error}}=0$, $n_{\mathrm{noise\_leak}}=0$
+- $n\_{\mathrm{ok}}=200$, $n\_{\mathrm{error}}=0$, $n\_{\mathrm{noise\_leak}}=0$
 - elapsed $\approx 857.5$ s
 - call counts: `{"open_session": 200, "MutateGate.apply": 200, "PinMapComposer.compose": 200, "close_session": 200}`
 

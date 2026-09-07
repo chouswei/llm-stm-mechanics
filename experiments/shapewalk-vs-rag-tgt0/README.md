@@ -1,8 +1,10 @@
 # ShapeWalk vs Dump vs RAG top-k — $T>0$ band
 
-Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs, same arms as [`../shapewalk-vs-rag/`](../shapewalk-vs-rag/) (ShapeWalk `pin_map`, Dump, lexical Jaccard top-$k=12$), scored on the [`../p1-tgt0/`](../p1-tgt0/) temperature band: $T=0.8$, $n_{\mathrm{seeds}}=20$, $\mathrm{score\_mean}$, $\mathrm{noise\_leak\_any}$.
+Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs, same arms as [`../shapewalk-vs-rag/`](../shapewalk-vs-rag/) (ShapeWalk `pin_map`, Dump, lexical Jaccard top-$k=12$), scored on the [`../p1-tgt0/`](../p1-tgt0/) temperature band: $T=0.8$, $n\_{\mathrm{seeds}}=20$, $\mathrm{score\_mean}$, $\mathrm{noise\_leak\_any}$.
 
-**Parent $T=0$ lock:** [`../shapewalk-vs-rag/results.summary.json`](../shapewalk-vs-rag/results.summary.json) (**PASS**; $n_{\mathrm{triple}}=83$). Do **not** overwrite it. Do not retune $k$, Jaccard, or $a,b,c,d$.
+**Parent $T=0$ lock:** [`../shapewalk-vs-rag/results.summary.json`](../shapewalk-vs-rag/results.summary.json) (**PASS**; $n\_{\mathrm{triple}}=83$). Do **not** overwrite it. Do not retune $k$, Jaccard, or $a,b,c,d$. Operational empty-$W$ / bake-off $d=\lvert W\rvert$; conceptual $d$ remains Lev (37).
+
+This directory is **protocol + harness only** until a locked live run is written under `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. Dry / smoke / `--limit` output is **not** a paper Result and **not** a PASS.
 
 **Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Authoritative $\widehat{\mathcal{A}}$ / PASS numbers do **not** exist in this directory until a locked live run is written under `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. There is **no** fabricated `results.summary.json` in the scaffold.
 
@@ -12,8 +14,8 @@ A live re-run writes [`results.live.json`](results.live.json) by default.
 
 - `memnet-llm==0.19.5` preferred (`0.19.4` OK if noted on the run payload; package pin; no SemVer $a$/$b$ claim)
 - Graphs: [`../p1-hr/`](../p1-hr/) (Sage author-blind ACCEPT after regen)
-- LLM (live only): OpenRouter `openai/gpt-4o-mini`, $T=0.8$, $n_{\mathrm{seeds}}=20$ per (session, arm) — **same as** `p1-tgt0`
-- $k_{\mathrm{RAG}}=M_{\mathrm{walk}}=12$ (lexical PROTOCOL; not retuned)
+- LLM (live only): OpenRouter `openai/gpt-4o-mini`, $T=0.8$, $n\_{\mathrm{seeds}}=20$ per (session, arm) — **same as** `p1-tgt0`
+- $k\_{\mathrm{RAG}}=M\_{\mathrm{walk}}=12$ (lexical PROTOCOL; not retuned)
 - $W$ builders: imported from [`../shapewalk-vs-rag/run_shapewalk_vs_rag.py`](../shapewalk-vs-rag/run_shapewalk_vs_rag.py)
 
 ## Cost
@@ -49,7 +51,7 @@ export OPENROUTER_API_KEY=  # your key; never commit it
 
 ShapeWalk **live** uses real `PinMapComposer.compose` (cue kind `HUB`, locators `[("slug", hub_slug)]`, `depth=2`, `max_rows=12`, `active_only=True`; admit node rows only). Dump serialises all observable session nodes (uncapped). RAG stays deterministic token-Jaccard top-$k=12$ with **no** `hid` in features or sort keys. $W$ is built once per session; the $20$ seeds are generate draws on that $W$.
 
-Per seed the driver records full-gold `score_llm` and `noise_leak`. Per arm: `score_mean`, `noise_leak_any`, and $\widehat{\mathcal{A}}$ with $\ell=1-\mathrm{score\_mean}$. Summary fields: $n_{\mathrm{triple}}$, mean $\Delta_{\mathrm{RAG}}$ / $\Delta_{\mathrm{dump}}$, bootstrap CIs ($B=10000$, seed $42$), PASS/FAIL per PROTOCOL.
+Per seed the driver records full-gold `score_llm` and `noise_leak`. Per arm: `score_mean`, `noise_leak_any`, and $\widehat{\mathcal{A}}$ with $\ell=1-\mathrm{score\_mean}$. Summary fields: $n\_{\mathrm{triple}}$, mean $\Delta\_{\mathrm{RAG}}$ / $\Delta\_{\mathrm{dump}}$, bootstrap CIs ($B=10000$, seed $42$), PASS/FAIL per PROTOCOL.
 
 Live writes [`results.live.json`](results.live.json) by default. It does **not** write `results.summary.json` unless `SHAPEWALK_VS_RAG_TGT0_WRITE=1`. Do not set `WRITE=1` from a different model, package, temperature, seed count, or scorer. This driver **never** writes the parent $T=0$ summary.
 
