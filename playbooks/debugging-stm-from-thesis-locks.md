@@ -53,7 +53,7 @@ Estimate / account $\hat\lambda\_M$ (finite-difference shadow price). Account di
 - Task fails **and** $\hat\lambda\_M>0$ → Shape pressing the cap. Relax $M$ / hops **or** rethink Shape.
 - Task fails **and** slack ($\hat\lambda\_M\approx 0$, gold already fits) → **wrong cue / wrong Shape**, not “buy more $M$”.
 - Cap-violation rate under learned policies must be **0** at the engine. Softening hard caps inside Recall is not a debug fix (inspectability).
-- Silent truncate of load-bearing kinds (`FND` / checklist / fundamentals) under `max_rows` is a **truncated offer** (harness bug), not eviction and not a licence to soft-$M$. Prefer filter-out or uncapped / high enough compose rows. CompanyMemory: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
+- Silent truncate of load-bearing kinds (`FND` / checklist / fundamentals) under `max_rows` is a **truncated offer** (harness bug), not eviction and not a licence to soft-$M$. Prefer filter-out or uncapped / high enough compose rows. If `pin_map` emit signals truncation or rows were capped, the extract is incomplete — no “complete FND census”; re-cue / filter or raise compose $M$ / uncap and re-pin. Caps stay hard. CompanyMemory: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ### 4. Cue / control wrong? (user-input placement)
 

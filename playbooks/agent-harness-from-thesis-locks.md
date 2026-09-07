@@ -30,7 +30,7 @@ If the same software component picks the next cue, log that as **experimenter**,
 Per turn t:
 
 1. **Cue → control** — map product cue q (codebook tokens) to analysis control u once at the boundary.
-2. **Proposal** — offer Shape X̃_t (e.g. MemNet `pin_map`, bounded k, hard LIMIT M).
+2. **Proposal** — offer Shape X̃_t (e.g. MemNet `pin_map`, bounded k, hard LIMIT M). MemNet **MUST** highlight truncation on the wire when Shape is clipped. If emit signals truncation or rows were capped, the offer is **incomplete** — do not paint a complete census; re-cue / filter-out or raise compose M / uncap and re-pin. Caps stay hard.
 3. **Admission** — caller builds actual W_t from offer + instructions + dialogue + tools. X̃_t ⊆ W_t only if the whole Shape is admitted.
 4. **Integrate** — LLM generates under W_t (drift at T=0; path measure at T>0 — fix T or average seeds).
 5. **Eviction** — KV / window policy removes mass from W (discrete dissipative force on the hard window; continuous R is the forgetting *account*, not a second discrete channel).
@@ -100,7 +100,7 @@ Fail-able checks (run when you claim inspectability): hid-feature permutation ch
 - λ̂_M (finite-difference shadow price) is an **account diagnostic**, not a buyable product knob.
 - Positive λ̂_M when gold is truncated and relaxing M helps; should not fake-positive when gold already fits.
 
-**Debug:** task fails + λ̂_M>0 → Shape pressing the cap. Task fails + slack → wrong cue / wrong Shape, not “buy more M.” Prefer **filter-out** or an **uncapped / high enough** compose window over a hard truncate that can drop load-bearing kinds; do not call that window a complete extract. Softening engine $M$ is not the fix. CompanyMemory extracts: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
+**Debug:** task fails + λ̂_M>0 → Shape pressing the cap. Task fails + slack → wrong cue / wrong Shape, not “buy more M.” Prefer **filter-out** or an **uncapped / high enough** compose window over a hard truncate that can drop load-bearing kinds; do not call that window a complete extract. If `pin_map` emit signals truncation or rows were capped, treat the extract as **incomplete** — **MUST NOT** paint a “complete FND census”; re-cue / filter or raise compose $M$ / uncap and re-pin. Softening engine $M$ is not the fix. Caps stay hard. CompanyMemory extracts: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ---
 
@@ -167,7 +167,7 @@ If a session is SSOT for shared working memory:
 ```
 turn_t
   cue_q / control_u
-  proposal: ordered observable ids (+ payloads), caps (k,M,…), rejects
+  proposal: ordered observable ids (+ payloads), caps (k,M,…), rejects, truncation? (if emit signals clip / capped rows)
   admission: ordered W ids, policy name
   eviction: removed ids, policy name
   integrate: model, T, seed(s)
@@ -187,6 +187,7 @@ Enough to replay which surface moved and to run gauge / Markov / cap diagnostics
 - [ ] User input placed as cue / W-span / F± (not dump-S; not collapsed surfaces)  
 - [ ] No hid in ranker features or metric  
 - [ ] Hard caps hard; λ̂ only as diagnostic  
+- [ ] Truncation on the `pin_map` wire (or capped rows) → incomplete extract; re-cue / filter or raise compose $M$ / uncap and re-pin; no complete-census paint  
 - [ ] Coeffs / critical checklist frozen before held-out  
 - [ ] T fixed or seeds averaged  
 - [ ] Handoff = session id, not dump  
