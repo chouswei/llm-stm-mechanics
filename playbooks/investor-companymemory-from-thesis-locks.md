@@ -40,7 +40,7 @@ NewsIngest / AnalysisEngine talk to CompanyMemory via existing `MemoryWrite` / `
 | $W$ (working set) | Admitted `pin_map` Shape into analyse/chat context |
 | $u$ / cue | RelativeSeed cue: typically anchor `COM_{ticker}_{exchange}`, codebook locators; depth / max_rows caps |
 | Commit($\Delta$) | CompanyMemory gated GQL mutate (`CREATE` / `MERGE` / `MATCH…SET`). Leftover CLI `add` is **not** product Commit |
-| Proposal | `pin_map` offer (shaped). Honesty $c$: nickname `id` **off wire** on 0.19.4; MemNet **0.19.5** `SHAPE_DROP_KEYS` drops `hid` / `_memnet_hid` / `elementId` on shaped emit |
+| Proposal | `pin_map` offer (shaped). Honesty $c$: nickname `id` **off wire** on 0.19.4; MemNet **0.19.5** `SHAPE_DROP_KEYS` drops `hid` / `_memnet_hid` / `elementId` on shaped emit. MemNet **MUST** highlight truncation on the wire when Shape is clipped; a truncation signal (or capped rows) means the extract is **incomplete** |
 | Admission | What Host / AnalysisEngine actually pastes into the LLM window |
 | Eviction | Caps / recycle / news keep caps (`AI_INVESTOR_MEMNET_KEEP_ENTS` etc.). Analysis of stickiness $m$ stays **off wire** |
 | $F^\pm$ | Mission claim / Wanted hydrate / user chat corrections as **discrete impulses** — not dump-$S$ |
@@ -98,16 +98,22 @@ Three legal placements (may stack):
 | Collapsed proposal / admission / eviction logs | Inspectability: three surfaces logged separately when debugging analyse misses |
 | Federate MemNet over Desk REST / GraphQL as MemNet | Wire is GQL; leftover crew memory POST is not a face |
 | Soften keep / row caps inside the engine “to remember more” | Caps stay hard; $\hat\lambda\_M$ is diagnostic |
+| Hard-truncate a CompanyMemory extract so `FND` / checklist / fundamentals drop; call that window “complete” | Silent truncation of load-bearing kinds is a **harness bug**. Prefer **filter-out** (e.g. drop news) or **uncapped / high enough** `max_rows`. Honour the wire truncation highlight. Hard engine caps stay hard — fix cue / filter / scope, not soft $M$ |
+| Paint “complete FND census” when `pin_map` signals truncation or rows were capped | Truncated Shape is **incomplete**. Re-cue / filter-out or raise compose $M$ / uncap and **re-pin**. Caps stay hard |
+
+**MUST (CompanyMemory / company-session extracts).** Do **not** set `max_rows` (or any other compose window) so the offer can omit `FND`, checklist, or fundamentals. Prefer filter-out of non-load-bearing kinds (news is the usual drop) **or** an uncapped / high enough row budget that still holds those kinds. **MUST NOT** advertise a complete CompanyMemory extract under a window that can omit them. Admission and caps remain real; silent truncation that drops load-bearing kinds is not “the cap working as designed.” Engine caps stay hard rejects. The fix is cue / filter / scope, not softening $M$ inside Recall.
+
+MemNet **MUST** highlight truncation on the wire when Shape is clipped. If `pin_map` emit signals truncation **or** rows were capped, treat the extract as **incomplete**: **MUST NOT** paint a “complete FND census.” Re-cue / filter-out (prefer filter-out) **or** raise compose $M$ / uncap and re-pin. Hard engine caps stay hard.
 
 ---
 
 ## 6. Inspectability / debug pointers
 
-If **analyse misses a prior finding**, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) **before** raising $M$ / keep caps / rankers.
+If **analyse misses a prior finding**, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) **before** raising $M$ / keep caps / rankers. Split **proposal miss** (never in the offer) vs **truncated offer** (`max_rows` / window cut load-bearing kinds) vs **eviction** (entered $W$ then dropped).
 
 Force the three surfaces (plus integrate / Commit):
 
-1. **Proposal** — was the finding in the `pin_map` offer from the company session?
+1. **Proposal** — was the finding in the `pin_map` offer from the company session? If the offer is a hard truncate that dropped `FND` / checklist / fundamentals, **or** emit signals truncation / capped rows, that is a **truncated offer**, not a complete extract. Honour the wire highlight; re-cue / filter or raise compose $M$ / uncap and re-pin.
 2. **Admission** — offered but not pasted into AnalysisEngine $W$?
 3. **Eviction** — entered $W$ then dropped by window / keep / recycle (`AI_INVESTOR_MEMNET_KEEP_ENTS` etc.)?
 
@@ -132,7 +138,8 @@ If the company session is SSOT for shared company working memory:
 
 - Change desk code in `modelbasedPrj-ai-investor` (Inves owns the desk).
 - Claim Neo4j live / Bolt hydrate for CompanyMemory or EvidenceCentre.
-- SemVer $a$/$b$ on MemNet (honesty $c$ is a wire-leak **symptom**, not a version cut).
+- SemVer $a$/$b$ on MemNet (honesty $c$ is a wire-leak **symptom**, not a version cut). Truncation-on-wire is a harness MUST, not a SemVer claim here.
+- Mint a truncation field name on `pin_map` (honour the emit signal / capped-row fact; do not invent a key in this playbook).
 - Replace `docs/memnet-role.md` (that file remains desk SSOT).
 - Put $m$, $p$, momentum, coverage, $\lambda$ on the product wire.
 
@@ -149,6 +156,8 @@ If the company session is SSOT for shared company working memory:
 - [ ] Handoff = session ids, not dump  
 - [ ] No hid/nickname ranking; no $m$/$p$/$\lambda$ on `pin_map`  
 - [ ] CompanyMemory `pin_map` on 0.19.5: `SHAPE_DROP_KEYS` hygiene (`hid` / `_memnet_hid` / `elementId` off shaped emit)  
+- [ ] CompanyMemory extract: no truncating `max_rows` that can drop `FND` / checklist / fundamentals; filter-out or uncapped / high enough; never claim “complete” under that window  
+- [ ] If `pin_map` signals truncation or rows were capped: extract incomplete; no “complete FND census”; re-cue / filter or raise compose $M$ / uncap and re-pin; caps stay hard  
 
 ---
 
