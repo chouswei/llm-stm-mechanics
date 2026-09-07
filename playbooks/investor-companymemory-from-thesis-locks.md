@@ -98,16 +98,19 @@ Three legal placements (may stack):
 | Collapsed proposal / admission / eviction logs | Inspectability: three surfaces logged separately when debugging analyse misses |
 | Federate MemNet over Desk REST / GraphQL as MemNet | Wire is GQL; leftover crew memory POST is not a face |
 | Soften keep / row caps inside the engine “to remember more” | Caps stay hard; $\hat\lambda\_M$ is diagnostic |
+| Hard-truncate a CompanyMemory extract so `FND` / checklist / fundamentals drop; call that window “complete” | Silent truncation of load-bearing kinds is a **harness bug**. Prefer **filter-out** (e.g. drop news) or **uncapped / high enough** `max_rows`. Hard engine caps stay hard — fix cue / filter / scope, not soft $M$ |
+
+**MUST (CompanyMemory / company-session extracts).** Do **not** set `max_rows` (or any other compose window) so the offer can omit `FND`, checklist, or fundamentals. Prefer filter-out of non-load-bearing kinds (news is the usual drop) **or** an uncapped / high enough row budget that still holds those kinds. **MUST NOT** advertise a complete CompanyMemory extract under a window that can omit them. Admission and caps remain real; silent truncation that drops load-bearing kinds is not “the cap working as designed.” Engine caps stay hard rejects. The fix is cue / filter / scope, not softening $M$ inside Recall.
 
 ---
 
 ## 6. Inspectability / debug pointers
 
-If **analyse misses a prior finding**, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) **before** raising $M$ / keep caps / rankers.
+If **analyse misses a prior finding**, triage with [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md) **before** raising $M$ / keep caps / rankers. Split **proposal miss** (never in the offer) vs **truncated offer** (`max_rows` / window cut load-bearing kinds) vs **eviction** (entered $W$ then dropped).
 
 Force the three surfaces (plus integrate / Commit):
 
-1. **Proposal** — was the finding in the `pin_map` offer from the company session?
+1. **Proposal** — was the finding in the `pin_map` offer from the company session? If the offer is a hard truncate that dropped `FND` / checklist / fundamentals, that is a **truncated offer**, not a complete extract.
 2. **Admission** — offered but not pasted into AnalysisEngine $W$?
 3. **Eviction** — entered $W$ then dropped by window / keep / recycle (`AI_INVESTOR_MEMNET_KEEP_ENTS` etc.)?
 
@@ -149,6 +152,7 @@ If the company session is SSOT for shared company working memory:
 - [ ] Handoff = session ids, not dump  
 - [ ] No hid/nickname ranking; no $m$/$p$/$\lambda$ on `pin_map`  
 - [ ] CompanyMemory `pin_map` on 0.19.5: `SHAPE_DROP_KEYS` hygiene (`hid` / `_memnet_hid` / `elementId` off shaped emit)  
+- [ ] CompanyMemory extract: no truncating `max_rows` that can drop `FND` / checklist / fundamentals; filter-out or uncapped / high enough; never claim “complete” under that window  
 
 ---
 

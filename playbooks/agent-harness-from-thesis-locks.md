@@ -100,7 +100,7 @@ Fail-able checks (run when you claim inspectability): hid-feature permutation ch
 - λ̂_M (finite-difference shadow price) is an **account diagnostic**, not a buyable product knob.
 - Positive λ̂_M when gold is truncated and relaxing M helps; should not fake-positive when gold already fits.
 
-**Debug:** task fails + λ̂_M>0 → Shape pressing the cap. Task fails + slack → wrong cue / wrong Shape, not “buy more M.”
+**Debug:** task fails + λ̂_M>0 → Shape pressing the cap. Task fails + slack → wrong cue / wrong Shape, not “buy more M.” Prefer **filter-out** or an **uncapped / high enough** compose window over a hard truncate that can drop load-bearing kinds; do not call that window a complete extract. Softening engine $M$ is not the fix. CompanyMemory extracts: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ---
 

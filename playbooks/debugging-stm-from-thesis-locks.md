@@ -9,7 +9,7 @@ Use this when an LLM agent with session memory (MemNet ShapeWalk or any inventor
 
 ## 0. First question
 
-Is the failure in **proposal**, **admission**, **eviction**, **integrate** (LLM), or **Commit**?
+Is the failure in **proposal**, **admission**, **eviction**, **integrate** (LLM), or **Commit**? Under proposal, split **proposal miss** (gold never in the offer) from **truncated offer** (window / `max_rows` cut load-bearing kinds).
 
 Force that split **before** tweaking $M$ / window / rankers. Collapsing the three control surfaces plus generate plus inventory write is how you debug the wrong object.
 
@@ -53,6 +53,7 @@ Estimate / account $\hat\lambda\_M$ (finite-difference shadow price). Account di
 - Task fails **and** $\hat\lambda\_M>0$ → Shape pressing the cap. Relax $M$ / hops **or** rethink Shape.
 - Task fails **and** slack ($\hat\lambda\_M\approx 0$, gold already fits) → **wrong cue / wrong Shape**, not “buy more $M$”.
 - Cap-violation rate under learned policies must be **0** at the engine. Softening hard caps inside Recall is not a debug fix (inspectability).
+- Silent truncate of load-bearing kinds (`FND` / checklist / fundamentals) under `max_rows` is a **truncated offer** (harness bug), not eviction and not a licence to soft-$M$. Prefer filter-out or uncapped / high enough compose rows. CompanyMemory: [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md).
 
 ### 4. Cue / control wrong? (user-input placement)
 
@@ -118,6 +119,7 @@ Do not bake the benchmark into $L$ / $R$ and call it a win.
 | Rename / nickname changes offer or answer | Hid / `id` in features or wire; hid-perm | Proposal ranking / wire | gauge/P3; symmetries besides renaming |
 | Hid-sort “fixes” tests | Order washed out? | Test hygiene / proposal | metric (37); gauge |
 | Task fail, gold truncated, relaxing $M$ helps | $\hat\lambda\_M>0$ | Cap / Shape size | KKT / $\hat\lambda\_M$ |
+| Offer missing `FND` / checklist / fundamentals under a “complete” extract | `max_rows` / window vs kinds present | Truncated offer (proposal), not eviction | inspectability; CompanyMemory playbook |
 | Task fail, gold already fits | Slack; cue codebook | Cue / Shape, not $M$ | user-input; inspectability |
 | User text in $S$ without Commit | Placement | Cue vs dump-$S$ | user-input placement |
 | Merge-by-name / “the user said X” | Identity-by-name | Commit / find | gauge; symmetries besides renaming |
