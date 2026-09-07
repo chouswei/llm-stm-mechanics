@@ -2,7 +2,7 @@
 
 Locked **before** outcomes. Do not retune $k$, the lexical Jaccard scorer, $\widehat{\mathcal{A}}$ coefficients, the equal-quality gate, $T$, $n_{\mathrm{seeds}}$, or the PASS band after seeing live numbers.
 
-This is a **protocol + harness scaffold**. Authoritative $\widehat{\mathcal{A}}$ / PASS numbers do **not** exist until the first locked run is written under explicit `WRITE=1`. This note is not a Result. It is **not** a MemNet SemVer $a$/$b$ claim.
+This is a **protocol + harness scaffold**. Authoritative $\widehat{\mathcal{A}}$ / PASS numbers do **not** exist until the first locked run is written under explicit `WRITE=1`. Dry / smoke / `--limit` output is **not** a paper Result. It is **not** a MemNet SemVer $a$/$b$ claim.
 
 ## Parent lock (T=0 lexical)
 

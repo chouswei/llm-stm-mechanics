@@ -46,12 +46,12 @@ Hid, store key, or nickname `id` in ranking features, metric, or offer order?
 
 **Fix:** observables-only order; nickname off wire; hid-permutation must leave observable offer unchanged.
 
-### 3. Cap biting? (KKT / $\hat\lambda_M$)
+### 3. Cap biting? (KKT / $\hat\lambda\_M$)
 
-Estimate / account $\hat\lambda_M$ (finite-difference shadow price). Account diagnostic, not a buyable knob.
+Estimate / account $\hat\lambda\_M$ (finite-difference shadow price). Account diagnostic, not a buyable knob.
 
-- Task fails **and** $\hat\lambda_M>0$ → Shape pressing the cap. Relax $M$ / hops **or** rethink Shape.
-- Task fails **and** slack ($\hat\lambda_M\approx 0$, gold already fits) → **wrong cue / wrong Shape**, not “buy more $M$”.
+- Task fails **and** $\hat\lambda\_M>0$ → Shape pressing the cap. Relax $M$ / hops **or** rethink Shape.
+- Task fails **and** slack ($\hat\lambda\_M\approx 0$, gold already fits) → **wrong cue / wrong Shape**, not “buy more $M$”.
 - Cap-violation rate under learned policies must be **0** at the engine. Softening hard caps inside Recall is not a debug fix (inspectability).
 
 ### 4. Cue / control wrong? (user-input placement)
@@ -68,7 +68,7 @@ A cue-basis change is canonical for control **only if** the observable trajector
 
 - Offer good, $W$ missing gold → **admission** policy (caller did not admit the Shape).
 - Offer missing gold → **proposal / cue**, not admission.
-- $\tilde{X}_t\subseteq W_t$ only if the **whole** Shape is admitted.
+- $\tilde{X}\_t\subseteq W\_t$ only if the **whole** Shape is admitted.
 
 Native update is forced discrete EL on the turn lattice, not “run continuous $R$ on the hard window.” Do not invent a second discrete eviction channel while triaging admission.
 
@@ -92,7 +92,7 @@ Matched $W$ + $u$ but **divergent futures** → hidden history (tool/caller stat
 
 - Enlarge $\sigma$ or retract the Markov claim **for that harness**.
 - Inventory $S$ unequal with equal $W$ = different manifold, not a Markov fail.
-- Engine does not emit $p$. $W$-only is stronger / easier to falsify. If you put $p$ in $\sigma$, name $p_{\mathrm{mech}}$ vs $p_{\mathrm{adj}}$ (Legendre lock); never a `momentum` field on `pin_map`.
+- Engine does not emit $p$. $W$-only is stronger / easier to falsify. If you put $p$ in $\sigma$, name $p\_{\mathrm{mech}}$ vs $p\_{\mathrm{adj}}$ (Legendre lock); never a `momentum` field on `pin_map`.
 
 Positive control that **should** mismatch (hidden path-label) is required to trust a Markov harness — see §3.
 
@@ -117,7 +117,7 @@ Do not bake the benchmark into $L$ / $R$ and call it a win.
 | Cannot tell why $W$ changed | Separate proposal / admission / eviction lines? | Logging (stop) | inspectability |
 | Rename / nickname changes offer or answer | Hid / `id` in features or wire; hid-perm | Proposal ranking / wire | gauge/P3; symmetries besides renaming |
 | Hid-sort “fixes” tests | Order washed out? | Test hygiene / proposal | metric (37); gauge |
-| Task fail, gold truncated, relaxing $M$ helps | $\hat\lambda_M>0$ | Cap / Shape size | KKT / $\hat\lambda_M$ |
+| Task fail, gold truncated, relaxing $M$ helps | $\hat\lambda\_M>0$ | Cap / Shape size | KKT / $\hat\lambda\_M$ |
 | Task fail, gold already fits | Slack; cue codebook | Cue / Shape, not $M$ | user-input; inspectability |
 | User text in $S$ without Commit | Placement | Cue vs dump-$S$ | user-input placement |
 | Merge-by-name / “the user said X” | Identity-by-name | Commit / find | gauge; symmetries besides renaming |
@@ -152,7 +152,7 @@ Do not bake the benchmark into $L$ / $R$ and call it a win.
 - Fit $m$ / critical weights / $a,b,c,d$ on the same run you celebrate
 - Put $m$, $p$, momentum, coverage, $\lambda$, stickiness on `pin_map`
 - Treat honesty $c$ / wire leaks as a SemVer $a$/$b$ claim
-- Identify $p_{\mathrm{mech}}\equiv p_{\mathrm{adj}}$ without the Legendre conditions, then “debug momentum”
+- Identify $p\_{\mathrm{mech}}\equiv p\_{\mathrm{adj}}$ without the Legendre conditions, then “debug momentum”
 - Wash out admission order as if it were gauge
 - Merge nodes by nickname because an automorphism *might* exist
 
@@ -175,7 +175,7 @@ turn_t
 
 **Debug-specific (optional, analysis — not product fields on `pin_map`):**
 
-- $\hat\lambda_M$ account (finite-difference; slack vs biting)
+- $\hat\lambda\_M$ account (finite-difference; slack vs biting)
 - gauge perm result (hid-isomorph: offer/answer same? RAW vs CANONICAL wire)
 - matched-$W$ pair ids (Markov: pair key, next-offer / next-$W$ mismatch)
 - cap_violation? (engine reject count; must be 0 under learned $u$)

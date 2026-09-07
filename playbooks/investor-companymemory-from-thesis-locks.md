@@ -40,7 +40,7 @@ NewsIngest / AnalysisEngine talk to CompanyMemory via existing `MemoryWrite` / `
 | $W$ (working set) | Admitted `pin_map` Shape into analyse/chat context |
 | $u$ / cue | RelativeSeed cue: typically anchor `COM_{ticker}_{exchange}`, codebook locators; depth / max_rows caps |
 | Commit($\Delta$) | CompanyMemory gated GQL mutate (`CREATE` / `MERGE` / `MATCH…SET`). Leftover CLI `add` is **not** product Commit |
-| Proposal | `pin_map` offer (shaped). Honesty $c$: nickname `id` **off wire** on 0.19.4 |
+| Proposal | `pin_map` offer (shaped). Honesty $c$: nickname `id` **off wire** on 0.19.4; MemNet **0.19.5** `SHAPE_DROP_KEYS` drops `hid` / `_memnet_hid` / `elementId` on shaped emit |
 | Admission | What Host / AnalysisEngine actually pastes into the LLM window |
 | Eviction | Caps / recycle / news keep caps (`AI_INVESTOR_MEMNET_KEEP_ENTS` etc.). Analysis of stickiness $m$ stays **off wire** |
 | $F^\pm$ | Mission claim / Wanted hydrate / user chat corrections as **discrete impulses** — not dump-$S$ |
@@ -91,13 +91,13 @@ Three legal placements (may stack):
 |-----|-----|
 | `rag_query` / dump-$S$ as STM API | Snapshot benches ≠ product dump; Host search stays outside MemNet |
 | Layer mutate from CompanyMemory | GQL only (`CREATE` / `MERGE` / `MATCH…SET`); leftover CLI `add` ≠ Commit |
-| Hid / nickname in ranking | Observables on wire; honesty $c$ / nickname `id` off wire on 0.19.4 |
+| Hid / nickname in ranking | Observables on wire; honesty $c$ / nickname `id` off wire on 0.19.4; **0.19.5** `SHAPE_DROP_KEYS` (`hid` / `_memnet_hid` / `elementId` dropped on shaped emit) |
 | $m$ / $p$ / $\lambda$ / momentum on `pin_map` | Analysis-only (measuring $m$; Legendre) |
 | Desk speaking Bolt; `liveNeo4jClaimed` true for CompanyMemory | MemNet = session; Neo4j = disk; **this cut does not put CompanyMemory on Neo4j** |
 | Merge company session with Evidence Library session | Distinct `companySessionId` vs `evidenceSessionId` |
 | Collapsed proposal / admission / eviction logs | Inspectability: three surfaces logged separately when debugging analyse misses |
 | Federate MemNet over Desk REST / GraphQL as MemNet | Wire is GQL; leftover crew memory POST is not a face |
-| Soften keep / row caps inside the engine “to remember more” | Caps stay hard; $\hat\lambda_M$ is diagnostic |
+| Soften keep / row caps inside the engine “to remember more” | Caps stay hard; $\hat\lambda\_M$ is diagnostic |
 
 ---
 
@@ -111,7 +111,7 @@ Force the three surfaces (plus integrate / Commit):
 2. **Admission** — offered but not pasted into AnalysisEngine $W$?
 3. **Eviction** — entered $W$ then dropped by window / keep / recycle (`AI_INVESTOR_MEMNET_KEEP_ENTS` etc.)?
 
-Then: **cap biting** vs **wrong cue** (wrong `COM_*`, Library session instead of company session, empty census cue treated as neighbourhood dump). Gauge: nickname / hid leaks on the offer wire (honesty $c$).
+Then: **cap biting** vs **wrong cue** (wrong `COM_*`, Library session instead of company session, empty census cue treated as neighbourhood dump). Gauge: nickname / hid leaks on the offer wire (honesty $c$). On MemNet **0.19.5**, shaped `pin_map` emit uses `SHAPE_DROP_KEYS` in `memnet.models` (`hid`, `_memnet_hid`, `elementId` dropped on shaped emit — mutate ack, shaped present, jsonl). Nickname `id` stays off **shaped read** (0.19.4). Do not invent extra drop keys. See MemNet [CHANGELOG 0.19.5](https://github.com/chouswei/MemNet/blob/main/CHANGELOG.md) and [`docs/operations/honesty-c-wire-audit.md`](https://github.com/chouswei/MemNet/blob/main/docs/operations/honesty-c-wire-audit.md).
 
 Do **not** treat a Library-only fill as a CompanyMemory retrieval miss. Hydration has not Commit’d yet.
 
@@ -148,6 +148,7 @@ If the company session is SSOT for shared company working memory:
 - [ ] Commit = CompanyMemory GQL only  
 - [ ] Handoff = session ids, not dump  
 - [ ] No hid/nickname ranking; no $m$/$p$/$\lambda$ on `pin_map`  
+- [ ] CompanyMemory `pin_map` on 0.19.5: `SHAPE_DROP_KEYS` hygiene (`hid` / `_memnet_hid` / `elementId` off shaped emit)  
 
 ---
 
@@ -157,4 +158,5 @@ If the company session is SSOT for shared company working memory:
 - Wire: [`playbooks/agent-harness-from-thesis-locks.md`](agent-harness-from-thesis-locks.md)  
 - Triage: [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md)  
 - Desk SSOT: `docs/memnet-role.md` in [modelbasedPrj-ai-investor](https://github.com/chouswei/modelbasedPrj-ai-investor)  
-- §13 seam locks used here: inspectability, gauge/P3 (nickname off wire), update (Commit impulse), user-input placement (harness §2.5), measuring $m$ (off-wire), Legendre firewall, KKT / $\hat\lambda_M$ as diagnostic only  
+- §13 seam locks used here: inspectability, gauge/P3 (nickname off wire; 0.19.5 `SHAPE_DROP_KEYS`), update (Commit impulse), user-input placement (harness §2.5), measuring $m$ (off-wire), Legendre firewall, KKT / $\hat\lambda\_M$ as diagnostic only  
+- MemNet honesty $c$: [CHANGELOG 0.19.5](https://github.com/chouswei/MemNet/blob/main/CHANGELOG.md) (`SHAPE_DROP_KEYS`); [honesty-c wire audit](https://github.com/chouswei/MemNet/blob/main/docs/operations/honesty-c-wire-audit.md)  

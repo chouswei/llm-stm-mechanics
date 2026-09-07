@@ -124,6 +124,7 @@ Operational estimator (conceptual form):
 Rules:
 
 - Preregister a,b,c,d (and any stand-in for d, e.g. d(∅,W)=|W|) **before** held-out outcomes.
+- Keep the dual metric: **conceptual** $d$ = Lev (37); **operational** empty-$W$ / bake-off $d$ = $|W|$. Do not collapse them. Locked ShapeWalk vs RAG bake-offs use the operational stand-in and say so.
 - Compare policies at **matched answer quality**, not “dump has more gold so loses.”
 - **Critical evictions** = task-weighted stand-in → same preregister / freeze / held-out discipline (no same-run fit).
 - Structural dissipation (bytes, Lev of eviction) is non-circular; task-weighted dissipation needs held-out weights.
@@ -199,4 +200,4 @@ Enough to replay which surface moved and to run gauge / Markov / cap diagnostics
 - §13 seam locks: Legendre (+ analysis-only $p$ maps (35)–(36)), update rule (+ discrete Dirac requirements; structure not written), stochasticity (OM candidate / derivation bar), Markov (+ W-only empirical), metric (37), measuring $m$ (off-wire), symmetries besides renaming, inspectability, gauge chart ≠ theorem, dissipation circularity  
 - Debug when a task fails: [`playbooks/debugging-stm-from-thesis-locks.md`](debugging-stm-from-thesis-locks.md)  
 - Desk surface map (AI Investor CompanyMemory; not a desk code change): [`playbooks/investor-companymemory-from-thesis-locks.md`](investor-companymemory-from-thesis-locks.md)  
-- Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`; ShapeWalk vs lexical RAG live driver: `experiments/shapewalk-vs-rag/`)
+- Empirical harnesses: `experiments/` (P1/P2/P3, `markov-w-only/`, `s13-seams/`; locked bake-off Results: `experiments/shapewalk-vs-rag/`, `experiments/shapewalk-vs-rag-embed/`; `experiments/shapewalk-vs-rag-tgt0/` is protocol+harness only until `WRITE=1`, not a paper Result)

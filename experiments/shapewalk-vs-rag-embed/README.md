@@ -2,7 +2,7 @@
 
 Protocol + **live three-arm OpenRouter driver** on the p1-hr $n=200$ graphs: **ShapeWalk** (`PinMapComposer.compose` / `pin_map`), **Dump** (P1 continuity), and **Embedding RAG top-$k$** (MiniLM cosine; no graph walk). Lexical Jaccard RAG is **not** in this live loop; the parent lock is [`../shapewalk-vs-rag/`](../shapewalk-vs-rag/) (**PASS**; do not overwrite).
 
-Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; full-gold evidence + `noise_leak` gate). Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**. $k=12$ is the same cap as lexical; the lexical Jaccard definition is unchanged.
+Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; full-gold evidence + `noise_leak` gate). Coefficients $a=1,b=1,c=0,d=10$ — **not retuned**. Operational empty-$W$ / bake-off $d=\lvert W\rvert$; conceptual $d$ remains Lev (37). Do not collapse them. $k=12$ is the same cap as lexical; the lexical Jaccard definition is unchanged.
 
 **Lock:** [`PROTOCOL.md`](PROTOCOL.md) is authoritative. Do not retune $k$, the MiniLM embedder, $\widehat{\mathcal{A}}$ coeffs, or the PASS band after seeing outcomes.
 
@@ -14,7 +14,7 @@ Task and scorer match [`../p1-llm-hard/`](../p1-llm-hard/) (evidence vs noise; f
 - `sentence-transformers` (local `all-MiniLM-L6-v2`; no OpenAI embed API in v1)
 - Graphs: [`../p1-hr/`](../p1-hr/) (Sage author-blind ACCEPT after regen)
 - LLM (live only): OpenRouter `openai/gpt-4o-mini`, $T=0$ — generate only
-- $k_{\mathrm{RAG}}=M_{\mathrm{walk}}=12$ (see PROTOCOL)
+- $k\_{\mathrm{RAG}}=M\_{\mathrm{walk}}=12$ (see PROTOCOL)
 
 ## Re-run
 
@@ -47,7 +47,7 @@ export OPENROUTER_API_KEY=  # your key; never commit it
 
 ShapeWalk **live** uses real `PinMapComposer.compose` (cue kind `HUB`, locators `[("slug", hub_slug)]`, `depth=2`, `max_rows=12`, `active_only=True`; admit node rows only). Dump serialises all observable session nodes (uncapped). Embedding RAG stays local MiniLM cosine top-$k=12$ with **no** `hid` / nick in embed texts and **no** vectors on `pin_map`.
 
-Per session the driver records $|W|$, $\mathrm{gold}\cap W$, `score_llm`, `noise_leak`, and $\widehat{\mathcal{A}}$ for each arm. Summary fields: $n_{\mathrm{pair}}$ (walk+embed equal-quality), mean $\Delta_{\mathrm{embed}}$, bootstrap CI ($B=10000$, seed $42$), secondary walk+Dump pairwise, PASS/FAIL per PROTOCOL.
+Per session the driver records $|W|$, $\mathrm{gold}\cap W$, `score_llm`, `noise_leak`, and $\widehat{\mathcal{A}}$ for each arm. Summary fields: $n\_{\mathrm{pair}}$ (walk+embed equal-quality), mean $\Delta\_{\mathrm{embed}}$, bootstrap CI ($B=10000$, seed $42$), secondary walk+Dump pairwise, PASS/FAIL per PROTOCOL.
 
 Live writes [`results.live.json`](results.live.json) by default. It does **not** write `results.summary.json` unless `SHAPEWALK_VS_RAG_EMBED_WRITE=1`. Do not set `WRITE=1` from a different model, package, embedder, or scorer.
 
